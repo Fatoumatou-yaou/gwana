@@ -49,7 +49,7 @@ gem "devise", "~> 4.9"
 gem "pundit", "~> 2.3"
 
 # Background jobs
-gem "sidekiq", "~> 7.2"
+gem "sidekiq", "~> 8.0"
 gem "redis", "~> 5.0"
 
 # Full-text search
