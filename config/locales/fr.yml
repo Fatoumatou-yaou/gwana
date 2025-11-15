@@ -1,0 +1,61 @@
+fr:
+  application:
+    title: "GWANA - Réseau de Valorisation des Femmes Pionnières"
+    description: "Plateforme de valorisation de femmes pionnières et expertes qui exercent des métiers à connotation masculine au Niger et mentorat"
+
+  navigation:
+    main: "Navigation principale"
+    menu: "Menu"
+    members: "Annuaire"
+    articles: "Actualités"
+    profile: "Mon profil"
+    admin: "Administration"
+
+  footer:
+    description: "Réseau de valorisation de femmes pionnières et expertes au Niger"
+    links: "Liens"
+    contact: "Contact"
+    email: "contact@gwana.org"
+    rights: "Tous droits réservés"
+
+  pundit:
+    not_authorized: "Vous n'êtes pas autorisé à effectuer cette action."
+
+  home:
+    title: "Bienvenue sur GWANA"
+    subtitle: "Réseau de Valorisation des Femmes Pionnières"
+    description: "Rejoignez notre communauté de femmes expertes qui transforment les métiers traditionnellement masculins au Niger"
+    cta_primary: "Rejoindre le réseau"
+    cta_secondary: "Découvrir l'annuaire"
+    stats_members: "Membres"
+    stats_mentors: "Mentors"
+    stats_requests: "Demandes de mentorat"
+
+  mentorship_request_mailer:
+    new_request:
+      subject: "Nouvelle demande de mentorat de %{requester_name}"
+    request_accepted:
+      subject: "Votre demande de mentorat a été acceptée"
+    request_rejected:
+      subject: "Votre demande de mentorat a été refusée"
+
+  profiles:
+    update:
+      success: "Profil mis à jour avec succès"
+
+  members:
+    search_placeholder: "Rechercher par nom, profession, compétences..."
+    search: "Rechercher"
+    available_only: "Disponibles pour mentorat uniquement"
+    available: "Disponible pour mentorat"
+    no_results: "Aucun membre trouvé"
+    bio: "Biographie"
+    skills: "Compétences"
+    request_mentorship: "Demander un mentorat"
+
+  articles:
+    search_placeholder: "Rechercher des articles..."
+    search: "Rechercher"
+    no_results: "Aucun article trouvé"
+    tags: "Tags"
+

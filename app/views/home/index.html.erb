@@ -1,0 +1,107 @@
+<% content_for :title, t("home.title") %>
+<% content_for :description, t("home.description") %>
+
+<!-- Hero Section -->
+<section class="text-center py-16 md:py-24" aria-labelledby="hero-title">
+  <div class="max-w-4xl mx-auto">
+    <h1 id="hero-title" class="text-5xl md:text-7xl font-bold mb-6 text-[#D4AF37]">
+      <%= t("home.title") %>
+    </h1>
+    <p class="text-xl md:text-2xl text-gray-300 mb-4">
+      <%= t("home.subtitle") %>
+    </p>
+    <p class="text-lg text-gray-400 mb-8 max-w-2xl mx-auto">
+      <%= t("home.description") %>
+    </p>
+    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+      <% if user_signed_in? %>
+        <%= link_to t("home.cta_secondary"), members_path, class: "bg-[#6A0DAD] hover:bg-[#5B21B6] text-white px-8 py-3 rounded-lg font-semibold transition-all transform hover:scale-105" %>
+      <% else %>
+        <%= link_to t("home.cta_primary"), new_user_registration_path, class: "bg-[#6A0DAD] hover:bg-[#5B21B6] text-white px-8 py-3 rounded-lg font-semibold transition-all transform hover:scale-105" %>
+        <%= link_to t("home.cta_secondary"), members_path, class: "bg-transparent border-2 border-[#6A0DAD] text-[#6A0DAD] hover:bg-[#6A0DAD] hover:text-white px-8 py-3 rounded-lg font-semibold transition-all" %>
+      <% end %>
+    </div>
+  </div>
+</section>
+
+<!-- Stats Section -->
+<section class="py-12 bg-[#0B0B0B] rounded-lg mb-16" aria-label="<%= t("home.stats_members") %>">
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+    <div>
+      <div class="text-4xl font-bold text-[#D4AF37] mb-2"><%= @members_count %></div>
+      <div class="text-gray-400"><%= t("home.stats_members") %></div>
+    </div>
+    <div>
+      <div class="text-4xl font-bold text-[#D4AF37] mb-2"><%= @mentors_count %></div>
+      <div class="text-gray-400"><%= t("home.stats_mentors") %></div>
+    </div>
+    <div>
+      <div class="text-4xl font-bold text-[#D4AF37] mb-2"><%= @requests_count %></div>
+      <div class="text-gray-400"><%= t("home.stats_requests") %></div>
+    </div>
+  </div>
+</section>
+
+<!-- Featured Members Section -->
+<% if @featured_members.any? %>
+  <section class="mb-16" aria-labelledby="featured-members-title">
+    <h2 id="featured-members-title" class="text-3xl font-bold mb-8 text-center">
+      <%= t("navigation.members") %>
+    </h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <% @featured_members.each do |member| %>
+        <div class="bg-[#0B0B0B] rounded-lg p-6 border border-[#6A0DAD]/20 hover:border-[#6A0DAD]/40 transition-all">
+          <% if member.photo.attached? %>
+            <%= image_tag member.photo, alt: member.full_name, class: "w-24 h-24 rounded-full mx-auto mb-4 object-cover" %>
+          <% else %>
+            <div class="w-24 h-24 rounded-full mx-auto mb-4 bg-[#6A0DAD] flex items-center justify-center text-2xl font-bold text-white">
+              <%= member.first_name[0].upcase %><%= member.last_name[0].upcase %>
+            </div>
+          <% end %>
+          <h3 class="text-xl font-semibold text-center mb-2">
+            <%= link_to member.full_name, member_path(member), class: "hover:text-[#D4AF37] transition-colors" %>
+          </h3>
+          <p class="text-gray-400 text-center text-sm mb-2"><%= member.profession %></p>
+          <p class="text-gray-500 text-center text-xs"><%= member.region %></p>
+        </div>
+      <% end %>
+    </div>
+    <div class="text-center mt-8">
+      <%= link_to t("home.cta_secondary"), members_path, class: "text-[#D4AF37] hover:text-[#B8860B] font-semibold transition-colors" %>
+    </div>
+  </section>
+<% end %>
+
+<!-- Recent Articles Section -->
+<% if @recent_articles.any? %>
+  <section class="mb-16" aria-labelledby="recent-articles-title">
+    <h2 id="recent-articles-title" class="text-3xl font-bold mb-8 text-center">
+      <%= t("navigation.articles") %>
+    </h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <% @recent_articles.each do |article| %>
+        <article class="bg-[#0B0B0B] rounded-lg p-6 border border-[#6A0DAD]/20 hover:border-[#6A0DAD]/40 transition-all">
+          <% if article.featured_image.attached? %>
+            <%= image_tag article.featured_image, alt: article.title, class: "w-full h-48 object-cover rounded-lg mb-4" %>
+          <% end %>
+          <h3 class="text-xl font-semibold mb-2">
+            <%= link_to article.title, article_path(article), class: "hover:text-[#D4AF37] transition-colors" %>
+          </h3>
+          <p class="text-gray-400 text-sm mb-4">
+            <%= truncate(strip_tags(article.content.to_s), length: 150) %>
+          </p>
+          <div class="flex items-center justify-between text-xs text-gray-500">
+            <span><%= article.category %></span>
+            <time datetime="<%= article.published_at.iso8601 %>">
+              <%= l(article.published_at, format: :short) if article.published_at %>
+            </time>
+          </div>
+        </article>
+      <% end %>
+    </div>
+    <div class="text-center mt-8">
+      <%= link_to t("navigation.articles"), articles_path, class: "text-[#D4AF37] hover:text-[#B8860B] font-semibold transition-colors" %>
+    </div>
+  </section>
+<% end %>
+

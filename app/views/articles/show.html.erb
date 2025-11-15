@@ -1,0 +1,37 @@
+<% content_for :title, @article.title %>
+
+<div class="max-w-4xl mx-auto">
+  <article class="bg-[#0B0B0B] rounded-lg p-8 border border-[#6A0DAD]/20">
+    <div class="mb-6">
+      <div class="flex items-center justify-between mb-4">
+        <span class="text-sm text-[#D4AF37] bg-[#6A0DAD]/20 px-3 py-1 rounded-full"><%= @article.category %></span>
+        <time datetime="<%= @article.published_at.iso8601 %>" class="text-sm text-gray-500">
+          <%= l(@article.published_at, format: :long) if @article.published_at %>
+        </time>
+      </div>
+      <h1 class="text-4xl font-bold text-[#D4AF37] mb-4"><%= @article.title %></h1>
+      <p class="text-gray-400">Par <%= @article.author.member_profile&.full_name || @article.author.email %></p>
+    </div>
+
+    <% if @article.featured_image.attached? %>
+      <div class="mb-8">
+        <%= image_tag @article.featured_image, alt: @article.title, class: "w-full rounded-lg" %>
+      </div>
+    <% end %>
+
+    <div class="prose prose-invert max-w-none">
+      <%= @article.content %>
+    </div>
+
+    <% if @article.tags.present? %>
+      <div class="mt-8 pt-8 border-t border-[#6A0DAD]/20">
+        <h3 class="text-lg font-semibold mb-4"><%= t("articles.tags") %></h3>
+        <div class="flex flex-wrap gap-2">
+          <% @article.tags_array.each do |tag| %>
+            <span class="bg-[#6A0DAD]/20 text-[#D4AF37] px-3 py-1 rounded-full text-sm">#<%= tag %></span>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </article>
+</div>

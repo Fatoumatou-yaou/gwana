@@ -1,0 +1,24 @@
+/* Typography - @import must come first */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Merriweather:wght@300;400;700&display=swap');
+
+@import "tailwindcss";
+
+/* Custom color palette for GWANA */
+@theme {
+  --color-violet-primary: #6A0DAD;
+  --color-violet-deep: #5B21B6;
+  --color-black-charcoal: #0B0B0B;
+  --color-black-dark: #111111;
+  --color-gold-warm: #D4AF37;
+  --color-gold-accent: #B8860B;
+  --color-accent-light: #EDE7F6;
+  --color-background-dark: #0F1724;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Merriweather', serif;
+}

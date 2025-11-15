@@ -1,0 +1,60 @@
+en:
+  application:
+    title: "GWANA - Network for Valuing Pioneer Women"
+    description: "Platform for valuing pioneer and expert women who practice male-dominated professions in Niger and mentoring"
+
+  navigation:
+    main: "Main navigation"
+    menu: "Menu"
+    members: "Directory"
+    articles: "News"
+    profile: "My profile"
+    admin: "Administration"
+
+  footer:
+    description: "Network for valuing pioneer and expert women in Niger"
+    links: "Links"
+    contact: "Contact"
+    email: "contact@gwana.org"
+    rights: "All rights reserved"
+
+  pundit:
+    not_authorized: "You are not authorized to perform this action."
+
+  home:
+    title: "Welcome to GWANA"
+    subtitle: "Network for Valuing Pioneer Women"
+    description: "Join our community of expert women transforming traditionally male-dominated professions in Niger"
+    cta_primary: "Join the network"
+    cta_secondary: "Discover the directory"
+    stats_members: "Members"
+    stats_mentors: "Mentors"
+    stats_requests: "Mentorship requests"
+
+  mentorship_request_mailer:
+    new_request:
+      subject: "New mentorship request from %{requester_name}"
+    request_accepted:
+      subject: "Your mentorship request has been accepted"
+    request_rejected:
+      subject: "Your mentorship request has been rejected"
+
+  profiles:
+    update:
+      success: "Profile updated successfully"
+
+  members:
+    search_placeholder: "Search by name, profession, skills..."
+    search: "Search"
+    available_only: "Available for mentorship only"
+    available: "Available for mentorship"
+    no_results: "No members found"
+    bio: "Biography"
+    skills: "Skills"
+    request_mentorship: "Request mentorship"
+
+  articles:
+    search_placeholder: "Search articles..."
+    search: "Search"
+    no_results: "No articles found"
+    tags: "Tags"
