@@ -1,0 +1,201 @@
+<!-- Actualités Section - Design Moderne 2025-2026 -->
+<% if @recent_articles.any? %>
+  <section 
+    class="mb-20 relative py-24 bg-gradient-to-b from-gray-50 via-slate-950 to-black overflow-hidden"
+    aria-labelledby="actualites-title">
+    
+    <!-- Background decorative elements -->
+    <div class="absolute inset-0 overflow-hidden pointer-events-none">
+      <!-- Animated gradient orbs -->
+      <div class="absolute top-1/4 left-0 w-[600px] h-[600px] bg-gradient-radial from-purple-700/15 via-transparent to-transparent rounded-full blur-3xl animate-pulse-slow"></div>
+      <div class="absolute bottom-1/4 right-0 w-[500px] h-[500px] bg-gradient-radial from-blue-500/10 via-transparent to-transparent rounded-full blur-3xl animate-pulse-slow" style="animation-delay: 1.5s;"></div>
+      
+      <!-- Geometric shapes -->
+      <div class="absolute top-20 right-20 w-32 h-32 border border-purple-700/10 rounded-full animate-float"></div>
+      <div class="absolute bottom-32 left-16 w-24 h-24 border border-blue-500/10 rounded-full animate-float" style="animation-delay: 2s;"></div>
+    </div>
+
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <!-- Title and Description -->
+      <div class="text-center mb-16">
+        <h2 
+          id="actualites-title" 
+          class="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 text-white text-center"
+        >
+          Dernières Actualités
+        </h2>
+        <p class="text-lg md:text-xl text-gray-400 max-w-3xl mx-auto">
+          Découvrez les dernières nouvelles, témoignages et événements de notre communauté
+        </p>
+      </div>
+
+      <!-- Articles Grid - Asymmetric Layout -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8 max-w-7xl mx-auto">
+        <!-- Featured Article - Large Card (Left) -->
+        <% featured_article = @recent_articles.first %>
+        <% if featured_article %>
+          <article 
+            class="lg:col-span-2 group relative overflow-hidden rounded-2xl bg-gradient-to-br from-slate-950 to-slate-900 border border-purple-700/20 hover:border-purple-700/50 transition-all duration-500 transform hover:scale-[1.02] hover:shadow-2xl hover:shadow-purple-700/20"
+          >
+            <!-- Background gradient overlay -->
+            <div class="absolute inset-0 bg-gradient-to-br from-purple-700/5 via-transparent to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            
+            <!-- Image Container -->
+            <div class="relative h-64 md:h-80 lg:h-96 overflow-hidden">
+              <% if featured_article.photo.attached? %>
+                <%= image_tag featured_article.photo, 
+                    alt: featured_article.title, 
+                    class: "w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
+                %>
+              <% elsif featured_article.video.attached? %>
+                <video class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" muted>
+                  <source src="<%= url_for(featured_article.video) %>" type="<%= featured_article.video.content_type %>">
+                </video>
+              <% else %>
+                <div class="w-full h-full bg-gradient-to-br from-purple-700/30 to-blue-500/30 flex items-center justify-center">
+                  <svg class="w-24 h-24 text-purple-700/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/>
+                  </svg>
+                </div>
+              <% end %>
+              
+              <!-- Gradient overlay on image -->
+              <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent"></div>
+              
+              <!-- Category Badge -->
+              <div class="absolute top-6 left-6">
+                <span class="px-4 py-2 bg-purple-700/80 backdrop-blur-md text-white text-sm font-semibold rounded-full border border-white/20 shadow-lg">
+                  <%= featured_article.category %>
+                </span>
+              </div>
+            </div>
+
+            <!-- Content -->
+            <div class="relative p-6 md:p-8 lg:p-10">
+              <div class="flex items-center gap-4 mb-4 text-sm text-gray-400">
+                <time datetime="<%= featured_article.published_at.iso8601 %>" class="flex items-center gap-2">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                  </svg>
+                  <%= l(featured_article.published_at, format: :long) if featured_article.published_at %>
+                </time>
+              </div>
+              
+              <h3 class="text-2xl md:text-3xl lg:text-4xl font-bold mb-4 text-white group-hover:text-amber-500 transition-colors duration-300">
+                <%= link_to featured_article.title, article_path(featured_article), class: "hover:underline" %>
+              </h3>
+              
+              <p class="text-gray-300 text-base md:text-lg mb-6 line-clamp-3 leading-relaxed">
+                <%= truncate(strip_tags(featured_article.content.to_s), length: 200) %>
+              </p>
+              
+              <!-- Tags -->
+              <% if featured_article.tags.present? %>
+                <div class="flex flex-wrap gap-2 mb-6">
+                  <% featured_article.tags_array.first(3).each do |tag| %>
+                    <span class="px-3 py-1 bg-purple-700/20 text-amber-500 text-xs rounded-full border border-purple-700/30">
+                      #<%= tag %>
+                    </span>
+                  <% end %>
+                </div>
+              <% end %>
+              
+              <!-- Read More Link -->
+              <div class="flex items-center gap-2 text-amber-500 font-semibold group-hover:gap-4 transition-all duration-300">
+                <%= link_to "Lire la suite", article_path(featured_article), class: "flex items-center gap-2" %>
+                <svg class="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                </svg>
+              </div>
+            </div>
+
+            <!-- Shine effect on hover -->
+            <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000 pointer-events-none"></div>
+          </article>
+        <% end %>
+
+        <!-- Secondary Articles - Smaller Cards (Right) -->
+        <div class="flex flex-col gap-6 lg:gap-8">
+          <% @recent_articles[1..2].each do |article| %>
+            <article 
+              class="group relative overflow-hidden rounded-xl bg-gradient-to-br from-slate-950 to-slate-900 border border-purple-700/20 hover:border-purple-700/50 transition-all duration-500 transform hover:scale-[1.03] hover:shadow-xl hover:shadow-purple-700/10"
+            >
+              <!-- Background gradient overlay -->
+              <div class="absolute inset-0 bg-gradient-to-br from-purple-700/5 via-transparent to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              
+              <!-- Image Container -->
+              <div class="relative h-48 overflow-hidden">
+                <% if article.photo.attached? %>
+                  <%= image_tag article.photo, 
+                      alt: article.title, 
+                      class: "w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
+                  %>
+                <% elsif article.video.attached? %>
+                  <video class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" muted>
+                    <source src="<%= url_for(article.video) %>" type="<%= article.video.content_type %>">
+                  </video>
+                <% else %>
+                  <div class="w-full h-full bg-gradient-to-br from-purple-700/30 to-blue-500/30 flex items-center justify-center">
+                    <svg class="w-16 h-16 text-purple-700/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/>
+                    </svg>
+                  </div>
+                <% end %>
+                
+                <!-- Gradient overlay on image -->
+                <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
+                
+                <!-- Category Badge -->
+                <div class="absolute top-4 left-4">
+                  <span class="px-3 py-1 bg-purple-700/80 backdrop-blur-md text-white text-xs font-semibold rounded-full border border-white/20 shadow-lg">
+                    <%= article.category %>
+                  </span>
+                </div>
+              </div>
+
+              <!-- Content -->
+              <div class="relative p-5">
+                <div class="flex items-center gap-2 mb-3 text-xs text-gray-400">
+                  <time datetime="<%= article.published_at.iso8601 %>">
+                    <%= l(article.published_at, format: :short) if article.published_at %>
+                  </time>
+                </div>
+                
+                <h3 class="text-lg md:text-xl font-bold mb-3 text-white group-hover:text-amber-500 transition-colors duration-300 line-clamp-2">
+                  <%= link_to article.title, article_path(article), class: "hover:underline" %>
+                </h3>
+                
+                <p class="text-gray-400 text-sm mb-4 line-clamp-2 leading-relaxed">
+                  <%= truncate(strip_tags(article.content.to_s), length: 100) %>
+                </p>
+                
+                <!-- Read More Link -->
+                <div class="flex items-center gap-2 text-amber-500 text-sm font-semibold group-hover:gap-3 transition-all duration-300">
+                  <%= link_to "Lire", article_path(article), class: "flex items-center gap-2" %>
+                  <svg class="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                  </svg>
+                </div>
+              </div>
+
+              <!-- Shine effect on hover -->
+              <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000 pointer-events-none"></div>
+            </article>
+          <% end %>
+        </div>
+      </div>
+
+      <!-- View All Link -->
+      <div class="text-center mt-12">
+        <%= link_to articles_path, 
+            class: "group inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-purple-700/20 to-blue-500/20 backdrop-blur-md text-amber-500 rounded-xl font-semibold text-lg border border-purple-700/30 hover:border-purple-700/50 hover:from-purple-700/30 hover:to-blue-500/30 transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl hover:shadow-purple-700/20" do %>
+          <span>Voir toutes les actualités</span>
+          <svg class="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+          </svg>
+        <% end %>
+      </div>
+    </div>
+  </section>
+<% end %>
+

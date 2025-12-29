@@ -1,0 +1,86 @@
+<!-- Mission Section -->
+<section class="mb-20" aria-labelledby="mission-title">
+  <!-- Title and Description - En dehors du fond coloré -->
+  <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+    <%# <div class="text-center mb-16">
+      <div class="mb-6">
+        <span class="text-sm font-semibold text-purple-700 uppercase tracking-wider bg-purple-100 px-4 py-2 rounded-full">
+          Mission
+        </span>
+      </div>
+      <h2 id="mission-title" class="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 bg-gradient-to-r from-gray-900 via-purple-700 to-gray-900 bg-clip-text text-transparent">
+        Notre Mission
+      </h2>
+     
+    </div> %>
+  </div>
+
+  <!-- Contenu principal avec fond coloré -->
+  <div class="relative py-20 bg-gradient-to-b from-black via-slate-800 to-purple-700 overflow-hidden">
+    <!-- Background geometric shapes -->
+    <div class="absolute inset-0 overflow-hidden pointer-events-none">
+      <!-- Single thick light purple ring in top left with light accent above -->
+      <svg 
+        class="absolute -top-20 -left-20 w-[400px] h-[400px]"
+        viewBox="0 0 400 400"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <defs>
+          <!-- Shadow filter for subtle depth -->
+          <filter id="ringShadow" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur in="SourceAlpha" stdDeviation="8"/>
+            <feOffset dx="4" dy="6" result="offsetblur"/>
+            <feComponentTransfer>
+              <feFuncA type="linear" slope="0.4"/>
+            </feComponentTransfer>
+            <feMerge>
+              <feMergeNode/>
+              <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+          </filter>
+          <!-- Gradient for light accent -->
+          <linearGradient id="lightAccent" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" style="stop-color:rgb(250,245,255);stop-opacity:0.8" />
+            <stop offset="100%" style="stop-color:rgb(250,245,255);stop-opacity:0" />
+          </linearGradient>
+        </defs>
+        <!-- Single thick light purple ring -->
+        <circle
+          cx="200"
+          cy="200"
+          r="160"
+          fill="none"
+          stroke="rgb(250,245,255)"
+          stroke-width="25"
+          opacity="0.7"
+          filter="url(#ringShadow)"
+        />
+        <!-- Small light purple accent above the ring (top arc) -->
+        <path
+          d="M 50 50 A 150 150 0 0 1 350 50"
+          fill="none"
+          stroke="rgb(250,245,255)"
+          stroke-width="18"
+          opacity="0.85"
+          stroke-linecap="round"
+        />
+      </svg>
+
+      <!-- Large blurred shape in top right (inspired by the image) -->
+      <div class="absolute -top-40 -right-40 w-[600px] h-[600px] rounded-full bg-purple-50 opacity-20 blur-3xl"></div>
+      
+      <!-- Additional subtle blurred shape for depth -->
+      <div class="absolute top-0 right-0 w-[400px] h-[400px] rounded-full bg-purple-400 opacity-15 blur-2xl"></div>
+    </div>
+      <h2 id="mission-title" class="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 text-white text-center">
+        Notre Mission
+      </h2>
+    <!-- Content -->
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div class="max-w-4xl mx-auto text-center">
+ <p class="text-lg md:text-xl text-white max-w-3xl mx-auto">
+        Valoriser et mettre en lumière les femmes pionnières et expertes qui exercent des métiers à connotation masculine au Niger. Faciliter le mentorat, créer des opportunités et construire un réseau solide pour l'autonomisation des femmes.
+      </p>      </div>
+    </div>
+  </div>
+</section>

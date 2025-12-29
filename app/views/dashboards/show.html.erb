@@ -1,0 +1,106 @@
+<% content_for :title, "Mon Espace" %>
+
+<div class="max-w-7xl mx-auto px-4 py-8">
+  <h1 class="text-4xl font-bold mb-8 text-gray-900">Mon Espace</h1>
+
+  <!-- Welcome Section -->
+  <div class="bg-white rounded-lg p-6 border border-gray-200 shadow-sm mb-8">
+    <h2 class="text-2xl font-semibold mb-4 text-gray-900">Bienvenue, <%= @user.email %> !</h2>
+    <%# <% if @gwana_profile %> %>
+      <%# <p class="text-gray-600">Profil gwana : <%= @gwana_profile.full_name %></p> %>
+    <%# <% else %> %>
+      <%# <p class="text-gray-600">Vous n'avez pas encore de profil gwana.</p> %>
+      <%# <%= link_to "Créer mon profil", edit_profile_path, class: "inline-block mt-4 bg-purple-700 hover:bg-purple-800 text-white px-4 py-2 rounded-lg transition-colors" %> %>
+    <%# <% end %> %>
+  </div>
+
+  <!-- Stats Cards -->
+  <% stats_count = 1 + (@user.gwana? ? 1 : 0) + (@user.admin? ? 1 : 0) %>
+  <div class="grid grid-cols-1 <%= stats_count == 3 ? 'md:grid-cols-3' : stats_count == 2 ? 'md:grid-cols-2' : 'md:grid-cols-1' %> gap-6 mb-8">
+    <div class="bg-white rounded-lg p-6 border border-gray-200 shadow-sm">
+      <div class="text-3xl font-bold text-purple-700 mb-2"><%= @user.mentorship_requests_as_requester.count %></div>
+      <div class="text-gray-600">Mes demandes de mentorat</div>
+    </div>
+  </div>
+
+  <!-- My Mentorship Requests -->
+  <div class="bg-white rounded-lg p-6 border border-gray-200 shadow-sm mb-8">
+    <div class="flex justify-between items-center mb-4">
+      <h2 class="text-2xl font-semibold text-gray-900">Mes demandes de mentorat</h2>
+      <%= link_to "Voir toutes", mentorship_requests_path, class: "text-purple-700 hover:text-purple-800 transition-colors" %>
+    </div>
+    <% if @my_mentorship_requests.any? %>
+      <div class="space-y-4">
+        <% @my_mentorship_requests.each do |request| %>
+          <div class="border-b border-gray-200 pb-4 last:border-0">
+            <div class="flex justify-between items-start">
+              <div>
+                <p class="font-semibold">Mentor : <%= request.mentor.gwana_profile&.full_name || request.mentor.email %></p>
+                <p class="text-sm text-gray-600"><%= request.motivation.truncate(100) if request.motivation %></p>
+                <div class="flex gap-2 text-xs text-gray-500 mt-1">
+                  <% if request.niveau_etudes.present? %>
+                    <span><%= request.niveau_etudes.humanize %></span>
+                  <% end %>
+                  <% if request.filiere.present? %>
+                    <span>• <%= request.filiere %></span>
+                  <% end %>
+                  <span>• <%= l(request.created_at, format: :short) %></span>
+                </div>
+                <div class="flex gap-2 text-xs text-gray-500 mt-1">
+                  <span>• <%= request.commune.name if request.commune.present? %></span>
+                  <span>• <%= request.commune.department.name if request.commune.department.present? %></span>
+                  <span>• <%= request.commune.region.name if request.commune.region.present? %></span>
+                </div>
+              </div>
+              <span class="px-3 py-1 rounded-full text-xs <%= request.pending? ? 'bg-yellow-500/20 text-yellow-500' : request.accepted? ? 'bg-green-500/20 text-green-500' : 'bg-red-500/20 text-red-500' %>">
+                <%= request.status.humanize %>
+              </span>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <p class="text-gray-600">Aucune demande de mentorat</p>
+      <%= link_to "Créer une demande", new_mentorship_request_path, class: "inline-block mt-4 bg-purple-700 hover:bg-purple-800 text-white px-4 py-2 rounded-lg transition-colors" %>
+    <% end %>
+  </div>
+
+  <!-- Mentorship Requests as Mentor -->
+  <% if @user.gwana? && @mentorship_requests_as_mentor.any? %>
+    <div class="bg-white rounded-lg p-6 border border-gray-200 shadow-sm mb-8">
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-2xl font-semibold text-gray-900">Demandes reçues</h2>
+        <%= link_to "Voir toutes", mentorship_requests_path, class: "text-purple-700 hover:text-purple-800 transition-colors" %>
+      </div>
+      <div class="space-y-4">
+        <% @mentorship_requests_as_mentor.each do |request| %>
+          <div class="border-b border-gray-200 pb-4 last:border-0">
+            <div class="flex justify-between items-start">
+              <div class="flex-1">
+                <p class="font-semibold text-gray-900">De : <%= request.requester.full_name || request.requester.email %></p>
+                <p class="text-sm text-gray-600"><%= request.motivation.truncate(100) if request.motivation %></p>
+                <div class="flex gap-2 text-xs text-gray-500 mt-1">
+                  <% if request.niveau_etudes.present? %>
+                    <span><%= request.niveau_etudes.humanize %></span>
+                  <% end %>
+                  <% if request.filiere.present? %>
+                    <span>• <%= request.filiere %></span>
+                  <% end %>
+                  <span>• <%= l(request.created_at, format: :short) %></span>
+                </div>
+              </div>
+              <div class="flex gap-2 ml-4">
+                <span class="px-3 py-1 rounded-full text-xs <%= request.pending? ? 'bg-yellow-500/20 text-yellow-500' : request.accepted? ? 'bg-green-500/20 text-green-500' : 'bg-red-500/20 text-red-500' %>">
+                  <%= request.status.humanize %>
+                </span>
+                <%= link_to "Voir", mentorship_request_path(request), class: "text-purple-700 hover:text-purple-800 transition-colors text-sm" %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  <% end %> 
+
+</div>
+

@@ -1,0 +1,86 @@
+---
+alwaysApply: true
+---
+
+1. Respect strict de la séparation des responsabilités :
+
+Controllers :
+
+Contiennent uniquement la logique de contrôle : chargement des données, appels aux services, redirections, rendu de vue.
+
+Aucune logique métier ou calcul complexe ne doit se trouver dans un controller.
+
+Models :
+Contiennent la logique métier propre à l’objet, les validations, les associations, les scopes.
+
+Services :
+
+Toute logique métier avancée, calculs complexes, règles fiscales, intégrations externes, doit être déplacée dans un service dédié.
+
+Helpers :
+
+Uniquement pour les méthodes de formatage ou d’affichage destinées aux vues (formatage de montants, couleurs, labels…).
+
+Aucune logique métier ou règles applicatives dans un helper.
+
+Decorators / Presenters :
+
+Pour enrichir les modèles avec des méthodes de présentation (libellés, formats, calculs simples destinés à l’affichage).
+
+Ne doivent pas contenir de logique transactionnelle ni de logique métier importante.
+
+Views :
+
+Doivent être strictement déclaratives : HTML + quelques helpers simples.
+
+Aucune logique de calcul, aucune règle métier, aucun traitement Ruby lourd dans les vues.
+
+Policies (Pundit) :
+
+Uniquement pour la logique d’autorisation : qui peut faire quoi.
+
+Routes :
+
+Définir uniquement les ressources et actions, jamais de logique métier.Jamais de JavaScript inline
+
+Interdiction totale d’écrire du JS directement dans les vues (onclick=, <script>, fonctions JS dans les templates ERB, etc.).
+
+Toute logique front doit être encapsulée dans Stimulus controllers localisés dans :
+
+app/javascript/controllers/Respect strict de la séparation des responsabilités :
+
+
+
+2. Toujours vérifier l’existant avant de créer du nouveau code
+
+Quand Cursor génère du code, il doit systématiquement :
+
+a. Vérifier si une fonctionnalité similaire existe déjà
+
+Voir si un modèle, un service, un helper, un controller ou un partial couvre déjà une partie du besoin.
+
+Ne jamais dupliquer un mécanisme existant
+
+b. Réutiliser tout ce qui peut l’être
+
+Si un service ou une méthode existe mais ne couvre pas 100 % du besoin, ajuster ou refactoriser proprement, sans casser l’existant.
+
+Exemple :
+
+Réutiliser Payment et les flux EtresorService au lieu de créer quelque chose de nouveau.
+
+c. Refactoriser quand nécessaire
+
+Mais seulement si :
+
+C’est non destructif,
+
+Ne casse pas les comportements actuels,
+
+Et permet de rendre la fonctionnalité plus générique et maintenable.
+
+d. Toujours analyser l’architecture actuelle avant de produire le code
+
+Regarder les patterns déjà appliqués : services, decorators, helpers, policies, partials, stimulus, etc.
+
+Suivre exactement ces conventions.

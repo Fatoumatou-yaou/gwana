@@ -1,0 +1,41 @@
+<!-- Recent Articles Section -->
+<% if @recent_articles.any? %>
+  <section class="py-20 bg-black" aria-labelledby="recent-articles-title">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 id="recent-articles-title" class="text-4xl font-bold mb-12 text-center text-amber-500">
+        <%= t("navigation.articles") %>
+      </h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <% @recent_articles.each do |article| %>
+          <article class="bg-slate-950 rounded-xl overflow-hidden border border-purple-700/20 hover:border-purple-700/40 transition-all transform hover:scale-105">
+            <% if article.photo.attached? %>
+              <%= image_tag article.photo, alt: article.title, class: "w-full h-48 object-cover" %>
+            <% elsif article.video.attached? %>
+              <video class="w-full h-48 object-cover" muted>
+                <source src="<%= url_for(article.video) %>" type="<%= article.video.content_type %>">
+              </video>
+            <% end %>
+            <div class="p-6">
+              <h3 class="text-xl font-semibold mb-2">
+                <%= link_to article.title, article_path(article), class: "hover:text-amber-500 transition-colors" %>
+              </h3>
+              <p class="text-gray-400 text-sm mb-4 line-clamp-3">
+                <%= truncate(strip_tags(article.content.to_s), length: 150) %>
+              </p>
+              <div class="flex items-center justify-between text-xs text-gray-500">
+                <span class="bg-purple-700/20 text-amber-500 px-2 py-1 rounded-full"><%= article.category %></span>
+                <time datetime="<%= article.published_at.iso8601 %>">
+                  <%= l(article.published_at, format: :short) if article.published_at %>
+                </time>
+              </div>
+            </div>
+          </article>
+        <% end %>
+      </div>
+      <div class="text-center mt-12">
+        <%= link_to t("navigation.articles"), articles_path, class: "text-amber-500 hover:text-amber-600 font-semibold text-lg transition-colors" %>
+      </div>
+    </div>
+  </section>
+<% end %>
+

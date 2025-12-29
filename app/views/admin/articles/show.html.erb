@@ -1,0 +1,86 @@
+<% content_for :title, @article.title %>
+
+<div class="max-w-4xl mx-auto px-4 py-8">
+  <div class="bg-white rounded-lg p-8 border border-gray-200 shadow-sm">
+    <!-- En-tête avec actions -->
+    <div class="flex justify-between items-start mb-8">
+      <div>
+        <div class="flex items-center gap-3 mb-4">
+          <span class="text-sm text-purple-700 bg-purple-700/20 px-3 py-1 rounded-full"><%= @article.category %></span>
+          <span class="text-sm <%= @article.published? ? 'text-green-600' : 'text-yellow-600' %> bg-<%= @article.published? ? 'green' : 'yellow' %>-400/20 px-3 py-1 rounded-full">
+            <%= @article.published_status %>
+          </span>
+        </div>
+        <h1 class="text-4xl font-bold text-gray-900 mb-2"><%= @article.title %></h1>
+        <p class="text-gray-600">
+          Par <%= @article.author.gwana_profile&.full_name || @article.author.email %>
+          <% if @article.published_at %>
+            • Publié le <%= l(@article.published_at, format: :long) %>
+          <% end %>
+        </p>
+      </div>
+      <div class="flex gap-2">
+        <%= link_to "Modifier", edit_admin_article_path(@article), class: "bg-purple-700 hover:bg-purple-800 text-white px-4 py-2 rounded-lg transition-colors" %>
+        <%= link_to "Supprimer", admin_article_path(@article), 
+            data: { turbo_method: :delete, turbo_confirm: "Êtes-vous sûr de vouloir supprimer cet article ?" },
+            class: "bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition-colors" %>
+        <%= link_to "Retour", admin_articles_path, class: "bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg transition-colors" %>
+      </div>
+    </div>
+
+    <!-- Média -->
+    <% if @article.photo.attached? %>
+      <div class="mb-8">
+        <%= image_tag @article.photo, alt: @article.title, class: "w-full rounded-lg border border-gray-200" %>
+      </div>
+    <% elsif @article.video.attached? %>
+      <div class="mb-8">
+        <video controls class="w-full rounded-lg border border-gray-200">
+          <source src="<%= url_for(@article.video) %>" type="<%= @article.video.content_type %>">
+          Votre navigateur ne supporte pas la lecture de vidéos.
+        </video>
+      </div>
+    <% end %>
+
+    <!-- Contenu -->
+    <div class="prose max-w-none mb-8">
+      <%= sanitize(@article.content, tags: %w[p br strong em u h1 h2 h3 h4 h5 h6 ul ol li a blockquote], attributes: %w[href class]) %>
+    </div>
+
+    <!-- Tags -->
+    <% if @article.tags.present? %>
+      <div class="pt-8 border-t border-gray-200">
+        <h3 class="text-lg font-semibold text-gray-900 mb-4">Tags</h3>
+        <div class="flex flex-wrap gap-2">
+          <% @article.tags_array.each do |tag| %>
+            <span class="bg-purple-700/20 text-purple-700 px-3 py-1 rounded-full text-sm">#<%= tag %></span>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+
+    <!-- Informations techniques -->
+    <div class="mt-8 pt-8 border-t border-gray-200">
+      <h3 class="text-lg font-semibold text-gray-900 mb-4">Informations</h3>
+      <div class="grid grid-cols-2 gap-4 text-sm">
+        <div>
+          <span class="text-gray-600">Créé le :</span>
+          <span class="text-gray-900 ml-2"><%= l(@article.created_at, format: :long) %></span>
+        </div>
+        <div>
+          <span class="text-gray-400">Modifié le :</span>
+          <span class="text-white ml-2"><%= l(@article.updated_at, format: :long) %></span>
+        </div>
+        <div>
+          <span class="text-gray-400">Slug :</span>
+          <span class="text-white ml-2 font-mono text-xs"><%= @article.slug %></span>
+        </div>
+        <div>
+          <span class="text-gray-400">Type de média :</span>
+          <span class="text-white ml-2"><%= @article.media_type.humanize %></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

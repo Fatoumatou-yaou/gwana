@@ -1,0 +1,19 @@
+<% content_for :title, "Gestion des Gwanas" %>
+
+<div class="max-w-7xl mx-auto px-4 py-8">
+  <%= render ItemTableComponent.new(
+    items: @gwanas,
+    columns: {
+      full_name: "Nom",
+      "user.email" => "Email",
+      phone: "Téléphone",
+      formatted_created_at: "Date de création"
+    },
+    item_type: "gwana",
+    scope: ["admin"],
+    actions: [:show, :edit, :delete],
+    display_new_button: true,
+    empty_message: "Aucun compte gwana créé pour le moment.",
+    pagy: @pagy
+  ) %>
+</div>

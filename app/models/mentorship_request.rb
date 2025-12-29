@@ -1,4 +1,3 @@
-# frozen_string_literal: true
 
 class MentorshipRequest < ApplicationRecord
   # Enums
@@ -13,13 +12,18 @@ class MentorshipRequest < ApplicationRecord
   # Associations
   belongs_to :requester, class_name: "User"
   belongs_to :mentor, class_name: "User"
+  belongs_to :commune, optional: true
 
   # Validations
   validates :message, presence: true, length: { minimum: 10 }
   validates :objectives, presence: true
+  validates :motivation, presence: true, length: { minimum: 50 }
+  validates :niveau_etudes, presence: true
+  validates :filiere, presence: true
   validates :requester_id, presence: true
   validates :mentor_id, presence: true
   validate :requester_cannot_be_mentor
+  validate :mentor_must_be_gwana
 
   # Scopes
   scope :recent, -> { order(created_at: :desc) }
@@ -47,6 +51,13 @@ class MentorshipRequest < ApplicationRecord
     return unless requester_id == mentor_id
 
     errors.add(:base, "Le demandeur ne peut pas être son propre mentor")
+  end
+
+  def mentor_must_be_gwana
+    return unless mentor_id.present?
+    return if mentor&.gwana?
+
+    errors.add(:mentor_id, "La mentor doit être une gwana")
   end
 
   def send_notification_email

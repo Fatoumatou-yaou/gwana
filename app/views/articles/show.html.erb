@@ -1,37 +1,137 @@
 <% content_for :title, @article.title %>
 
-<div class="max-w-4xl mx-auto">
-  <article class="bg-[#0B0B0B] rounded-lg p-8 border border-[#6A0DAD]/20">
-    <div class="mb-6">
-      <div class="flex items-center justify-between mb-4">
-        <span class="text-sm text-[#D4AF37] bg-[#6A0DAD]/20 px-3 py-1 rounded-full"><%= @article.category %></span>
-        <time datetime="<%= @article.published_at.iso8601 %>" class="text-sm text-gray-500">
-          <%= l(@article.published_at, format: :long) if @article.published_at %>
-        </time>
-      </div>
-      <h1 class="text-4xl font-bold text-[#D4AF37] mb-4"><%= @article.title %></h1>
-      <p class="text-gray-400">Par <%= @article.author.member_profile&.full_name || @article.author.email %></p>
-    </div>
+<section class="bg-gradient-to-b from-white via-gray-50 to-white py-12 md:py-16">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Breadcrumb -->
+    <nav class="mb-8" aria-label="Breadcrumb">
+      <ol class="flex items-center gap-2 text-sm text-gray-600">
+        <li>
+          <%= link_to "Accueil", root_path, class: "hover:text-purple-700 transition-colors" %>
+        </li>
+        <li>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </li>
+        <li>
+          <%= link_to "Actualités", articles_path, class: "hover:text-purple-700 transition-colors" %>
+        </li>
+        <li>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </li>
+        <li class="text-gray-900 font-medium truncate max-w-xs"><%= truncate(@article.title, length: 40) %></li>
+      </ol>
+    </nav>
 
-    <% if @article.featured_image.attached? %>
-      <div class="mb-8">
-        <%= image_tag @article.featured_image, alt: @article.title, class: "w-full rounded-lg" %>
-      </div>
-    <% end %>
-
-    <div class="prose prose-invert max-w-none">
-      <%= @article.content %>
-    </div>
-
-    <% if @article.tags.present? %>
-      <div class="mt-8 pt-8 border-t border-[#6A0DAD]/20">
-        <h3 class="text-lg font-semibold mb-4"><%= t("articles.tags") %></h3>
-        <div class="flex flex-wrap gap-2">
-          <% @article.tags_array.each do |tag| %>
-            <span class="bg-[#6A0DAD]/20 text-[#D4AF37] px-3 py-1 rounded-full text-sm">#<%= tag %></span>
+    <article class="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
+      <!-- En-tête de l'article -->
+      <div class="px-6 md:px-10 pt-8 md:pt-12 pb-6 border-b border-gray-100">
+        <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
+          <span class="text-sm font-semibold text-purple-700 bg-purple-700/10 px-4 py-2 rounded-full border border-purple-700/20">
+            <%= @article.category %>
+          </span>
+          <% if @article.published_at %>
+            <time datetime="<%= @article.published_at.iso8601 %>" class="text-sm text-gray-500 flex items-center gap-2">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+              </svg>
+              <%= l(@article.published_at, format: :long) %>
+            </time>
           <% end %>
         </div>
+        
+        <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-6 leading-tight">
+          <%= @article.title %>
+        </h1>
+        
+        <% if @article.author.gwana_profile&.full_name.present? %>
+          <div class="flex items-center gap-3 pt-4 border-t border-gray-100">
+            <div class="w-10 h-10 bg-gradient-to-br from-purple-700 to-purple-800 rounded-full flex items-center justify-center">
+              <span class="text-white font-semibold text-sm"><%= @article.author.gwana_profile.full_name.first.upcase %></span>
+            </div>
+            <div>
+              <p class="text-sm text-gray-500">Par</p>
+              <p class="text-base font-semibold text-gray-900"><%= @article.author.gwana_profile.full_name %></p>
+            </div>
+          </div>
+        <% end %>
       </div>
-    <% end %>
-  </article>
-</div>
+
+      <!-- Média (Photo ou Vidéo) -->
+      <% if @article.photo.attached? %>
+        <div class="w-full mb-8">
+          <div class="relative overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200">
+            <%= image_tag @article.photo, 
+                alt: @article.title, 
+                class: "w-full h-auto object-cover" 
+            %>
+          </div>
+        </div>
+      <% elsif @article.video.attached? %>
+        <div class="w-full mb-8 bg-black rounded-lg overflow-hidden">
+          <div class="relative aspect-video">
+            <video controls class="w-full h-full object-contain">
+              <source src="<%= url_for(@article.video) %>" type="<%= @article.video.content_type %>">
+              Votre navigateur ne supporte pas la lecture de vidéos.
+            </video>
+          </div>
+        </div>
+      <% end %>
+
+      <!-- Contenu de l'article -->
+      <div class="px-6 md:px-10 pb-8 md:pb-12">
+        <div class="prose prose-lg prose-slate max-w-none 
+                    prose-headings:text-gray-900 prose-headings:font-bold 
+                    prose-h1:text-4xl prose-h2:text-3xl prose-h3:text-2xl
+                    prose-p:text-gray-700 prose-p:leading-relaxed prose-p:mb-6 
+                    prose-a:text-purple-700 prose-a:no-underline hover:prose-a:underline prose-a:font-semibold
+                    prose-strong:text-gray-900 prose-strong:font-semibold 
+                    prose-ul:text-gray-700 prose-ol:text-gray-700 prose-li:text-gray-700 
+                    prose-blockquote:border-l-purple-700 prose-blockquote:border-l-4 prose-blockquote:pl-6 prose-blockquote:pr-4 prose-blockquote:py-2 prose-blockquote:italic prose-blockquote:text-gray-600 prose-blockquote:bg-gray-50 prose-blockquote:rounded-r-lg
+                    prose-img:rounded-xl prose-img:shadow-lg
+                    prose-code:text-purple-700 prose-code:bg-gray-100 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded">
+          <%= sanitize(@article.content, tags: %w[p br strong em u h1 h2 h3 h4 h5 h6 ul ol li a blockquote img code pre], attributes: %w[href class src alt]) %>
+        </div>
+
+        <!-- Tags -->
+        <% if @article.tags.present? %>
+          <div class="mt-12 pt-8 border-t border-gray-200">
+            <div class="flex items-center gap-2 mb-4">
+              <svg class="w-5 h-5 text-purple-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/>
+              </svg>
+              <h3 class="text-lg font-semibold text-gray-900">Tags</h3>
+            </div>
+            <div class="flex flex-wrap gap-2">
+              <% @article.tags_array.each do |tag| %>
+                <span class="px-4 py-2 bg-gray-100 text-purple-700 text-sm font-medium rounded-full border border-gray-200 hover:bg-purple-700/10 hover:border-purple-700/30 transition-all duration-200 cursor-default">
+                  #<%= tag %>
+                </span>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </article>
+
+    <!-- Navigation vers les autres articles -->
+    <div class="mt-8 flex items-center justify-between gap-4">
+      <%= link_to articles_path, 
+          class: "inline-flex items-center gap-2 px-6 py-3 bg-white text-purple-700 hover:text-purple-800 font-semibold rounded-xl border border-gray-200 hover:border-purple-700/30 shadow-sm hover:shadow-md transition-all duration-200" do %>
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+        </svg>
+        <span>Retour aux articles</span>
+      <% end %>
+      
+      <div class="flex items-center gap-2 text-sm text-gray-500">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+        </svg>
+        <span>Lecture : ~<%= (@article.content.to_s.split.size / 200.0).ceil %> min</span>
+      </div>
+    </div>
+  </div>
+</section>

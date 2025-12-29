@@ -1,5 +1,15 @@
-<h1>MentorshipRequest#new_request</h1>
-
-<p>
-  <%= @greeting %>, find me in app/views/mentorship_request_mailer/new_request.html.erb
-</p>
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <h1>Nouvelle demande de mentorat</h1>
+    <p>Bonjour <%= @mentor.gwana_profile&.full_name || @mentor.email %>,</p>
+    
+    <p>Vous avez reçu une nouvelle demande de mentorat de la part de <strong><%= @requester.full_name || @requester.email %></strong>.</p>
+    <p>Vous pouvez consulter cette demande et y répondre depuis votre <a href="<%= mentorship_request_url(@mentorship_request) %>" style="color: rgb(107, 13, 173);">espace Gwana</a>.</p>
+    
+    <p>Cordialement,<br>L'équipe Gwana</p>
+  </body>
+</html>

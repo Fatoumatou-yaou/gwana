@@ -1,0 +1,43 @@
+<div class="min-h-screen bg-gradient-to-b from-white to-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-4xl mx-auto">
+    <% if title || subtitle %>
+      <div class="text-center mb-8">
+        <% if title %>
+          <h1 class="text-4xl font-bold text-[#FF6B35] mb-2"><%= title %></h1>
+        <% end %>
+        <% if subtitle %>
+          <p class="text-gray-600"><%= subtitle %></p>
+        <% end %>
+      </div>
+    <% end %>
+
+    <!-- Form Card -->
+    <div class="bg-white rounded-2xl shadow-xl p-8 md:p-12 relative overflow-hidden">
+      <!-- Decorative shapes -->
+      <div class="absolute top-0 right-0 w-32 h-32 bg-[#FF6B35]/10 rounded-full -mr-16 -mt-16"></div>
+      <div class="absolute bottom-0 left-0 w-40 h-40 bg-[#FF6B35]/5 rounded-full -ml-20 -mb-20"></div>
+
+      <div class="relative z-10">
+        <% if has_errors? %>
+          <div class="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+            <ul class="list-disc list-inside text-red-600">
+              <% errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+
+        <%= yield %>
+
+        <!-- Submit Button -->
+        <div class="flex justify-center gap-4 mt-8">
+          <%= yield :submit_button %>
+          <% if cancel_path %>
+            <%= link_to cancel_label, cancel_path, class: "bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-4 px-12 rounded-lg transition-all" %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

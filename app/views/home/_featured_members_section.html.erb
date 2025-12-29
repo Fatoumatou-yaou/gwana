@@ -1,0 +1,45 @@
+<!-- Featured Gwanas Section -->
+<% if @featured_gwanas.any? %>
+  <section class="mb-20 relative py-20 bg-gradient-to-b from-purple-800 via-purple-700 to-purple-900 overflow-hidden" aria-labelledby="featured-gwanas-title">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <!-- Title and Description -->
+      <div class="text-center mb-16">
+        <div class="mb-6">
+          <span class="text-sm font-semibold text-amber-500 uppercase tracking-wider bg-amber-500/10 backdrop-blur-sm px-4 py-2 rounded-full border border-amber-500/20">
+            Communauté
+          </span>
+        </div>
+        <h2 id="featured-gwanas-title" class="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 bg-gradient-to-r from-amber-500 via-amber-500 to-amber-500/90 bg-clip-text text-transparent">
+          Gwanas
+        </h2>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <% @featured_gwanas.each do |gwana| %>
+          <div class="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20 hover:border-amber-500/40 transition-all transform hover:scale-105">
+            <% if gwana.photo.attached? %>
+              <%= image_tag gwana.photo, alt: gwana.full_name, class: "w-24 h-24 rounded-full mx-auto mb-4 object-cover" %>
+            <% else %>
+              <div class="w-24 h-24 rounded-full mx-auto mb-4 bg-gradient-to-br from-purple-700 to-purple-800 flex items-center justify-center text-2xl font-bold text-white">
+                <%= gwana.first_name[0].upcase %><%= gwana.last_name[0].upcase %>
+              </div>
+            <% end %>
+            <h3 class="text-xl font-semibold text-center mb-2 text-white">
+              <%= link_to gwana.full_name, gwana_path(gwana), class: "hover:text-amber-500 transition-colors" %>
+            </h3>
+            <p class="text-white/80 text-center text-sm mb-2"><%= gwana.profession %></p>
+            <p class="text-white/60 text-center text-xs"><%= gwana.region %></p>
+            <% if gwana.available_for_mentorship? %>
+              <div class="mt-4 text-center">
+                <span class="inline-block bg-purple-700/20 text-amber-500 text-xs px-3 py-1 rounded-full">Disponible pour mentorat</span>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+      <div class="text-center mt-12">
+        <%= link_to "Découvrir l'annuaire", gwanas_path, class: "text-amber-500 hover:text-amber-600 font-semibold text-lg transition-colors" %>
+      </div>
+    </div>
+  </section>
+<% end %>
+

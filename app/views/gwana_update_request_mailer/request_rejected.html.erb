@@ -1,0 +1,18 @@
+<h1>Demande de mise à jour refusée</h1>
+
+<p>
+  Bonjour <%= @gwana.full_name %>,
+</p>
+
+<p>
+  Votre demande de mise à jour de profil a été refusée par l'administrateur.
+</p>
+
+<p>
+  Si vous avez des questions, n'hésitez pas à nous contacter.
+</p>
+
+<p>
+  <%= link_to "Voir mon profil", gwana_url(@gwana, locale: I18n.locale), class: "button" %>
+</p>
+

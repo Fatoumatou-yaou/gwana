@@ -1,0 +1,18 @@
+<h1>Demande de mise à jour approuvée</h1>
+
+<p>
+  Bonjour <%= @gwana.full_name %>,
+</p>
+
+<p>
+  Votre demande de mise à jour de profil a été approuvée par l'administrateur.
+</p>
+
+<p>
+  Les modifications ont été appliquées à votre profil.
+</p>
+
+<p>
+  <%= link_to "Voir mon profil", gwana_url(@gwana, locale: I18n.locale), class: "button" %>
+</p>
+

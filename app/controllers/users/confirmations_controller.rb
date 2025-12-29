@@ -1,6 +1,7 @@
-# frozen_string_literal: true
 
 class Users::ConfirmationsController < Devise::ConfirmationsController
+  layout "slim"
+  
   protected
 
   def after_confirmation_path_for(_resource_name, _resource)

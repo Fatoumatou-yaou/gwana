@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class ApplicationPolicy
   attr_reader :user, :record
 
@@ -8,32 +6,20 @@ class ApplicationPolicy
     @record = record
   end
 
-  def index?
-    false
+  def admin?
+    user&.admin?
   end
 
-  def show?
-    false
+  def gwana?
+    user&.gwana?
   end
 
-  def create?
-    false
+  def admin_or_gwana?
+    user.present? && (user.admin? || user.gwana?)
   end
 
-  def new?
-    create?
-  end
-
-  def update?
-    false
-  end
-
-  def edit?
-    update?
-  end
-
-  def destroy?
-    false
+  def user?
+    user&.user?
   end
 
   class Scope

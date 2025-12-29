@@ -1,0 +1,19 @@
+{
+  "files.associations": {
+    "*.erb": "erb",
+    "*.html.erb": "erb"
+  },
+  "[erb]": {
+    "editor.defaultFormatter": "vscode.html-language-features",
+    "editor.formatOnSave": false
+  },
+  "[ruby]": {
+    "editor.defaultFormatter": "shopify.ruby-lsp",
+    "editor.formatOnSave": true
+  },
+  "[html]": {
+    "editor.defaultFormatter": "vscode.html-language-features",
+    "editor.formatOnSave": true
+  }
+}
+

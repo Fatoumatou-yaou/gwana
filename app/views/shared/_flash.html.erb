@@ -1,0 +1,7 @@
+<div id="flash-messages">
+  <% if flash.any? %>
+    <% flash.each do |type, message| %>
+      <%= render NotificationComponent.new(type: type.to_sym, message: message) %>
+    <% end %>
+  <% end %>
+</div>

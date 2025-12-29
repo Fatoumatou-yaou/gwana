@@ -1,4 +1,3 @@
-# frozen_string_literal: true
 
 class ArticlePolicy < ApplicationPolicy
   def index?
@@ -6,28 +5,28 @@ class ArticlePolicy < ApplicationPolicy
   end
 
   def show?
-    record.published? || user.present? && (record.author == user || user.admin? || user.admin_reseau?)
+    record.published? || user.present? && (record.author == user || user.admin?)
   end
 
   def create?
-    user.present? && (user.admin? || user.admin_reseau?)
+    user.present? && user.admin?
   end
 
   def update?
-    user.present? && (record.author == user || user.admin? || user.admin_reseau?)
+    user.present? && (record.author == user || user.admin?)
   end
 
   def destroy?
-    user.present? && (user.admin? || user.admin_reseau?)
+    user.present? && user.admin?
   end
 
   def publish?
-    user.present? && (user.admin? || user.admin_reseau?)
+    user.present? && user.admin?
   end
 
   class Scope < Scope
     def resolve
-      if user&.admin? || user&.admin_reseau?
+      if user&.admin?
         scope.all
       else
         scope.published

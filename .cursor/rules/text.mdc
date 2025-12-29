@@ -1,0 +1,6 @@
+---
+alwaysApply: true
+---
+always write text inline and paragraphs
+no traductions the app is in french. 
+-Donc plus de t("home.cta_secondary") par exmple mais toujours ecrire le texte directment inline

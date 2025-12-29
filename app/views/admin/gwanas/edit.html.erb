@@ -1,0 +1,25 @@
+<% content_for :title, "Modifier le compte Gwana" %>
+
+<div class="min-h-screen bg-gradient-to-b from-white to-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-4xl mx-auto">
+    <div class="text-center mb-8">
+      <h1 class="text-4xl font-bold text-purple-700 mb-2">Modifier le compte Gwana</h1>
+      <p class="text-gray-600">Modifier les informations de <%= @gwana.full_name %></p>
+    </div>
+
+    <%= form_with model: [:admin, @gwana], local: true, multipart: true do |f| %>
+      <%= render "admin/gwanas/form", gwana: @gwana, f: f %>
+      
+      <div class="flex justify-center gap-4 mt-8">
+        <%= f.submit "Enregistrer les modifications", 
+            class: "bg-gradient-to-r from-purple-700 to-purple-800 hover:from-purple-800 hover:to-purple-700 text-white font-bold py-4 px-12 rounded-lg transition-all shadow-lg transform hover:scale-105 flex items-center gap-2" %>
+        <%= link_to "Annuler", admin_gwana_path(@gwana), class: "bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-4 px-12 rounded-lg transition-all" %>
+      </div>
+    <% end %>
+
+    <div class="text-center mt-6">
+      <%= link_to "← Retour à la liste", admin_gwanas_path, class: "text-purple-700 hover:text-purple-800 transition-colors" %>
+    </div>
+  </div>
+</div>
+

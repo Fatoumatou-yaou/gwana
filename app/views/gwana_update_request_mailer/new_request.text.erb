@@ -1,0 +1,17 @@
+Nouvelle demande de mise à jour de profil
+
+Bonjour <%= @admin.gwana_profile&.full_name || @admin.email %>,
+
+Une nouvelle demande de mise à jour de profil a été soumise par <%= @gwana.full_name %>.
+
+<% if @gwana_update_request.has_bio_update? %>
+Bio modifiée :
+<%= @gwana_update_request.bio %>
+
+<% end %>
+<% if @gwana_update_request.has_photo_update? %>
+Photo modifiée
+
+<% end %>
+Voir la demande : <%= admin_gwana_update_request_url(@gwana_update_request, locale: I18n.locale) %>
+

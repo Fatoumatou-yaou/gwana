@@ -1,0 +1,13 @@
+<% if resource.errors.any? %>
+  <div class="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg">
+    <h4 class="text-sm font-semibold text-red-800 mb-2">
+      <%= pluralize(resource.errors.count, "erreur") %> empêche(nt) la création du compte :
+    </h4>
+    <ul class="list-disc list-inside text-sm text-red-600">
+      <% resource.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+

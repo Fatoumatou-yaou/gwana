@@ -48,6 +48,9 @@ gem "devise", "~> 4.9"
 # Authorization
 gem "pundit", "~> 2.3"
 
+# View components
+gem "view_component", "~> 3.12"
+
 # Background jobs
 gem "sidekiq", "~> 7.2"
 gem "redis", "~> 5.0"
@@ -58,8 +61,14 @@ gem "pg_search", "~> 2.3"
 # Pagination
 gem "pagy", "~> 8.0"
 
+# Charts
+gem "chartkick", "~> 5.0"
+
 # Friendly URLs
 gem "friendly_id", "~> 5.5"
+
+# Decorators
+gem "draper", "~> 4.0"
 
 # Internationalization
 gem "rails-i18n", "~> 8.0"
@@ -73,6 +82,11 @@ group :development, :test do
 
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
+end
+
+group :development do
+  # Excel file reading for imports
+  gem "roo", "~> 2.10"
 end
 
 group :development do

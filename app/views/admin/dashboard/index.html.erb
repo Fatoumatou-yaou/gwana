@@ -1,50 +1,50 @@
 <% content_for :title, "Dashboard Admin" %>
 
-<div class="max-w-7xl mx-auto">
-  <h1 class="text-4xl font-bold mb-8 text-[#D4AF37]">Dashboard Administrateur</h1>
+<div class="max-w-7xl mx-auto px-4 py-8">
+  <h1 class="text-4xl font-bold mb-8 text-gray-900">Dashboard Administrateur</h1>
 
   <!-- Stats Cards -->
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-    <div class="bg-[#0B0B0B] rounded-lg p-6 border border-[#6A0DAD]/20">
-      <div class="text-3xl font-bold text-[#D4AF37] mb-2"><%= @members_count %></div>
-      <div class="text-gray-400">Membres</div>
+    <div class="bg-white rounded-lg p-6 border border-gray-200 shadow-sm">
+      <div class="text-3xl font-bold text-purple-700 mb-2"><%= @gwanas_count %></div>
+      <div class="text-gray-600">Gwanas</div>
     </div>
-    <div class="bg-[#0B0B0B] rounded-lg p-6 border border-[#6A0DAD]/20">
-      <div class="text-3xl font-bold text-[#D4AF37] mb-2"><%= @users_count %></div>
-      <div class="text-gray-400">Utilisateurs</div>
+    <div class="bg-white rounded-lg p-6 border border-gray-200 shadow-sm">
+      <div class="text-3xl font-bold text-purple-700 mb-2"><%= @users_count %></div>
+      <div class="text-gray-600">Utilisateurs</div>
     </div>
-    <div class="bg-[#0B0B0B] rounded-lg p-6 border border-[#6A0DAD]/20">
-      <div class="text-3xl font-bold text-[#D4AF37] mb-2"><%= @mentors_count %></div>
-      <div class="text-gray-400">Mentors</div>
+    <div class="bg-white rounded-lg p-6 border border-gray-200 shadow-sm">
+      <div class="text-3xl font-bold text-purple-700 mb-2"><%= @mentors_count %></div>
+      <div class="text-gray-600">Mentors</div>
     </div>
-    <div class="bg-[#0B0B0B] rounded-lg p-6 border border-[#6A0DAD]/20">
-      <div class="text-3xl font-bold text-[#D4AF37] mb-2"><%= @requests_count %></div>
-      <div class="text-gray-400">Demandes de mentorat</div>
+    <div class="bg-white rounded-lg p-6 border border-gray-200 shadow-sm">
+      <div class="text-3xl font-bold text-purple-700 mb-2"><%= @requests_count %></div>
+      <div class="text-gray-600">Demandes de mentorat</div>
     </div>
   </div>
 
   <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-    <div class="bg-[#0B0B0B] rounded-lg p-6 border border-[#6A0DAD]/20">
-      <div class="text-3xl font-bold text-[#D4AF37] mb-2"><%= @pending_requests %></div>
-      <div class="text-gray-400">Demandes en attente</div>
+    <div class="bg-white rounded-lg p-6 border border-gray-200 shadow-sm">
+      <div class="text-3xl font-bold text-purple-700 mb-2"><%= @pending_requests %></div>
+      <div class="text-gray-600">Demandes en attente</div>
     </div>
-    <div class="bg-[#0B0B0B] rounded-lg p-6 border border-[#6A0DAD]/20">
-      <div class="text-3xl font-bold text-[#D4AF37] mb-2"><%= @published_articles %></div>
-      <div class="text-gray-400">Articles publiés</div>
+    <div class="bg-white rounded-lg p-6 border border-gray-200 shadow-sm">
+      <div class="text-3xl font-bold text-purple-700 mb-2"><%= @published_articles %></div>
+      <div class="text-gray-600">Articles publiés</div>
     </div>
   </div>
 
   <!-- Recent Requests -->
-  <div class="bg-[#0B0B0B] rounded-lg p-6 border border-[#6A0DAD]/20 mb-8">
-    <h2 class="text-2xl font-semibold mb-4">Demandes récentes</h2>
+  <div class="bg-white rounded-lg p-6 border border-gray-200 shadow-sm mb-8">
+    <h2 class="text-2xl font-semibold mb-4 text-gray-900">Demandes récentes</h2>
     <% if @recent_requests.any? %>
       <div class="space-y-4">
         <% @recent_requests.each do |request| %>
-          <div class="border-b border-[#6A0DAD]/20 pb-4 last:border-0">
+          <div class="border-b border-gray-200 pb-4 last:border-0">
             <div class="flex justify-between items-start">
               <div>
-                <p class="font-semibold"><%= request.requester.member_profile&.full_name || request.requester.email %></p>
-                <p class="text-sm text-gray-400">→ <%= request.mentor.member_profile&.full_name || request.mentor.email %></p>
+                <p class="font-semibold text-gray-900"><%= request.requester.gwana_profile&.full_name || request.requester.email %></p>
+                <p class="text-sm text-gray-600">→ <%= request.mentor.gwana_profile&.full_name || request.mentor.email %></p>
                 <p class="text-xs text-gray-500 mt-1"><%= l(request.created_at, format: :short) %></p>
               </div>
               <span class="px-3 py-1 rounded-full text-xs <%= request.pending? ? 'bg-yellow-500/20 text-yellow-500' : request.accepted? ? 'bg-green-500/20 text-green-500' : 'bg-red-500/20 text-red-500' %>">
@@ -55,28 +55,28 @@
         <% end %>
       </div>
     <% else %>
-      <p class="text-gray-400">Aucune demande récente</p>
+      <p class="text-gray-600">Aucune demande récente</p>
     <% end %>
   </div>
 
-  <!-- Recent Members -->
-  <div class="bg-[#0B0B0B] rounded-lg p-6 border border-[#6A0DAD]/20">
-    <h2 class="text-2xl font-semibold mb-4">Membres récents</h2>
-    <% if @recent_members.any? %>
+  <!-- Recent Gwanas -->
+  <div class="bg-white rounded-lg p-6 border border-gray-200 shadow-sm">
+    <h2 class="text-2xl font-semibold mb-4 text-gray-900">Gwanas récentes</h2>
+    <% if @recent_gwanas.any? %>
       <div class="space-y-4">
-        <% @recent_members.each do |member| %>
-          <div class="flex items-center justify-between border-b border-[#6A0DAD]/20 pb-4 last:border-0">
+        <% @recent_gwanas.each do |gwana| %>
+          <div class="flex items-center justify-between border-b border-gray-200 pb-4 last:border-0">
             <div>
-              <p class="font-semibold"><%= member.full_name %></p>
-              <p class="text-sm text-gray-400"><%= member.profession %></p>
-              <p class="text-xs text-gray-500 mt-1"><%= l(member.created_at, format: :short) %></p>
+              <p class="font-semibold text-gray-900"><%= gwana.full_name %></p>
+              <p class="text-sm text-gray-600"><%= gwana.profession %></p>
+              <p class="text-xs text-gray-500 mt-1"><%= l(gwana.created_at, format: :short) %></p>
             </div>
-            <%= link_to "Voir", admin_member_path(member), class: "text-[#D4AF37] hover:text-[#B8860B] transition-colors" %>
+            <%= link_to "Voir", admin_gwana_path(gwana), class: "text-purple-700 hover:text-purple-800 transition-colors" %>
           </div>
         <% end %>
       </div>
     <% else %>
-      <p class="text-gray-400">Aucun membre récent</p>
+      <p class="text-gray-600">Aucune gwana récente</p>
     <% end %>
   </div>
 </div>

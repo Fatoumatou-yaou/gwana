@@ -25,11 +25,20 @@ en:
     title: "Welcome to GWANA"
     subtitle: "Network for Valuing Pioneer Women"
     description: "Join our community of expert women transforming traditionally male-dominated professions in Niger"
+    hero_title_line1: "Valuing Pioneer"
+    hero_title_line2: "Women"
+    hero_title_line3: "Transforming Professions"
+    hero_title_line4: "in Niger"
+    hero_description: "Join our community of expert women transforming traditionally male-dominated professions in Niger and creating lasting impact."
     cta_primary: "Join the network"
     cta_secondary: "Discover the directory"
     stats_members: "Members"
     stats_mentors: "Mentors"
     stats_requests: "Mentorship requests"
+    mission_title: "Our Mission"
+    mission_text: "To value and highlight pioneer and expert women who practice male-dominated professions in Niger. Facilitate mentorship, create opportunities and build a strong network for women's empowerment."
+    group_photo_alt: "GWANA pioneer women group"
+    group_photo_placeholder: "GWANA group photo"
 
   mentorship_request_mailer:
     new_request:

@@ -1,26 +1,47 @@
-# frozen_string_literal: true
-
 Rails.application.routes.draw do
   # Health check (outside locale scope)
   get "up" => "rails/health#show", as: :rails_health_check
 
   # Locale scope
-  scope "(:locale)", locale: /fr|en/ do
     # Root
     root "home#index"
 
     # Authentication
     devise_for :users, controllers: {
+      sessions: "users/sessions",
       registrations: "users/registrations",
       confirmations: "users/confirmations"
     }
 
+    # Route GET pour sign_out (fallback si nécessaire)
+    devise_scope :user do
+      get "users/sign_out", to: "users/sessions#destroy"
+    end
+
+    # OTP verification
+    namespace :users do
+      resources :otp, only: [:new, :create], path: "otp" do
+        collection do
+          post :resend
+        end
+      end
+    end
+
     # Public pages
-    resources :members, only: %i[index show], param: :slug
-    resources :articles, only: %i[index show], param: :slug
+    resources :gwanas, only: %i[index show], path: "gwanas"
+    resources :articles, only: %i[index show]
+
+    # API routes for location data
+    namespace :api do
+      get "departments", to: "locations#departments"
+      get "communes", to: "locations#communes"
+    end
 
     # Authenticated routes
     authenticate :user do
+      # Dashboard
+      resource :dashboard, only: [:show]
+
       # Member profile
       resource :profile, only: %i[show edit update], controller: "profiles"
 
@@ -35,17 +56,24 @@ Rails.application.routes.draw do
 
     # Admin routes
     namespace :admin do
-      root "dashboard#index"
-      resources :members
+      root "dashboard#show"
+      resource :dashboard, only: [:show], controller: "dashboard"
+      
+      resources :gwanas
       resources :mentorship_requests, only: %i[index show]
+      resources :gwana_update_requests, only: %i[index show], path: "gwana_update_requests" do
+        member do
+          patch :approve
+          patch :reject
+        end
+      end
       resources :articles
-      resources :users, only: %i[index show edit update]
+      resources :users, only: %i[index show new create edit update]
     end
 
     # Sidekiq web UI (admin only)
     require "sidekiq/web"
-    authenticate :user, ->(u) { u.admin? || u.admin_reseau? } do
+    authenticate :user, ->(u) { u.admin? } do
       mount Sidekiq::Web => "/sidekiq"
     end
-  end
 end

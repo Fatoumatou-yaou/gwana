@@ -1,0 +1,20 @@
+<!-- Stats Section -->
+<section class="py-16 bg-black border-y border-purple-700/20" aria-label="<%= t("home.stats_members") %>">
+  <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+      <div class="transform hover:scale-105 transition-transform">
+        <div class="text-5xl font-bold text-amber-500 mb-2"><%= @gwanas_count %></div>
+        <div class="text-gray-400 text-lg"><%= t("home.stats_members") %></div>
+      </div>
+      <div class="transform hover:scale-105 transition-transform">
+        <div class="text-5xl font-bold text-amber-500 mb-2"><%= @mentors_count %></div>
+        <div class="text-gray-400 text-lg"><%= t("home.stats_mentors") %></div>
+      </div>
+      <div class="transform hover:scale-105 transition-transform">
+        <div class="text-5xl font-bold text-amber-500 mb-2"><%= @requests_count %></div>
+        <div class="text-gray-400 text-lg"><%= t("home.stats_requests") %></div>
+      </div>
+    </div>
+  </div>
+</section>
+

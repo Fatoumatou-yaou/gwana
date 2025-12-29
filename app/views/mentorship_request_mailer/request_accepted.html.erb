@@ -1,5 +1,18 @@
-<h1>MentorshipRequest#request_accepted</h1>
-
-<p>
-  <%= @greeting %>, find me in app/views/mentorship_request_mailer/request_accepted.html.erb
-</p>
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <h1>Demande de mentorat acceptée</h1>
+    <p>Bonjour <%= @requester.full_name || @requester.email %>,</p>
+    
+    <p>Nous avons le plaisir de vous informer que votre demande de mentorat auprès de <strong><%= @mentor.gwana_profile&.full_name || @mentor.email %></strong> a été acceptée.</p>
+    
+    <p>Votre mentor va maintenant pouvoir vous accompagner dans votre parcours. Vous pouvez consulter les détails de votre demande depuis votre <a href="<%= mentorship_request_url(@mentorship_request) %>" style="color: rgb(107, 13, 173);">espace Gwana</a>.</p>
+    
+    <p>Nous vous souhaitons un excellent mentorat !</p>
+    
+    <p>Cordialement,<br>L'équipe Gwana</p>
+  </body>
+</html>

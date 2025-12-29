@@ -1,0 +1,12 @@
+<div class="<%= container_classes %>" data-controller="notification" data-notification-target="container">
+  <div class="flex items-center p-4 rounded-lg shadow-lg">
+    <span class="material-symbols-outlined mr-3"><%= icon %></span>
+    <div class="flex-1">
+      <%= @message %>
+    </div>
+    <button class="ml-4 text-gray-500 hover:text-gray-700" data-action="notification#close">
+      <span class="material-symbols-outlined">close</span>
+    </button>
+  </div>
+</div>
+

@@ -1,0 +1,20 @@
+<% content_for :title, "Gestion des utilisateurs" %>
+
+<div class="max-w-7xl mx-auto px-4 py-8">
+  <%= render ItemTableComponent.new(
+    items: @users,
+    columns: {
+      full_name: "Nom",
+      email: "Email",
+      profile: "Profil",
+      formatted_created_at: "Date de création"
+    },
+    item_type: "user",
+    scope: ["admin"],
+    actions: [:show, :edit],
+    display_new_button: true,
+    empty_message: "Aucun utilisateur créé pour le moment.",
+    pagy: @pagy
+  ) %>
+</div>
+

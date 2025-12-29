@@ -1,4 +1,3 @@
-# frozen_string_literal: true
 
 class MentorshipRequestPolicy < ApplicationPolicy
   def index?
@@ -6,19 +5,19 @@ class MentorshipRequestPolicy < ApplicationPolicy
   end
 
   def show?
-    user.present? && (record.requester == user || record.mentor == user || user.admin? || user.admin_reseau?)
+    user.present? && (record.requester == user || record.mentor == user || user.admin?)
   end
 
   def create?
-    user.present? && user.member?
+    user.present? && user.user?
   end
 
   def update?
-    user.present? && (record.mentor == user || user.admin? || user.admin_reseau?)
+    user.present? && (record.mentor == user || user.admin?)
   end
 
   def destroy?
-    user.present? && (record.requester == user || user.admin? || user.admin_reseau?)
+    user.present? && (record.requester == user || user.admin?)
   end
 
   def accept?
@@ -31,11 +30,11 @@ class MentorshipRequestPolicy < ApplicationPolicy
 
   class Scope < Scope
     def resolve
-      if user&.admin? || user&.admin_reseau?
+      if user&.admin?
         scope.all
-      elsif user&.mentor?
+      elsif user&.gwana?
         scope.for_mentor(user.id)
-      elsif user&.member?
+      elsif user&.user?
         scope.for_requester(user.id)
       else
         scope.none

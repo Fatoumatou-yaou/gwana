@@ -1,11 +1,12 @@
-# frozen_string_literal: true
-
 class HomeController < ApplicationController
+  layout "slim"
+
   def index
-    @members_count = Member.count
-    @mentors_count = User.mentors.count
+    @gwanas_count = Gwana.count
+    # @mentors_count = User.mentors.count
     @requests_count = MentorshipRequest.pending.count
-    @recent_articles = Article.published.recent.limit(3)
-    @featured_members = Member.available_for_mentorship.limit(6)
+    @recent_articles = decorate(Article.published.recent.limit(3))
+    @featured_gwanas = decorate(Gwana.available_for_mentorship.limit(6))
+    @directory_gwanas = decorate(Gwana.limit(14))
   end
 end

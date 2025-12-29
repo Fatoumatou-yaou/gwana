@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_11_15_194319) do
+ActiveRecord::Schema[8.0].define(version: 2025_12_28_191616) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -63,13 +63,46 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_15_194319) do
     t.text "tags"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "media_type"
     t.index ["author_id"], name: "index_articles_on_author_id"
     t.index ["category"], name: "index_articles_on_category"
+    t.index ["media_type"], name: "index_articles_on_media_type"
     t.index ["published"], name: "index_articles_on_published"
     t.index ["slug"], name: "index_articles_on_slug", unique: true
   end
 
-  create_table "members", force: :cascade do |t|
+  create_table "communes", force: :cascade do |t|
+    t.string "name", null: false
+    t.bigint "department_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["department_id"], name: "index_communes_on_department_id"
+    t.index ["name", "department_id"], name: "index_communes_on_name_and_department_id", unique: true
+  end
+
+  create_table "departments", force: :cascade do |t|
+    t.string "name", null: false
+    t.bigint "region_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name", "region_id"], name: "index_departments_on_name_and_region_id", unique: true
+    t.index ["region_id"], name: "index_departments_on_region_id"
+  end
+
+  create_table "gwana_update_requests", force: :cascade do |t|
+    t.bigint "gwana_id", null: false
+    t.text "bio"
+    t.integer "status", default: 0, null: false
+    t.bigint "reviewed_by_id"
+    t.datetime "reviewed_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["gwana_id"], name: "index_gwana_update_requests_on_gwana_id"
+    t.index ["reviewed_by_id"], name: "index_gwana_update_requests_on_reviewed_by_id"
+    t.index ["status"], name: "index_gwana_update_requests_on_status"
+  end
+
+  create_table "gwanas", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.string "first_name"
     t.string "last_name"
@@ -84,10 +117,16 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_15_194319) do
     t.string "slug"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["available_for_mentorship"], name: "index_members_on_available_for_mentorship"
-    t.index ["region"], name: "index_members_on_region"
-    t.index ["slug"], name: "index_members_on_slug", unique: true
-    t.index ["user_id"], name: "index_members_on_user_id", unique: true
+    t.string "address"
+    t.string "phone"
+    t.bigint "commune_id"
+    t.text "experiences"
+    t.text "formations"
+    t.index ["available_for_mentorship"], name: "index_gwanas_on_available_for_mentorship"
+    t.index ["commune_id"], name: "index_gwanas_on_commune_id"
+    t.index ["region"], name: "index_gwanas_on_region"
+    t.index ["slug"], name: "index_gwanas_on_slug", unique: true
+    t.index ["user_id"], name: "index_gwanas_on_user_id", unique: true
   end
 
   create_table "mentorship_requests", force: :cascade do |t|
@@ -99,9 +138,21 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_15_194319) do
     t.integer "status", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "motivation"
+    t.bigint "commune_id"
+    t.string "niveau_etudes"
+    t.string "filiere"
+    t.index ["commune_id"], name: "index_mentorship_requests_on_commune_id"
     t.index ["mentor_id"], name: "index_mentorship_requests_on_mentor_id"
     t.index ["requester_id"], name: "index_mentorship_requests_on_requester_id"
     t.index ["status"], name: "index_mentorship_requests_on_status"
+  end
+
+  create_table "regions", force: :cascade do |t|
+    t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_regions_on_name", unique: true
   end
 
   create_table "users", force: :cascade do |t|
@@ -117,15 +168,39 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_15_194319) do
     t.integer "role", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "first_name"
+    t.string "last_name"
+    t.string "phone"
+    t.string "country_code"
+    t.integer "profile", default: 0, null: false
+    t.boolean "is_verified", default: false, null: false
+    t.string "otp"
+    t.datetime "otp_sent_at"
+    t.datetime "deleted_at"
+    t.integer "gender"
+    t.date "date_of_birth"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
+    t.index ["deleted_at"], name: "index_users_on_deleted_at"
     t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["is_verified"], name: "index_users_on_is_verified"
+    t.index ["phone"], name: "index_users_on_phone"
+    t.index ["profile"], name: "index_users_on_profile"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "articles", "users", column: "author_id"
-  add_foreign_key "members", "users"
+  add_foreign_key "communes", "departments"
+  add_foreign_key "departments", "regions"
+  add_foreign_key "gwana_update_requests", "gwanas"
+  add_foreign_key "gwana_update_requests", "gwanas"
+  add_foreign_key "gwana_update_requests", "users", column: "reviewed_by_id"
+  add_foreign_key "gwanas", "communes"
+  add_foreign_key "gwanas", "communes"
+  add_foreign_key "gwanas", "users"
+  add_foreign_key "gwanas", "users"
+  add_foreign_key "mentorship_requests", "communes"
   add_foreign_key "mentorship_requests", "users", column: "mentor_id"
   add_foreign_key "mentorship_requests", "users", column: "requester_id"
 end

@@ -1,16 +1,27 @@
-# frozen_string_literal: true
-
 class ApplicationController < ActionController::Base
   # Only allow modern browsers supporting webp images, web push, badges, import maps, CSS nesting, and CSS :has.
   allow_browser versions: :modern
 
   include Pundit::Authorization
+  include Pagy::Backend
 
   # Set locale
   before_action :set_locale
 
   # Handle Pundit errors
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
+
+  protected
+
+  def decorate(model_or_collection)
+    if model_or_collection.respond_to?(:each) && !model_or_collection.is_a?(Draper::CollectionDecorator)
+      Draper::CollectionDecorator.decorate(model_or_collection)
+    elsif model_or_collection.respond_to?(:decorate) && !model_or_collection.is_a?(Draper::Decorator)
+      model_or_collection.decorate
+    else
+      model_or_collection
+    end
+  end
 
   private
 
@@ -19,11 +30,11 @@ class ApplicationController < ActionController::Base
   end
 
   def default_url_options
-    { locale: I18n.locale }
+    {}
   end
 
   def user_not_authorized
-    flash[:alert] = t("pundit.not_authorized")
+    flash[:alert] = "Vous n'êtes pas autorisé à effectuer cette action."
     redirect_to(request.referer || root_path)
   end
 end

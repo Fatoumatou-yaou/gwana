@@ -1,4 +1,3 @@
-# frozen_string_literal: true
 
 class MentorshipRequestMailer < ApplicationMailer
   def new_request(mentorship_request)
@@ -8,7 +7,7 @@ class MentorshipRequestMailer < ApplicationMailer
 
     mail(
       to: @mentor.email,
-      subject: t("mentorship_request_mailer.new_request.subject", requester_name: @requester.member_profile&.full_name || @requester.email)
+      subject: "Nouvelle demande de mentorat de #{@requester.full_name || @requester.email}"
     )
   end
 
@@ -19,7 +18,7 @@ class MentorshipRequestMailer < ApplicationMailer
 
     mail(
       to: @requester.email,
-      subject: t("mentorship_request_mailer.request_accepted.subject")
+      subject: "Votre demande de mentorat a été acceptée"
     )
   end
 
@@ -30,7 +29,7 @@ class MentorshipRequestMailer < ApplicationMailer
 
     mail(
       to: @requester.email,
-      subject: t("mentorship_request_mailer.request_rejected.subject")
+      subject: "Votre demande de mentorat a été refusée"
     )
   end
 end
