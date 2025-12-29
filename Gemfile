@@ -52,7 +52,7 @@ gem "pundit", "~> 2.3"
 gem "view_component", "~> 3.12"
 
 # Background jobs
-gem "sidekiq", "~> 7.2"
+gem "sidekiq", "~> 8.1"
 gem "redis", "~> 5.0"
 
 # Full-text search
