@@ -1,0 +1,37 @@
+fr:
+  activerecord:
+    errors:
+      models:
+        user:
+          attributes:
+            email:
+              blank: "ne peut pas être vide"
+              taken: "a déjà été utilisé"
+              invalid: "n'est pas valide"
+            first_name:
+              blank: "ne peut pas être vide"
+            last_name:
+              blank: "ne peut pas être vide"
+            phone:
+              blank: "ne peut pas être vide"
+              taken: "a déjà été utilisé"
+              invalid: "n'est pas valide"
+        gwana:
+          attributes:
+            first_name:
+              blank: "ne peut pas être vide"
+            last_name:
+              blank: "ne peut pas être vide"
+            linkedin_url:
+              invalid: "doit être une URL valide (commençant par http:// ou https://)"
+            twitter_url:
+              invalid: "doit être une URL valide (commençant par http:// ou https://)"
+            website_url:
+              invalid: "doit être une URL valide (commençant par http:// ou https://)"
+      messages:
+        blank: "ne peut pas être vide"
+        taken: "a déjà été utilisé"
+        invalid: "n'est pas valide"
+        too_short: "est trop court (minimum %{count} caractères)"
+        too_long: "est trop long (maximum %{count} caractères)"
+

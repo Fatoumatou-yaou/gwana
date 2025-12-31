@@ -1,5 +1,4 @@
-
-class Admin::GwanaUpdateRequestPolicy < ApplicationPolicy
+class Admin::GwanaNetworkRequestPolicy < ApplicationPolicy
   def index?
     admin?
   end

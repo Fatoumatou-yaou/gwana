@@ -1,0 +1,20 @@
+<% content_for :title, "Demandes de rejoindre le réseau" %>
+
+<div class="max-w-7xl mx-auto px-4 py-8">
+  <%= render ItemTableComponent.new(
+    items: @requests,
+    columns: {
+      full_name: "Nom complet",
+      email: "Email",
+      status_badge: "Statut",
+      formatted_created_at: "Date de demande"
+    },
+    item_type: "gwana_network_request",
+    scope: ["admin"],
+    actions: [:show],
+    display_new_button: false,
+    empty_message: "Aucune demande pour le moment.",
+    pagy: @pagy
+  ) %>
+</div>
+

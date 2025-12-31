@@ -181,31 +181,221 @@ h1, h2, h3, h4, h5, h6 {
   text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
 }
 
-/* Swiper Annuaire Styles */
-.annuaire-swiper {
-  padding: 2rem 0;
-  overflow: visible;
+/* Carousel Annuaire - Défilement infini */
+.annuaire-carousel-container {
+  position: relative;
   width: 100%;
+  overflow: hidden;
+  padding: 3rem 0;
+  margin: 0 auto;
 }
 
-.annuaire-swiper .swiper-slide {
+.annuaire-carousel-track {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  height: auto;
-  width: 100%;
+  gap: 2rem; /* Espacement horizontal augmenté pour plus de respiration */
+  will-change: transform;
+  transition: none;
+  width: max-content; /* Permet au track de dépasser la largeur du container */
+  align-items: flex-start; /* Permet le décalage vertical des items */
 }
 
-.annuaire-swiper .swiper-wrapper {
+.annuaire-carousel-item {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
   align-items: center;
+  width: 200px;
+  min-height: 320px; /* Hauteur minimale pour garantir la cohérence */
+  animation: fadeInUp 0.6s ease-out, waveAnimation 4s ease-in-out infinite;
+  animation-fill-mode: both;
+  transition: transform 0.3s ease, margin-top 0.3s ease;
 }
 
-/* Responsive adjustments for 2-row layout */
-@media (max-width: 768px) {
-  .annuaire-swiper .swiper-slide .ml-16 {
-    margin-left: 2rem;
+/* Animation de vague qui se propage de gauche à droite */
+@keyframes waveAnimation {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  25% {
+    transform: translateY(-15px);
+  }
+  50% {
+    transform: translateY(0);
+  }
+  75% {
+    transform: translateY(15px);
   }
 }
+
+/* Délais progressifs pour créer l'effet de vague qui se propage */
+.annuaire-carousel-item:nth-child(1) {
+  animation-delay: 0s, 0s;
+}
+
+.annuaire-carousel-item:nth-child(2) {
+  animation-delay: 0.1s, 0.3s;
+}
+
+.annuaire-carousel-item:nth-child(3) {
+  animation-delay: 0.2s, 0.6s;
+}
+
+.annuaire-carousel-item:nth-child(4) {
+  animation-delay: 0.3s, 0.9s;
+}
+
+.annuaire-carousel-item:nth-child(5) {
+  animation-delay: 0.4s, 1.2s;
+}
+
+.annuaire-carousel-item:nth-child(6) {
+  animation-delay: 0.5s, 1.5s;
+}
+
+.annuaire-carousel-item:nth-child(7) {
+  animation-delay: 0.6s, 1.8s;
+}
+
+.annuaire-carousel-item:nth-child(8) {
+  animation-delay: 0.7s, 2.1s;
+}
+
+/* Pour les items suivants, répéter le pattern */
+.annuaire-carousel-item:nth-child(n+9) {
+  animation-delay: 0s, calc(var(--wave-delay, 0s) + 0.3s);
+}
+
+/* Décalage vertical alterné subtil : items pairs (2, 4, 6...) décalés vers le bas */
+.annuaire-carousel-item:nth-child(even) {
+  margin-top: 2.5rem; /* Décalage réduit pour un effet plus moderne et subtil */
+}
+
+/* Items impairs (1, 3, 5...) restent à la hauteur normale */
+.annuaire-carousel-item:nth-child(odd) {
+  margin-top: 0;
+}
+
+/* Animation de vague réduite pour mobile */
+@keyframes waveAnimationMobile {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  25% {
+    transform: translateY(-8px);
+  }
+  50% {
+    transform: translateY(0);
+  }
+  75% {
+    transform: translateY(8px);
+  }
+}
+
+/* Sur mobile : décalage encore plus subtil et animation réduite */
+@media (max-width: 767px) {
+  .annuaire-carousel-item:nth-child(even) {
+    margin-top: 1.5rem; /* Décalage réduit sur mobile */
+  }
+  
+  .annuaire-carousel-item {
+    min-height: 280px; /* Hauteur réduite sur mobile */
+    /* Animation de vague plus subtile sur mobile */
+    animation: fadeInUp 0.6s ease-out, waveAnimationMobile 5s ease-in-out infinite;
+  }
+  
+  .annuaire-carousel-track {
+    gap: 1.5rem; /* Espacement réduit sur mobile */
+  }
+}
+
+/* Responsive: ajuster le nombre d'items visibles et le décalage */
+@media (min-width: 640px) {
+  .annuaire-carousel-item {
+    width: 220px;
+    min-height: 340px;
+  }
+  
+  .annuaire-carousel-item:nth-child(even) {
+    margin-top: 2.5rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .annuaire-carousel-item {
+    width: 240px;
+    min-height: 360px;
+  }
+  
+  .annuaire-carousel-item:nth-child(even) {
+    margin-top: 3rem; /* Décalage légèrement augmenté sur tablette+ */
+  }
+  
+  .annuaire-carousel-track {
+    gap: 2.5rem; /* Plus d'espace sur les grands écrans */
+  }
+}
+
+@media (min-width: 1024px) {
+  .annuaire-carousel-item {
+    width: 260px;
+    min-height: 380px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .annuaire-carousel-item {
+    width: 280px;
+    min-height: 400px;
+  }
+  
+  .annuaire-carousel-track {
+    gap: 3rem; /* Espacement maximal sur très grands écrans */
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Styles pour les avatars avec anneaux simplifiés en CSS */
+.gwana-avatar {
+  position: relative;
+}
+
+.gwana-avatar::before {
+  content: '';
+  position: absolute;
+  top: -8px;
+  left: -8px;
+  right: -8px;
+  bottom: -8px;
+  border-radius: 50%;
+  border: 3px solid rgba(241, 240, 243, 0.9);
+  z-index: 0;
+  pointer-events: none;
+}
+
+.gwana-avatar::after {
+  content: '';
+  position: absolute;
+  top: -16px;
+  left: -16px;
+  right: -16px;
+  bottom: -16px;
+  border-radius: 50%;
+  border: 8px solid rgba(243, 235, 247, 0.9);
+  z-index: -1;
+  pointer-events: none;
+  box-shadow: 0 4px 12px rgba(245, 244, 242, 0.25);
+}
+
 
 /* Masculinity Carousel Styles */
 .masculinity-carousel-track {
@@ -229,3 +419,4 @@ h1, h2, h3, h4, h5, h6 {
   width: 2rem !important;
   border-radius: 0.375rem;
 }
+

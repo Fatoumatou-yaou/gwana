@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_12_28_191616) do
+ActiveRecord::Schema[8.0].define(version: 2025_12_30_094509) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -87,6 +87,33 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_28_191616) do
     t.datetime "updated_at", null: false
     t.index ["name", "region_id"], name: "index_departments_on_name_and_region_id", unique: true
     t.index ["region_id"], name: "index_departments_on_region_id"
+  end
+
+  create_table "gwana_network_requests", force: :cascade do |t|
+    t.string "first_name", null: false
+    t.string "last_name", null: false
+    t.string "email", null: false
+    t.string "phone"
+    t.string "address"
+    t.bigint "commune_id"
+    t.string "profession"
+    t.text "experiences"
+    t.text "formations"
+    t.text "bio"
+    t.string "linkedin_url"
+    t.string "twitter_url"
+    t.string "website_url"
+    t.integer "status", default: 0, null: false
+    t.bigint "reviewed_by_id"
+    t.datetime "reviewed_at"
+    t.text "rejection_reason"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["commune_id"], name: "index_gwana_network_requests_on_commune_id"
+    t.index ["created_at"], name: "index_gwana_network_requests_on_created_at"
+    t.index ["email"], name: "index_gwana_network_requests_on_email"
+    t.index ["reviewed_by_id"], name: "index_gwana_network_requests_on_reviewed_by_id"
+    t.index ["status"], name: "index_gwana_network_requests_on_status"
   end
 
   create_table "gwana_update_requests", force: :cascade do |t|

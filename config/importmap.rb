@@ -7,5 +7,4 @@ pin "@hotwired/stimulus-loading", to: "stimulus-loading.js"
 pin_all_from "app/javascript/controllers", under: "controllers"
 pin "trix"
 pin "@rails/actiontext", to: "actiontext.esm.js"
-pin "swiper" # @12.0.3
-pin "swiper/modules", to: "swiper--modules.js" # @12.0.3
+# Swiper est chargé depuis CDN dans les layouts

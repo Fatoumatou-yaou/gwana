@@ -32,6 +32,8 @@ class ItemTableComponent < ViewComponent::Base
       @scope.include?("admin") ? :new_admin_user_path : :new_user_path
     when "gwana_update_request"
       @scope.include?("admin") ? :new_admin_gwana_update_request_path : :new_gwana_update_request_path
+    when "gwana_network_request"
+      @scope.include?("admin") ? :new_admin_gwana_network_request_path : :new_gwana_network_request_path
     else
       "new_#{@route_base}_path".to_sym
     end
@@ -47,6 +49,8 @@ class ItemTableComponent < ViewComponent::Base
       @scope.include?("admin") ? :admin_user_path : :user_path
     when "gwana_update_request"
       @scope.include?("admin") ? :admin_gwana_update_request_path : :gwana_update_request_path
+    when "gwana_network_request"
+      @scope.include?("admin") ? :admin_gwana_network_request_path : :gwana_network_request_path
     else
       "#{@route_base}_path".to_sym
     end
@@ -62,6 +66,8 @@ class ItemTableComponent < ViewComponent::Base
       @scope.include?("admin") ? :edit_admin_user_path : :edit_user_path
     when "gwana_update_request"
       @scope.include?("admin") ? :edit_admin_gwana_update_request_path : :edit_gwana_update_request_path
+    when "gwana_network_request"
+      @scope.include?("admin") ? :edit_admin_gwana_network_request_path : :edit_gwana_network_request_path
     else
       "edit_#{@route_base}_path".to_sym
     end
@@ -77,6 +83,8 @@ class ItemTableComponent < ViewComponent::Base
       @scope.include?("admin") ? :admin_user_path : :user_path
     when "gwana_update_request"
       @scope.include?("admin") ? :admin_gwana_update_request_path : :gwana_update_request_path
+    when "gwana_network_request"
+      @scope.include?("admin") ? :admin_gwana_network_request_path : :gwana_network_request_path
     else
       "#{@route_base}_path".to_sym
     end
@@ -92,6 +100,8 @@ class ItemTableComponent < ViewComponent::Base
       item # User n'a pas besoin de decorator pour l'instant
     when "gwana_update_request"
       item # GwanaUpdateRequest n'a pas besoin de decorator pour l'instant
+    when "gwana_network_request"
+      item # GwanaNetworkRequest n'a pas besoin de decorator pour l'instant
     else
       item
     end
@@ -120,6 +130,12 @@ class ItemTableComponent < ViewComponent::Base
 
     # Pour les gwana_update_requests admin, on n'a pas besoin de paramètres de scope supplémentaires
     if @item_type.to_s == "gwana_update_request" && @scope.include?("admin")
+      params[:id] = item.id
+      return params
+    end
+
+    # Pour les gwana_network_requests admin, on n'a pas besoin de paramètres de scope supplémentaires
+    if @item_type.to_s == "gwana_network_request" && @scope.include?("admin")
       params[:id] = item.id
       return params
     end

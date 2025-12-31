@@ -39,6 +39,19 @@ local:
 #   endpoint: https://<%= Rails.application.credentials.dig(:digitalocean, :spaces_region) || "nyc3" %>.digitaloceanspaces.com
 #   force_path_style: false
 
+# Hetzner Object Storage (S3-compatible)
+# Use bin/rails credentials:edit to set the Hetzner Object Storage secrets
+# Créer un bucket dans Hetzner Cloud Console > Object Storage
+# Régions disponibles: hel1 (Helsinki), nbg1 (Nuremberg), fsn1 (Falkenstein)
+# hetzner:
+#   service: S3
+#   access_key_id: <%= Rails.application.credentials.dig(:hetzner, :object_storage_access_key_id) %>
+#   secret_access_key: <%= Rails.application.credentials.dig(:hetzner, :object_storage_secret_access_key) %>
+#   region: <%= Rails.application.credentials.dig(:hetzner, :object_storage_region) || "hel1" %>
+#   bucket: <%= Rails.application.credentials.dig(:hetzner, :object_storage_bucket) %>
+#   endpoint: https://<%= Rails.application.credentials.dig(:hetzner, :object_storage_region) || "hel1" %>.your-objectstorage.com
+#   force_path_style: true
+
 # mirror:
 #   service: Mirror
 #   primary: local
