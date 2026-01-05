@@ -1,8 +1,8 @@
 <% content_for :title, @gwana.full_name %>
 
-<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
   <!-- Header Section with Photo -->
-  <div class="bg-gradient-to-br from-white to-gray-50 rounded-xl p-8 mb-8 border border-purple-700/30 shadow-xl">
+  <div class="bg-gradient-to-br from-white via-purple-50/30 to-gray-50 rounded-2xl p-6 md:p-8 mb-8 border border-purple-700/30 shadow-xl hover:shadow-2xl transition-shadow duration-300">
     <div class="flex flex-col md:flex-row items-center md:items-start gap-8">
       <!-- Photo -->
       <div class="flex-shrink-0">
@@ -30,7 +30,7 @@
         </h1>
         <p class="text-2xl text-amber-500 font-semibold mb-4"><%= @gwana.profession %></p>
         
-        <!-- Location and Contact Info -->
+        <!-- Location Info -->
         <div class="flex flex-wrap items-center justify-center md:justify-start gap-4 mb-4 text-gray-700">
           <% if @gwana.region.present? %>
             <div class="flex items-center gap-2">
@@ -42,14 +42,6 @@
               <% if @gwana.commune.present? %>
                 <span class="text-gray-500">• <%= @gwana.commune.name %></span>
               <% end %>
-      </div>
-    <% end %>
-          <% if @gwana.phone.present? %>
-            <div class="flex items-center gap-2">
-              <svg class="w-5 h-5 text-purple-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
-              </svg>
-              <span><%= @gwana.phone %></span>
             </div>
           <% end %>
         </div>
@@ -89,12 +81,12 @@
   </div>
 
   <!-- Main Content Grid -->
-  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
     <!-- Left Column - Main Info -->
-    <div class="lg:col-span-2 space-y-8">
+    <div class="lg:col-span-2 space-y-6">
       <!-- Biographie -->
       <% if @gwana.bio.present? %>
-        <div class="bg-gradient-to-br from-white to-gray-50 rounded-xl p-6 border border-purple-700/30 shadow-lg">
+        <div class="bg-gradient-to-br from-white to-gray-50 rounded-xl p-6 border border-purple-700/30 shadow-lg hover:shadow-xl transition-shadow duration-300">
           <div class="flex items-center gap-3 mb-4">
             <div class="w-10 h-10 rounded-full bg-purple-700/20 flex items-center justify-center">
               <svg class="w-6 h-6 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -103,7 +95,7 @@
             </div>
             <h2 class="text-2xl font-bold text-amber-500">Biographie</h2>
           </div>
-          <div class="text-gray-300 leading-relaxed prose prose-invert max-w-none">
+          <div class="gwana-bio text-gray-700 leading-relaxed">
             <%= simple_format(@gwana.bio) %>
           </div>
         </div>
@@ -111,8 +103,8 @@
 
       <!-- Expériences -->
       <% if @gwana.experiences.present? %>
-        <div class="bg-gradient-to-br from-slate-900 to-slate-800 rounded-xl p-6 border border-purple-700/30 shadow-lg">
-          <div class="flex items-center gap-3 mb-6">
+        <div class="bg-gradient-to-br from-white to-gray-50 rounded-xl p-6 border border-purple-700/30 shadow-lg hover:shadow-xl transition-shadow duration-300">
+          <div class="flex items-center gap-3 mb-4">
             <div class="w-10 h-10 rounded-full bg-purple-700/20 flex items-center justify-center">
               <svg class="w-6 h-6 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
@@ -120,16 +112,16 @@
             </div>
             <h2 class="text-2xl font-bold text-amber-500">Expériences professionnelles</h2>
           </div>
-          <div class="text-gray-300 leading-relaxed whitespace-pre-line">
-            <%= @gwana.experiences %>
+          <div class="gwana-bio text-gray-700 leading-relaxed">
+            <%= simple_format(@gwana.experiences) %>
           </div>
         </div>
-        <% end %>
+      <% end %>
 
       <!-- Formations -->
       <% if @gwana.formations.present? %>
-        <div class="bg-gradient-to-br from-slate-900 to-slate-800 rounded-xl p-6 border border-purple-700/30 shadow-lg">
-          <div class="flex items-center gap-3 mb-6">
+        <div class="bg-gradient-to-br from-white to-gray-50 rounded-xl p-6 border border-purple-700/30 shadow-lg hover:shadow-xl transition-shadow duration-300">
+          <div class="flex items-center gap-3 mb-4">
             <div class="w-10 h-10 rounded-full bg-purple-700/20 flex items-center justify-center">
               <svg class="w-6 h-6 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
@@ -137,18 +129,18 @@
             </div>
             <h2 class="text-2xl font-bold text-amber-500">Formations</h2>
           </div>
-          <div class="text-gray-300 leading-relaxed whitespace-pre-line">
-            <%= @gwana.formations %>
+          <div class="gwana-bio text-gray-700 leading-relaxed">
+            <%= simple_format(@gwana.formations) %>
           </div>
         </div>
       <% end %>
     </div>
 
     <!-- Right Column - Sidebar Info -->
-    <div class="space-y-6">
+    <div class="space-y-6 lg:sticky lg:top-6 lg:self-start">
       <!-- Compétences -->
       <% if @gwana.skills.present? && @gwana.skills_array.any? %>
-        <div class="bg-gradient-to-br from-white to-gray-50 rounded-xl p-6 border border-purple-700/30 shadow-lg">
+        <div class="bg-gradient-to-br from-white to-gray-50 rounded-xl p-6 border border-purple-700/30 shadow-lg hover:shadow-xl transition-shadow duration-300">
           <div class="flex items-center gap-3 mb-4">
             <div class="w-10 h-10 rounded-full bg-purple-700/20 flex items-center justify-center">
               <svg class="w-6 h-6 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -159,7 +151,7 @@
           </div>
           <div class="flex flex-wrap gap-2">
             <% @gwana.skills_array.each do |skill| %>
-              <span class="bg-purple-700/20 text-amber-500 px-4 py-2 rounded-full text-sm border border-purple-700/30 hover:bg-purple-700/30 transition-colors">
+              <span class="bg-purple-700/20 text-amber-500 px-4 py-2 rounded-full text-sm font-medium border border-purple-700/30 hover:bg-purple-700/30 hover:border-purple-700/50 transition-all duration-200 cursor-default">
                 <%= skill %>
               </span>
             <% end %>
@@ -167,53 +159,43 @@
         </div>
       <% end %>
 
-      <!-- Informations de contact -->
-      <div class="bg-gradient-to-br from-white to-gray-50 rounded-xl p-6 border border-purple-700/30 shadow-lg">
-        <h3 class="text-xl font-bold text-amber-500 mb-4 flex items-center gap-2">
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-          </svg>
-          Informations de contact
-        </h3>
-        <div class="space-y-3 text-gray-700">
-          <% if @gwana.user.email.present? %>
-            <div class="flex items-center gap-3">
-              <svg class="w-5 h-5 text-purple-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+      <!-- Call to Action - Demander mentorat -->
+      <% if @gwana.available_for_mentorship? %>
+        <div class="bg-gradient-to-br from-purple-700 via-purple-800 to-purple-900 rounded-xl p-6 border border-amber-500/30 shadow-lg hover:shadow-xl transition-all duration-300">
+          <div class="text-center mb-4">
+            <div class="w-16 h-16 bg-amber-500/20 rounded-full flex items-center justify-center mx-auto mb-3">
+              <svg class="w-8 h-8 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
               </svg>
-              <a href="mailto:<%= @gwana.user.email %>" class="hover:text-amber-500 transition-colors break-all">
-                <%= @gwana.user.email %>
-              </a>
             </div>
+            <h3 class="text-xl font-bold text-white mb-2">Intéressé(e) par un mentorat ?</h3>
+            <p class="text-gray-200 text-sm mb-4">Contactez <%= @gwana.first_name %> pour discuter de vos objectifs professionnels</p>
+          </div>
+          <% if user_signed_in? %>
+            <% if current_user.user? && @gwana.user != current_user %>
+              <%= link_to new_mentorship_request_path(mentor_id: @gwana.user_id), class: "block w-full bg-amber-500 hover:bg-amber-400 text-purple-900 font-bold px-6 py-3 rounded-lg transition-all transform hover:scale-105 shadow-lg text-center" do %>
+                <span class="flex items-center justify-center gap-2">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                  </svg>
+                  Demander un mentorat
+                </span>
+              <% end %>
+            <% elsif current_user == @gwana.user %>
+              <p class="text-gray-300 text-sm text-center">C'est votre propre profil</p>
+            <% else %>
+              <p class="text-gray-300 text-sm text-center">Seuls les membres peuvent demander un mentorat</p>
+            <% end %>
+          <% else %>
+            <%= link_to new_user_session_path, class: "block w-full bg-amber-500 hover:bg-amber-400 text-purple-900 font-bold px-6 py-3 rounded-lg transition-all transform hover:scale-105 shadow-lg text-center" do %>
+              <span class="flex items-center justify-center gap-2">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                </svg>
+                Se connecter pour demander un mentorat
+              </span>
+            <% end %>
           <% end %>
-          <% if @gwana.phone.present? %>
-            <div class="flex items-center gap-3">
-              <svg class="w-5 h-5 text-purple-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
-              </svg>
-              <a href="tel:<%= @gwana.phone %>" class="hover:text-amber-500 transition-colors">
-                <%= @gwana.phone %>
-              </a>
-            </div>
-          <% end %>
-          <% if @gwana.address.present? %>
-            <div class="flex items-start gap-3">
-              <svg class="w-5 h-5 text-purple-700 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
-              </svg>
-              <span class="flex-1"><%= @gwana.address %></span>
-      </div>
-    <% end %>
-        </div>
-      </div>
-
-      <!-- Call to Action -->
-      <% if user_signed_in? && current_user.user? && @gwana.available_for_mentorship? && @gwana.user != current_user %>
-        <div class="bg-gradient-to-br from-purple-700 to-purple-800 rounded-xl p-6 border border-amber-500/30 shadow-lg text-center">
-          <h3 class="text-xl font-bold text-white mb-3">Intéressé(e) par un mentorat ?</h3>
-          <p class="text-gray-200 mb-4 text-sm">Contactez <%= @gwana.first_name %> pour discuter de vos objectifs</p>
-          <%= link_to "Demander un mentorat", new_mentorship_request_path(mentor_id: @gwana.user_id), class: "inline-block w-full bg-amber-500 hover:bg-amber-400 text-purple-700 font-semibold px-6 py-3 rounded-lg transition-all transform hover:scale-105 shadow-lg" %>
         </div>
       <% end %>
     </div>

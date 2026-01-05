@@ -1,4 +1,4 @@
-<div class="w-full">
+<div class="w-full bg-white rounded-lg p-5 shadow-lg">
   <div class="flex flex-wrap justify-between items-center space-x-2 mb-6">
     <div class="flex items-center space-x-2">
     </div>
@@ -11,158 +11,153 @@
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
           </svg>
-          <span>Créer</span>
+          <span>Ajouter</span>
         <% end %>
       <% end %>
     </div>
   </div>
 
-  <div class="mt-6">
-    <div class="bg-white rounded-lg border border-gray-200 overflow-hidden shadow-sm">
-      <div class="overflow-x-auto">
-        <table class="min-w-full divide-y divide-gray-200">
-          <thead class="bg-gray-50">
-            <tr>
-              <% columns.each do |column, label| %>
-                <th class="px-6 py-4 text-left text-sm font-semibold text-gray-700"><%= label %></th>
-              <% end %>
-              <% if actions.any? %>
-                <th class="px-6 py-4 text-right text-sm font-semibold text-gray-700">Actions</th>
-              <% end %>
-            </tr>
-          </thead>
-          <tbody class="bg-white divide-y divide-gray-200">
-            <% items.each do |item| %>
-              <tr class="hover:bg-gray-50 transition-colors">
-                <% columns.each do |column, _| %>
-                  <td class="px-6 py-4 text-gray-900">
-                    <% decorated = decorate_item(item) %>
-                    <% if column.to_s.include?(".") %>
-                      <% parts = column.to_s.split(".") %>
-                      <% result = decorated %>
-                      <% parts.each do |part| %>
-                        <% result = result.send(part) if result.respond_to?(part) %>
-                      <% end %>
-                      <%= result %>
-                    <% else %>
-                      <%= decorated.send(column) %>
-                    <% end %>
-                  </td>
+  <div class="overflow-x-auto mt-5">
+    <table class="w-full divide-y divide-gray-200">
+      <thead class="bg-gray-50">
+        <tr>
+          <% columns.each do |column, label| %>
+            <th class="px-6 py-4 text-left text-sm font-semibold text-gray-700"><%= label %></th>
+          <% end %>
+          <% if actions.any? %>
+            <th class="px-6 py-4 text-right text-sm font-semibold text-gray-700">Actions</th>
+          <% end %>
+        </tr>
+      </thead>
+      <tbody class="bg-white divide-y divide-gray-200">
+        <% items.each do |item| %>
+          <tr class="hover:bg-gray-50 transition-colors">
+            <% columns.each do |column, _| %>
+              <td class="px-6 py-4 text-gray-900">
+                <% decorated = decorate_item(item) %>
+                <% if column.to_s.include?(".") %>
+                  <% parts = column.to_s.split(".") %>
+                  <% result = decorated %>
+                  <% parts.each do |part| %>
+                    <% result = result.send(part) if result.respond_to?(part) %>
+                  <% end %>
+                  <%= result %>
+                <% else %>
+                  <%= decorated.send(column) %>
                 <% end %>
-                <% if actions.any? %>
-                  <td class="px-6 py-4 text-right text-sm font-medium">
-                    <div data-controller="hover-dropdown"
-                         data-action="mouseenter->hover-dropdown#show mouseleave->hover-dropdown#hide"
-                         class="relative inline-block">
-                      <button type="button"
-                              class="p-2 text-gray-400 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-purple-700 focus:ring-offset-2 rounded-full bg-gray-100 hover:bg-gray-200"
-                              title="Actions">
-                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                          <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"></path>
-                        </svg>
-                      </button>
-                      <div data-hover-dropdown-target="menu"
-                           data-action="mouseenter->hover-dropdown#show mouseleave->hover-dropdown#hide"
-                           class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg ring-1 ring-gray-200 z-50">
-                        <div class="py-1" role="menu">
-                          <% actions.each do |action| %>
-                            <% pundit_action = (action.to_s == 'delete' ? 'destroy' : action) %>
-                            <% pundit_target = if item.respond_to?(:pundit_record) && item.pundit_record.present?
-                              item.pundit_record
-                            elsif item.respond_to?(:object)
-                              item.object
-                            else
-                              item
-                            end %>
-                            <% policy_target = scope.include?("admin") ? [:admin, pundit_target] : pundit_target %>
-                            <% if helpers.policy(policy_target).send("#{pundit_action}?") %>
-                              <% case action.to_s %>
-                              <% when 'show' %>
-                                <%= link_to send(show_link, route_params(item)),
-                                            class: "flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900",
-                                            title: "Voir les détails" do %>
-                                  <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
-                                  </svg>
-                                  Voir les détails
-                                <% end %>
-                              <% when 'edit' %>
-                                <%= link_to send(edit_link, route_params(item)),
-                                            class: "flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900",
-                                            title: "Modifier" do %>
-                                  <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
-                                  </svg>
-                                  Modifier
-                                <% end %>
-                              <% when 'delete' %>
-                                <%= link_to send(delete_link, route_params(item)),
-                                            data: { turbo_method: :delete, turbo_confirm: "Êtes-vous sûr de vouloir supprimer cet élément ?" },
-                                            class: "flex items-center px-4 py-2 text-sm text-red-700 hover:bg-red-50 hover:text-red-900",
-                                            title: "Supprimer" do %>
-                                  <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-                                  </svg>
-                                  Supprimer
-                                <% end %>
-                              <% end %>
+              </td>
+            <% end %>
+            <% if actions.any? %>
+              <td class="px-6 py-4 text-right text-sm font-medium">
+                <div data-controller="hover-dropdown"
+                      data-action="mouseenter->hover-dropdown#show mouseleave->hover-dropdown#hide"
+                      class="relative inline-block">
+                  <button type="button"
+                          class="p-2 text-gray-400 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-purple-700 focus:ring-offset-2 rounded-full bg-gray-100 hover:bg-gray-200"
+                          title="Actions">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"></path>
+                    </svg>
+                  </button>
+                  <div data-hover-dropdown-target="menu"
+                        data-action="mouseenter->hover-dropdown#show mouseleave->hover-dropdown#hide"
+                        class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg ring-1 ring-gray-200 z-50">
+                    <div class="py-1" role="menu">
+                      <% actions.each do |action| %>
+                        <% pundit_action = (action.to_s == 'delete' ? 'destroy' : action) %>
+                        <% pundit_target = if item.respond_to?(:pundit_record) && item.pundit_record.present?
+                          item.pundit_record
+                        elsif item.respond_to?(:object)
+                          item.object
+                        else
+                          item
+                        end %>
+                        <% policy_target = scope.include?("admin") ? [:admin, pundit_target] : pundit_target %>
+                        <% if helpers.policy(policy_target).send("#{pundit_action}?") %>
+                          <% case action.to_s %>
+                          <% when 'show' %>
+                            <%= link_to send(show_link, route_params(item)),
+                                        class: "flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900",
+                                        title: "Voir les détails" do %>
+                              <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                              </svg>
+                              Voir les détails
+                            <% end %>
+                          <% when 'edit' %>
+                            <%= link_to send(edit_link, route_params(item)),
+                                        class: "flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900",
+                                        title: "Modifier" do %>
+                              <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                              </svg>
+                              Modifier
+                            <% end %>
+                          <% when 'delete' %>
+                            <%= link_to send(delete_link, route_params(item)),
+                                        data: { turbo_method: :delete, turbo_confirm: "Êtes-vous sûr de vouloir supprimer cet élément ?" },
+                                        class: "flex items-center px-4 py-2 text-sm text-red-700 hover:bg-red-50 hover:text-red-900",
+                                        title: "Supprimer" do %>
+                              <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                              </svg>
+                              Supprimer
                             <% end %>
                           <% end %>
-                        </div>
-                      </div>
+                        <% end %>
+                      <% end %>
                     </div>
-                  </td>
-                <% end %>
-              </tr>
+                  </div>
+                </div>
+              </td>
             <% end %>
-          </tbody>
-        </table>
-      </div>
-
-      <% if items.empty? %>
-        <div class="p-12 text-center">
-          <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-          </svg>
-          <h3 class="mt-4 text-lg font-semibold text-gray-900">Aucun élément</h3>
-          <p class="mt-2 text-gray-600"><%= empty_message %></p>
-          <% if display_new_button %>
-            <% model_class = item_type.classify.constantize %>
-            <% policy_target = scope.include?("admin") ? [:admin, model_class] : model_class %>
-            <% if helpers.policy(policy_target).create? %>
-              <div class="mt-6">
-                <%= link_to send(new_link), class: "bg-purple-700 hover:bg-purple-800 text-white px-6 py-3 rounded-lg font-semibold transition-colors inline-flex items-center gap-2" do %>
-                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
-                  </svg>
-                  <span>Créer un nouvel élément</span>
-                <% end %>
-              </div>
-            <% end %>
-          <% end %>
-        </div>
-      <% end %>
-    </div>
-
-    <% if pagy && pagy.pages > 1 %>
-      <div class="flex flex-col sm:flex-row justify-center items-center gap-2 sm:gap-4 mt-6 text-sm text-gray-700">
-        <% if pagy.prev %>
-          <%= link_to "← Précédent", url_for(page: pagy.prev), class: "px-3 py-1 border border-gray-300 rounded hover:bg-purple-50 hover:border-purple-300 transition-colors" %>
-        <% else %>
-          <span class="px-3 py-1 border border-gray-300 rounded text-gray-400 cursor-not-allowed">← Précédent</span>
+          </tr>
         <% end %>
-        <div class="text-center">
-          <span><%= pagy.from %> - <%= pagy.to %> / <%= pagy.count %></span>
-          <span class="mx-2 text-gray-400">•</span>
-          <span>Page <%= pagy.page %> sur <%= pagy.pages %></span>
-        </div>
-        <% if pagy.next %>
-          <%= link_to "Suivant →", url_for(page: pagy.next), class: "px-3 py-1 border border-gray-300 rounded hover:bg-purple-50 hover:border-purple-300 transition-colors" %>
-        <% else %>
-          <span class="px-3 py-1 border border-gray-300 rounded text-gray-400 cursor-not-allowed">Suivant →</span>
+      </tbody>
+    </table>
+  </div>
+
+    <% if items.empty? %>
+      <div class="p-12 text-center">
+        <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+        </svg>
+        <h3 class="mt-4 text-lg font-semibold text-gray-900">Aucun élément</h3>
+        <p class="mt-2 text-gray-600"><%= empty_message %></p>
+        <% if display_new_button %>
+          <% model_class = item_type.classify.constantize %>
+          <% policy_target = scope.include?("admin") ? [:admin, model_class] : model_class %>
+          <% if helpers.policy(policy_target).create? %>
+            <div class="mt-6">
+              <%= link_to send(new_link), class: "bg-purple-700 hover:bg-purple-800 text-white px-6 py-3 rounded-lg font-semibold transition-colors inline-flex items-center gap-2" do %>
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                </svg>
+                <span>Créer un nouvel élément</span>
+              <% end %>
+            </div>
+          <% end %>
         <% end %>
       </div>
     <% end %>
-  </div>
+  <% if pagy && pagy.pages > 1 %>
+    <div class="flex flex-col sm:flex-row justify-center items-center gap-2 sm:gap-4 mt-6 text-sm text-gray-700">
+      <% if pagy.prev %>
+        <%= link_to "← Précédent", url_for(page: pagy.prev), class: "px-3 py-1 border border-gray-300 rounded hover:bg-purple-50 hover:border-purple-300 transition-colors" %>
+      <% else %>
+        <span class="px-3 py-1 border border-gray-300 rounded text-gray-400 cursor-not-allowed">← Précédent</span>
+      <% end %>
+      <div class="text-center">
+        <span><%= pagy.from %> - <%= pagy.to %> / <%= pagy.count %></span>
+        <span class="mx-2 text-gray-400">•</span>
+        <span>Page <%= pagy.page %> sur <%= pagy.pages %></span>
+      </div>
+      <% if pagy.next %>
+        <%= link_to "Suivant →", url_for(page: pagy.next), class: "px-3 py-1 border border-gray-300 rounded hover:bg-purple-50 hover:border-purple-300 transition-colors" %>
+      <% else %>
+        <span class="px-3 py-1 border border-gray-300 rounded text-gray-400 cursor-not-allowed">Suivant →</span>
+      <% end %>
+    </div>
+  <% end %>
 </div>

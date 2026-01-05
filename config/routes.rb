@@ -30,6 +30,7 @@ Rails.application.routes.draw do
     # Public pages
     resources :gwanas, only: %i[index show], path: "gwanas"
     resources :articles, only: %i[index show]
+    resources :gwana_network_requests, only: %i[new create show], path: "gwana_network_requests"
 
     # API routes for location data
     namespace :api do
@@ -69,6 +70,12 @@ Rails.application.routes.draw do
       end
       resources :articles
       resources :users, only: %i[index show new create edit update]
+      resources :gwana_network_requests, only: %i[index show], path: "gwana_network_requests" do
+        member do
+          patch :approve
+          patch :reject
+        end
+      end
     end
 
     # Sidekiq web UI (admin only)

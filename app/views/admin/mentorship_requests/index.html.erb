@@ -1,6 +1,5 @@
 <% content_for :title, "Demandes de mentorat" %>
 
-<div class="max-w-7xl mx-auto px-4 py-8">
   <%= render ItemTableComponent.new(
     items: @mentorship_requests,
     columns: {
@@ -16,5 +15,4 @@
     empty_message: "Aucune demande de mentorat pour le moment.",
     pagy: @pagy
   ) %>
-</div>
 

@@ -1,7 +1,12 @@
 <% content_for :title, @article.title %>
 
-<section class="bg-gradient-to-b from-white via-gray-50 to-white py-12 md:py-16">
-  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+<section data-controller="article-reader" class="bg-gradient-to-b from-white via-gray-50 to-white py-12 md:py-16">
+  <!-- Reading Progress Bar -->
+  <div data-article-reader-target="progress" class="fixed top-0 left-0 w-full h-1 bg-gray-200 z-50">
+    <div class="h-full bg-gradient-to-r from-purple-600 to-purple-700 transition-all duration-150 ease-out"></div>
+  </div>
+
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
     <!-- Breadcrumb -->
     <nav class="mb-8" aria-label="Breadcrumb">
       <ol class="flex items-center gap-2 text-sm text-gray-600">
@@ -24,6 +29,7 @@
         <li class="text-gray-900 font-medium truncate max-w-xs"><%= truncate(@article.title, length: 40) %></li>
       </ol>
     </nav>
+
 
     <article class="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
       <!-- En-tête de l'article -->
@@ -82,17 +88,8 @@
 
       <!-- Contenu de l'article -->
       <div class="px-6 md:px-10 pb-8 md:pb-12">
-        <div class="prose prose-lg prose-slate max-w-none 
-                    prose-headings:text-gray-900 prose-headings:font-bold 
-                    prose-h1:text-4xl prose-h2:text-3xl prose-h3:text-2xl
-                    prose-p:text-gray-700 prose-p:leading-relaxed prose-p:mb-6 
-                    prose-a:text-purple-700 prose-a:no-underline hover:prose-a:underline prose-a:font-semibold
-                    prose-strong:text-gray-900 prose-strong:font-semibold 
-                    prose-ul:text-gray-700 prose-ol:text-gray-700 prose-li:text-gray-700 
-                    prose-blockquote:border-l-purple-700 prose-blockquote:border-l-4 prose-blockquote:pl-6 prose-blockquote:pr-4 prose-blockquote:py-2 prose-blockquote:italic prose-blockquote:text-gray-600 prose-blockquote:bg-gray-50 prose-blockquote:rounded-r-lg
-                    prose-img:rounded-xl prose-img:shadow-lg
-                    prose-code:text-purple-700 prose-code:bg-gray-100 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded">
-          <%= sanitize(@article.content, tags: %w[p br strong em u h1 h2 h3 h4 h5 h6 ul ol li a blockquote img code pre], attributes: %w[href class src alt]) %>
+        <div class="article-content text-gray-700 text-lg leading-relaxed whitespace-pre-wrap">
+          <%= simple_format(@article.content.to_s, {}, wrapper_tag: "div") %>
         </div>
 
         <!-- Tags -->
@@ -116,16 +113,69 @@
       </div>
     </article>
 
+    <!-- Articles similaires -->
+    <% similar_articles = Article.published.where.not(id: @article.id).where(category: @article.category).limit(3) %>
+    <% if similar_articles.any? %>
+      <div class="mt-16">
+        <h2 class="text-2xl md:text-3xl font-bold text-gray-900 mb-8 flex items-center gap-3">
+          <svg class="w-6 h-6 text-purple-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+          </svg>
+          Articles similaires
+        </h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <% similar_articles.each do |article| %>
+            <article class="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden hover:shadow-xl transition-all duration-300 group">
+              <% if article.photo.attached? %>
+                <div class="aspect-video overflow-hidden">
+                  <%= image_tag article.photo, alt: article.title, class: "w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" %>
+                </div>
+              <% end %>
+
+              <div class="p-6">
+                <div class="flex items-center gap-2 mb-3">
+                  <span class="text-xs font-semibold text-purple-700 bg-purple-700/10 px-3 py-1 rounded-full">
+                    <%= article.category %>
+                  </span>
+                  <% if article.published_at %>
+                    <time class="text-xs text-gray-500">
+                      <%= l(article.published_at, format: :short) %>
+                    </time>
+                  <% end %>
+                </div>
+
+                <h3 class="text-lg font-bold text-gray-900 mb-3 line-clamp-2 group-hover:text-purple-700 transition-colors">
+                  <%= link_to article.title, article_path(article), class: "hover:underline" %>
+                </h3>
+
+                <p class="text-gray-600 text-sm line-clamp-3 mb-4">
+                  <%= truncate(strip_tags(article.content.to_s), length: 120) %>
+                </p>
+
+                <%= link_to article_path(article), class: "inline-flex items-center gap-2 text-purple-700 font-semibold text-sm hover:text-purple-800 transition-colors" do %>
+                  <span>Lire l'article</span>
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                  </svg>
+                <% end %>
+              </div>
+            </article>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+
     <!-- Navigation vers les autres articles -->
-    <div class="mt-8 flex items-center justify-between gap-4">
-      <%= link_to articles_path, 
+    <div class="mt-12 flex items-center justify-between gap-4 pt-8 border-t border-gray-200">
+      <%= link_to articles_path,
           class: "inline-flex items-center gap-2 px-6 py-3 bg-white text-purple-700 hover:text-purple-800 font-semibold rounded-xl border border-gray-200 hover:border-purple-700/30 shadow-sm hover:shadow-md transition-all duration-200" do %>
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
         </svg>
         <span>Retour aux articles</span>
       <% end %>
-      
+
       <div class="flex items-center gap-2 text-sm text-gray-500">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
@@ -135,3 +185,4 @@
     </div>
   </div>
 </section>
+

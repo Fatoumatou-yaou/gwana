@@ -5,7 +5,7 @@
       <!-- Logo à gauche -->
       <div class="flex items-center">
         <%= link_to root_path, class: "flex items-center space-x-2 hover:opacity-80 transition-opacity" do %>
-          <h1 class="text-4xl font-bold bg-gradient-to-r from-purple-700 to-purple-800 bg-clip-text text-transparent drop-shadow-lg">
+          <h1 class="text-4xl font-bold text-purple-800 drop-shadow-lg">
             gwana
           </h1>
         <% end %>
@@ -13,7 +13,7 @@
 
       <!-- Menu desktop -->
       <div class="hidden md:flex items-center gap-3">
-        <%= link_to root_path, class: "inline-flex items-center px-6 py-2.5 font-semibold hover:from-purple-800 hover:to-purple-700 hover:shadow-xl transition-all duration-300 hover:-translate-y-0.5" do %>
+        <%= link_to root_path, class: "inline-flex items-center px-6 py-2.5 font-semibold hover:from-purple-800 hover:to-purple-700 transition-all duration-300 hover:-translate-y-0.5" do %>
           Accueil
         <% end %>
         <%= link_to root_path, class: "inline-flex items-center px-6 py-2.5 font-semibold hover:from-purple-800 hover:to-purple-700 transition-all duration-300 hover:-translate-y-0.5" do %>
@@ -22,16 +22,19 @@
         
         <% if user_signed_in? %>
           <% if current_user.admin? %>
-            <%= link_to admin_dashboard_path, class: "inline-flex items-center px-6 py-2.5 rounded-xl text-white font-semibold bg-gradient-to-r from-purple-700 to-purple-800 hover:from-purple-800 hover:to-purple-700 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-0.5" do %>
+            <%= link_to admin_dashboard_path, class: "inline-flex items-center gap-2 px-6 py-2.5 rounded-xl text-white font-semibold bg-purple-800 hover:bg-purple-700 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-0.5" do %>
+              <span class="material-symbols-outlined text-lg">dashboard</span>
               Mon Espace
             <% end %>
           <% else %>
-            <%= link_to dashboard_path, class: "inline-flex items-center px-6 py-2.5 rounded-xl text-white font-semibold bg-gradient-to-r from-purple-700 to-purple-800 hover:from-purple-800 hover:to-purple-700 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-0.5" do %>
+            <%= link_to dashboard_path, class: "inline-flex items-center gap-2 px-6 py-2.5 rounded-xl text-white font-semibold bg-purple-800 hover:bg-purple-700 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-0.5" do %>
+              <span class="material-symbols-outlined text-lg">dashboard</span>
               Mon Espace
             <% end %>
           <% end %>
         <% else %>
-          <%= link_to new_user_session_path, class: "inline-flex items-center px-6 py-2.5 rounded-xl text-white font-semibold bg-gradient-to-r from-purple-700 to-purple-800 hover:from-purple-800 hover:to-purple-700 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-0.5" do %>
+          <%= link_to new_user_session_path, class: "inline-flex items-center gap-2 px-6 py-2.5 rounded-xl text-white font-semibold bg-purple-800 hover:bg-purple-700 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-0.5" do %>
+            <span class="material-symbols-outlined text-lg">login</span>
             Se connecter
           <% end %>
         <% end %>
@@ -78,16 +81,19 @@
         <div class="pt-4 border-t border-gray-200">
           <% if user_signed_in? %>
             <% if current_user.admin? %>
-              <%= link_to admin_dashboard_path, class: "block w-full px-4 py-3 text-center text-white font-semibold bg-gradient-to-r from-purple-700 to-purple-800 rounded-lg hover:from-purple-800 hover:to-purple-700 transition-all duration-300" do %>
-                Mon Espace
+              <%= link_to admin_dashboard_path, class: "flex items-center justify-center gap-2 w-full px-4 py-3 text-center text-white font-semibold bg-purple-800 rounded-lg hover:bg-purple-700 transition-all duration-300" do %>
+                <span class="material-symbols-outlined text-lg">dashboard</span>
+                Mon Espace  
               <% end %>
             <% else %>
-              <%= link_to dashboard_path, class: "block w-full px-4 py-3 text-center text-white font-semibold bg-gradient-to-r from-purple-700 to-purple-800 rounded-lg hover:from-purple-800 hover:to-purple-700 transition-all duration-300" do %>
+              <%= link_to dashboard_path, class: "flex items-center justify-center gap-2 w-full px-4 py-3 text-center text-white font-semibold bg-purple-800 rounded-lg hover:bg-purple-700 transition-all duration-300" do %>
+                <span class="material-symbols-outlined text-lg">dashboard</span>
                 Mon Espace
               <% end %>
             <% end %>
           <% else %>
-            <%= link_to new_user_session_path, class: "block w-full px-4 py-3 text-center text-purple-700 font-medium border-2 border-purple-700 rounded-lg hover:bg-purple-50 transition-colors duration-300" do %>
+            <%= link_to new_user_session_path, class: "flex items-center justify-center gap-2 w-full px-4 py-3 text-center text-white font-semibold bg-purple-800 hover:bg-purple-700 shadow-lg hover:shadow-xl border-2  rounded-lg transition-colors duration-300" do %>
+              <span class="material-symbols-outlined text-lg">login</span>
               Se connecter
             <% end %>
           <% end %>

@@ -13,7 +13,6 @@
     <%= stylesheet_link_tag "application", "tailwind", "data-turbo-track": "reload" %>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,1,0" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.css" />
     <%= javascript_importmap_tags %>
     <!-- Chart.js avec adaptateur de date et Chartkick depuis CDN -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.1/dist/chart.umd.js"></script>
@@ -29,16 +28,23 @@
   </head>
 
   <body class="bg-gray-50">
+    <!-- Flash messages -->
     <%= render "shared/flash" %>
 
+    <!-- Header -->
     <div class="flex min-h-screen">
-    <%= render "shared/sidebar" %>
+      <!-- Sidebar -->
+      <%= render "shared/sidebar" %>
 
-      <main id="main-content" class="flex-1 ml-64">
-        <div class="p-6">
-      <%= yield %>
+      <main id="main-content" class="flex-1"> 
+        <!-- Header -->
+        <%= render "shared/header" %>
+
+        <!-- Main content -->
+        <div class="p-4 max-w-9xl mx-auto md:ml-64">
+          <%= yield %>
         </div>
-    </main>
+      </main>
     </div>
     
   </body>

@@ -1,7 +1,7 @@
-<!-- Actualités Section - Design Moderne 2025-2026 -->
+<!-- Actualités Section -->
 <% if @recent_articles.any? %>
   <section 
-    class="mb-20 relative py-24 bg-gradient-to-b from-gray-50 via-slate-950 to-black overflow-hidden"
+    class="relative py-18 bg-gray-100 overflow-hidden"
     aria-labelledby="actualites-title">
     
     <!-- Background decorative elements -->
@@ -18,10 +18,8 @@
     <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
       <!-- Title and Description -->
       <div class="text-center mb-16">
-        <h2 
-          id="actualites-title" 
-          class="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 text-white text-center"
-        >
+        <h2 id="actualites-title" 
+          class="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 text-purple-800 text-center"        >
           Dernières Actualités
         </h2>
         <p class="text-lg md:text-xl text-gray-400 max-w-3xl mx-auto">
@@ -38,7 +36,7 @@
             class="lg:col-span-2 group relative overflow-hidden rounded-2xl bg-gradient-to-br from-slate-950 to-slate-900 border border-purple-700/20 hover:border-purple-700/50 transition-all duration-500 transform hover:scale-[1.02] hover:shadow-2xl hover:shadow-purple-700/20"
           >
             <!-- Background gradient overlay -->
-            <div class="absolute inset-0 bg-gradient-to-br from-purple-700/5 via-transparent to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            <div class="absolute inset-0 bg-white group-hover:opacity-100 transition-opacity duration-500"></div>
             
             <!-- Image Container -->
             <div class="relative h-64 md:h-80 lg:h-96 overflow-hidden">
@@ -81,11 +79,11 @@
                 </time>
               </div>
               
-              <h3 class="text-2xl md:text-3xl lg:text-4xl font-bold mb-4 text-white group-hover:text-amber-500 transition-colors duration-300">
+              <h3 class="text-2xl md:text-3xl lg:text-4xl font-bold mb-4 text-amber-500 group-hover:text-amber-500 transition-colors duration-300">
                 <%= link_to featured_article.title, article_path(featured_article), class: "hover:underline" %>
               </h3>
               
-              <p class="text-gray-300 text-base md:text-lg mb-6 line-clamp-3 leading-relaxed">
+              <p class="text-gray-700 text-base md:text-lg mb-6 line-clamp-3 leading-relaxed">
                 <%= truncate(strip_tags(featured_article.content.to_s), length: 200) %>
               </p>
               
@@ -121,7 +119,7 @@
               class="group relative overflow-hidden rounded-xl bg-gradient-to-br from-slate-950 to-slate-900 border border-purple-700/20 hover:border-purple-700/50 transition-all duration-500 transform hover:scale-[1.03] hover:shadow-xl hover:shadow-purple-700/10"
             >
               <!-- Background gradient overlay -->
-              <div class="absolute inset-0 bg-gradient-to-br from-purple-700/5 via-transparent to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <div class="absolute inset-0 bg-white group-hover:opacity-100 transition-opacity duration-500"></div>
               
               <!-- Image Container -->
               <div class="relative h-48 overflow-hidden">
@@ -161,11 +159,11 @@
                   </time>
                 </div>
                 
-                <h3 class="text-lg md:text-xl font-bold mb-3 text-white group-hover:text-amber-500 transition-colors duration-300 line-clamp-2">
+                <h3 class="text-lg md:text-xl font-bold mb-3 text-amber-500 group-hover:text-amber-500 transition-colors duration-300 line-clamp-2">
                   <%= link_to article.title, article_path(article), class: "hover:underline" %>
                 </h3>
                 
-                <p class="text-gray-400 text-sm mb-4 line-clamp-2 leading-relaxed">
+                <p class="text-gray-700 text-sm mb-4 line-clamp-2 leading-relaxed">
                   <%= truncate(strip_tags(article.content.to_s), length: 100) %>
                 </p>
                 
@@ -188,7 +186,7 @@
       <!-- View All Link -->
       <div class="text-center mt-12">
         <%= link_to articles_path, 
-            class: "group inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-purple-700/20 to-blue-500/20 backdrop-blur-md text-amber-500 rounded-xl font-semibold text-lg border border-purple-700/30 hover:border-purple-700/50 hover:from-purple-700/30 hover:to-blue-500/30 transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl hover:shadow-purple-700/20" do %>
+            class: "group inline-flex items-center gap-3 px-8 py-4 bg-purple-700 backdrop-blur-md text-white rounded-xl font-semibold text-lg border border-purple-700/30 hover:border-purple-700/50 hover:from-purple-700/30 hover:to-blue-500/30 transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl hover:shadow-purple-700/20" do %>
           <span>Voir toutes les actualités</span>
           <svg class="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>

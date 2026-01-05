@@ -20,7 +20,8 @@
       <%= f.label :first_name, "Prénom", class: "block text-sm font-semibold text-purple-700 mb-2" %>
       <%= f.text_field :first_name, 
           placeholder: "Prénom", 
-          class: "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-700 focus:border-transparent outline-none transition-all" %>
+          class: field_error_class(gwana, :first_name, "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-700 focus:border-transparent outline-none transition-all") %>
+      <%= field_error_message(gwana, :first_name) %>
     </div>
 
     <!-- Nom -->
@@ -28,7 +29,8 @@
       <%= f.label :last_name, "Nom", class: "block text-sm font-semibold text-purple-700 mb-2" %>
       <%= f.text_field :last_name, 
           placeholder: "Nom", 
-          class: "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-700 focus:border-transparent outline-none transition-all" %>
+          class: field_error_class(gwana, :last_name, "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-700 focus:border-transparent outline-none transition-all") %>
+      <%= field_error_message(gwana, :last_name) %>
     </div>
   </div>
 
@@ -36,9 +38,23 @@
   <div class="mb-6">
     <%= f.fields_for :user do |user_form| %>
       <%= user_form.label :email, "Email", class: "block text-sm font-semibold text-purple-700 mb-2" %>
+      <% 
+        # S'assurer que gwana.user existe
+        user_obj = gwana.user || gwana.build_user
+        email_errors = user_obj.errors[:email]
+        email_has_errors = email_errors.any?
+        # Aussi vérifier les erreurs sur gwana.email (si copiées là)
+        email_has_errors ||= gwana.errors[:email].any?
+      %>
       <%= user_form.email_field :email, 
           placeholder: "email@exemple.com", 
-          class: "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-700 focus:border-transparent outline-none transition-all" %>
+          class: (email_has_errors ? "w-full px-4 py-3 border border-red-500 focus:border-red-500 focus:ring-red-500 rounded-lg focus:ring-2 outline-none transition-all" : "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-700 focus:border-transparent outline-none transition-all") %>
+      <% if email_has_errors %>
+        <div class="mt-1 text-sm text-red-600 flex items-center gap-1">
+          <span class="text-red-500">⚠</span>
+          <%= email_errors.first || gwana.errors[:email].first %>
+        </div>
+      <% end %>
     <% end %>
   </div>
 
@@ -47,7 +63,8 @@
     <%= f.label :address, "Adresse", class: "block text-sm font-semibold text-purple-700 mb-2" %>
     <%= f.text_field :address, 
         placeholder: "Adresse", 
-        class: "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-700 focus:border-transparent outline-none transition-all" %>
+        class: field_error_class(gwana, :address, "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-700 focus:border-transparent outline-none transition-all") %>
+    <%= field_error_message(gwana, :address) %>
   </div>
 
   <!-- Téléphone -->
@@ -55,7 +72,8 @@
     <%= f.label :phone, "Téléphone", class: "block text-sm font-semibold text-purple-700 mb-2" %>
     <%= f.text_field :phone, 
         placeholder: "12345678", 
-        class: "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-700 focus:border-transparent outline-none transition-all" %>
+        class: field_error_class(gwana, :phone, "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-700 focus:border-transparent outline-none transition-all") %>
+    <%= field_error_message(gwana, :phone) %>
   </div>
 
   <!-- Localisation -->
@@ -66,16 +84,18 @@
       <select name="region_id" 
               id="region_id"
               data-location-cascade-target="region"
-              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-700 focus:border-transparent outline-none transition-all">
+              class="<%= field_error_class(gwana, :region_id, "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-700 focus:border-transparent outline-none transition-all") %>">
         <option value="">Sélectionnez une région</option>
         <% @regions ||= Region.ordered %>
+        <% selected_region_id = gwana.commune&.department&.region_id || params[:region_id] || params.dig(:gwana, :region_id) %>
         <% @regions.each do |region| %>
           <option value="<%= region.id %>" 
-                  <%= "selected" if @gwana.commune&.department&.region_id == region.id %>>
+                  <%= "selected" if selected_region_id.to_s == region.id.to_s %>>
             <%= region.name %>
           </option>
         <% end %>
       </select>
+      <%= field_error_message(gwana, :region_id) %>
     </div>
 
     <!-- Département -->
@@ -84,21 +104,23 @@
       <select name="department_id" 
               id="department_id"
               data-location-cascade-target="department"
-              <% if @gwana.commune&.department_id.present? %>
-                data-selected-value="<%= @gwana.commune.department_id %>"
+              <% selected_department_id = gwana.commune&.department_id || params[:department_id] || params.dig(:gwana, :department_id) %>
+              <% if selected_department_id.present? %>
+                data-selected-value="<%= selected_department_id %>"
               <% end %>
-              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-700 focus:border-transparent outline-none transition-all">
+              class="<%= field_error_class(gwana, :department_id, "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-700 focus:border-transparent outline-none transition-all") %>">
         <option value="">Sélectionnez un département</option>
         <% if @departments.present? %>
           <% @departments.each do |department| %>
             <option value="<%= department.id %>" 
-                    <%= "selected" if @gwana.commune&.department_id == department.id %>>
+                    <%= "selected" if selected_department_id.to_s == department.id.to_s %>>
               <%= department.name %>
             </option>
           <% end %>
         <% end %>
       </select>
-    </div>
+      <%= field_error_message(gwana, :department_id) %>
+      </div>
 
     <!-- Commune -->
     <div>
@@ -106,16 +128,17 @@
       <%= f.select :commune_id,
           options_for_select(
             (@communes || []).map { |c| [c.name, c.id] },
-            @gwana.commune_id
+            gwana.commune_id
           ),
           { prompt: "Sélectionnez une commune" },
           { 
             data: { 
               location_cascade_target: "commune",
-              selected_value: @gwana.commune_id
+              selected_value: gwana.commune_id
             },
-            class: "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-700 focus:border-transparent outline-none transition-all"
+            class: field_error_class(gwana, :commune_id, "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-700 focus:border-transparent outline-none transition-all")
           } %>
+      <%= field_error_message(gwana, :commune_id) %>
     </div>
   </div>
 
@@ -124,23 +147,28 @@
     <%= f.label :profession, "Profession", class: "block text-sm font-semibold text-purple-700 mb-2" %>
     <%= f.text_field :profession, 
         placeholder: "Profession", 
-        class: "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-700 focus:border-transparent outline-none transition-all" %>
+        class: field_error_class(gwana, :profession, "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-700 focus:border-transparent outline-none transition-all") %>
+    <%= field_error_message(gwana, :profession) %>
   </div>
 
   <!-- Expériences -->
   <div class="mb-6">
     <%= f.label :experiences, "Expériences", class: "block text-sm font-semibold text-purple-700 mb-2" %>
-    <%= f.text_field :experiences, 
+    <%= f.text_area :experiences, 
+        rows: 4,
         placeholder: "Expériences", 
-        class: "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-700 focus:border-transparent outline-none transition-all" %>
+        class: field_error_class(gwana, :experiences, "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-700 focus:border-transparent outline-none transition-all") %>
+    <%= field_error_message(gwana, :experiences) %>
   </div>
 
   <!-- Formations -->
   <div class="mb-6">
     <%= f.label :formations, "Formations", class: "block text-sm font-semibold text-purple-700 mb-2" %>
-    <%= f.text_field :formations, 
+    <%= f.text_area :formations, 
+        rows: 4,
         placeholder: "Formations", 
-        class: "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-700 focus:border-transparent outline-none transition-all" %>
+        class: field_error_class(gwana, :formations, "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-700 focus:border-transparent outline-none transition-all") %>
+    <%= field_error_message(gwana, :formations) %>
   </div>
 
   <!-- LinkedIn URL -->
@@ -148,7 +176,8 @@
     <%= f.label :linkedin_url, "LinkedIn URL", class: "block text-sm font-semibold text-purple-700 mb-2" %>
     <%= f.text_field :linkedin_url, 
         placeholder: "https://www.linkedin.com/in/your-profile", 
-        class: "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-700 focus:border-transparent outline-none transition-all" %>
+        class: field_error_class(gwana, :linkedin_url, "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-700 focus:border-transparent outline-none transition-all") %>
+    <%= field_error_message(gwana, :linkedin_url) %>
   </div>
 
   <!-- Twitter URL -->
@@ -156,7 +185,8 @@
     <%= f.label :twitter_url, "Twitter URL", class: "block text-sm font-semibold text-purple-700 mb-2" %>
     <%= f.text_field :twitter_url, 
         placeholder: "https://twitter.com/your-profile", 
-        class: "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-700 focus:border-transparent outline-none transition-all" %>
+        class: field_error_class(gwana, :twitter_url, "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-700 focus:border-transparent outline-none transition-all") %>
+    <%= field_error_message(gwana, :twitter_url) %>
   </div>
 
   <!-- Website URL -->
@@ -164,7 +194,8 @@
     <%= f.label :website_url, "Website URL", class: "block text-sm font-semibold text-purple-700 mb-2" %>
     <%= f.text_field :website_url, 
         placeholder: "https://your-website.com", 
-        class: "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-700 focus:border-transparent outline-none transition-all" %>
+        class: field_error_class(gwana, :website_url, "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-700 focus:border-transparent outline-none transition-all") %>
+    <%= field_error_message(gwana, :website_url) %>
   </div>
 
   <!-- Bio -->
@@ -173,7 +204,8 @@
     <%= f.text_area :bio, 
         rows: 5,
         placeholder: "Biographie...", 
-        class: "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-700 focus:border-transparent outline-none transition-all" %>
+        class: field_error_class(gwana, :bio, "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-700 focus:border-transparent outline-none transition-all") %>
+    <%= field_error_message(gwana, :bio) %>
   </div>
 
   <!-- Photo -->
@@ -186,7 +218,8 @@
     <% end %>
     <%= f.file_field :photo, 
         accept: "image/*",
-        class: "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-700 focus:border-transparent outline-none transition-all" %>
+        class: field_error_class(gwana, :photo, "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-700 focus:border-transparent outline-none transition-all") %>
+    <%= field_error_message(gwana, :photo) %>
   </div>
   </div>
 </div>

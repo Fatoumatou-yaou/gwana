@@ -43,8 +43,10 @@
     <% end %>
 
     <!-- Contenu -->
-    <div class="prose max-w-none mb-8">
-      <%= sanitize(@article.content, tags: %w[p br strong em u h1 h2 h3 h4 h5 h6 ul ol li a blockquote], attributes: %w[href class]) %>
+    <div class="mb-8">
+      <div class="admin-article-content text-gray-700 text-base leading-relaxed whitespace-pre-wrap">
+        <%= simple_format(@article.content.to_s, {}, wrapper_tag: "div") %>
+      </div>
     </div>
 
     <!-- Tags -->

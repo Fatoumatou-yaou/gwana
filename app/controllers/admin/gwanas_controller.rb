@@ -21,53 +21,113 @@ class Admin::GwanasController < Admin::BaseController
     end
 
     def create
-      # Créer un objet temporaire pour l'autorisation
-      # Le service créera le vrai objet avec tous les attributs
-      @gwana = Gwana.new
-      @gwana.build_user(email: gwana_params[:email])
-      authorize [:admin, @gwana]
-
       # Préparer les paramètres pour le service
-      # Convertir en hash simple et extraire l'email si présent dans user
       service_params = gwana_params.to_unsafe_h.symbolize_keys
       
       # Extraire l'email de user si présent
-      if service_params[:user].present? && service_params[:user][:email].present?
-        service_params[:email] = service_params[:user][:email]
-      end
+      email = service_params[:email] || (service_params[:user].present? ? service_params[:user][:email] : nil)
       
-      # Nettoyer les paramètres non utilisés
-      service_params.delete(:user)
-      service_params.delete(:region_id)
-      service_params.delete(:department_id)
+      # Créer un objet temporaire pour l'autorisation et pré-remplir avec les valeurs du formulaire
+      @gwana = Gwana.new(
+        first_name: service_params[:first_name],
+        last_name: service_params[:last_name],
+        bio: service_params[:bio],
+        address: service_params[:address],
+        phone: service_params[:phone],
+        profession: service_params[:profession],
+        experiences: service_params[:experiences],
+        formations: service_params[:formations],
+        linkedin_url: service_params[:linkedin_url],
+        twitter_url: service_params[:twitter_url],
+        website_url: service_params[:website_url],
+        commune_id: service_params[:commune_id]
+      )
+      @gwana.build_user(email: email)
+      authorize [:admin, @gwana]
+
+      # Nettoyer les paramètres non utilisés pour le service
+      service_params_for_service = service_params.dup
+      service_params_for_service.delete(:user)
+      service_params_for_service.delete(:region_id)
+      service_params_for_service.delete(:department_id)
+      service_params_for_service[:email] = email if email.present?
       
-      # Log pour debug (à retirer en production)
-      Rails.logger.debug("Service params: #{service_params.inspect}")
-      
-      result = GwanaCreationService.call(service_params)
+      result = GwanaCreationService.call(service_params_for_service)
 
       if result[:success]
         redirect_to admin_gwana_path(result[:gwana]), notice: "Nouvelle gwana créée avec succès!"
       else
+        # Copier les erreurs du service vers @gwana
         if result[:errors].is_a?(ActiveModel::Errors)
-          result[:errors].each do |attribute, messages|
+          # Si c'est un objet ActiveModel::Errors, vérifier de quel modèle il provient
+          error_record = result[:errors].instance_variable_get(:@base)
+          
+          # Utiliser messages pour obtenir un hash { attribute => [messages] }
+          result[:errors].messages.each do |attribute, messages|
             Array(messages).each do |message|
-              @gwana.errors.add(attribute, message)
+              # Si l'erreur vient d'un User et concerne l'email
+              if error_record.is_a?(User) && (attribute.to_s == "email" || attribute.to_sym == :email)
+                @gwana.user.errors.add(:email, message) if @gwana.user.present?
+                @gwana.errors.add(:email, message) # Aussi sur gwana pour l'affichage
+              # Si l'erreur vient d'un Gwana
+              elsif error_record.is_a?(Gwana)
+                @gwana.errors.add(attribute, message)
+              # Sinon, traiter comme une erreur de gwana
+              else
+                if attribute.to_s == "email" || attribute.to_sym == :email
+                  @gwana.user.errors.add(:email, message) if @gwana.user.present?
+                  @gwana.errors.add(:email, message)
+                else
+                  @gwana.errors.add(attribute, message)
+                end
+              end
             end
           end
         else
+          # Si c'est un hash d'erreurs
           result[:errors].each do |key, messages|
             Array(messages).each do |message|
-              @gwana.errors.add(key, message)
+              # Si l'erreur est sur :email, l'ajouter à user
+              if key.to_s == "email" || key.to_sym == :email
+                @gwana.user.errors.add(:email, message) if @gwana.user.present?
+                @gwana.errors.add(:email, message) # Aussi sur gwana pour l'affichage
+              else
+                @gwana.errors.add(key, message)
+              end
             end
           end
         end
+        
+        # Debug: logger les erreurs pour vérification
+        Rails.logger.debug("Errors on @gwana: #{@gwana.errors.full_messages.inspect}")
+        Rails.logger.debug("Errors on @gwana.user: #{@gwana.user&.errors&.full_messages&.inspect}")
+        
+        # Initialiser les variables nécessaires pour le rendu
+        @regions = Region.ordered
+        region_id = service_params[:region_id] || gwana_params[:region_id]
+        department_id = service_params[:department_id] || gwana_params[:department_id]
+        
+        if region_id.present?
+          region = Region.find_by(id: region_id)
+          @departments = region&.departments&.ordered || []
+          if department_id.present?
+            department = Department.find_by(id: department_id)
+            @communes = department&.communes&.ordered || []
+          else
+            @communes = []
+          end
+        else
+          @departments = []
+          @communes = []
+        end
+        
         render :new, status: :unprocessable_entity
       end
     end
 
     def edit
       authorize [:admin, @gwana]
+      @gwana = @gwana.decorate
       @regions = Region.ordered
       @departments = @gwana.commune&.department&.region&.departments&.ordered || []
       @communes = @gwana.commune&.department&.communes&.ordered || []
@@ -88,6 +148,7 @@ class Admin::GwanasController < Admin::BaseController
         
         redirect_to admin_gwana_path(@gwana), notice: "Compte gwana mis à jour avec succès"
       else
+        @gwana = @gwana.decorate
         @regions = Region.ordered
         @departments = @gwana.commune&.department&.region&.departments&.ordered || []
         @communes = @gwana.commune&.department&.communes&.ordered || []

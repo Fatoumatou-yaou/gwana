@@ -28,7 +28,7 @@ class Admin::ArticlesController < Admin::BaseController
 
     if @article.save
       flash[:notice] = "Article créé avec succès."
-      redirect_to admin_article_path(@article)
+      redirect_to admin_article_path(@article.id)
     else
       render :new, status: :unprocessable_entity
     end
@@ -42,7 +42,7 @@ class Admin::ArticlesController < Admin::BaseController
     authorize [:admin, @article]
     if @article.update(article_params)
       flash[:notice] = "Article mis à jour avec succès."
-      redirect_to admin_article_path(@article)
+      redirect_to admin_article_path(@article.id)
     else
       render :edit, status: :unprocessable_entity
     end
@@ -58,7 +58,16 @@ class Admin::ArticlesController < Admin::BaseController
   private
 
   def set_article
-    @article = Article.find(params[:id])
+    # Dans l'admin, on privilégie l'ID numérique mais on accepte aussi le slug si nécessaire
+    id_param = params[:id]
+    if id_param.to_s.match?(/\A\d+\z/)
+      # Si c'est un nombre, on cherche directement par ID
+      @article = Article.find_by(id: id_param)
+    else
+      # Sinon, on utilise FriendlyId (pour compatibilité)
+      @article = Article.friendly.find(id_param)
+    end
+    raise ActiveRecord::RecordNotFound unless @article
   end
 
   def article_params

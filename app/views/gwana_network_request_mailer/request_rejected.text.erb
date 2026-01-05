@@ -1,0 +1,18 @@
+Demande de rejoindre le réseau GWANA refusée
+
+Bonjour <%= @request.full_name %>,
+
+Votre demande de rejoindre le réseau GWANA a été examinée et malheureusement, elle n'a pas été retenue.
+
+<% if @request.rejection_reason.present? %>
+Motif du rejet :
+<%= @request.rejection_reason %>
+
+<% end %>
+Si vous avez des questions ou souhaitez plus d'informations, n'hésitez pas à nous contacter.
+
+Nous vous remercions de votre intérêt pour notre réseau.
+
+Cordialement,
+L'équipe GWANA
+

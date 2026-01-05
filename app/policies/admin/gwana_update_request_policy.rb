@@ -18,7 +18,7 @@ class Admin::GwanaUpdateRequestPolicy < ApplicationPolicy
 
   class Scope < Scope
     def resolve
-      admin? ? scope.all : scope.none
+      user&.admin? ? scope.all : scope.none
     end
   end
 end

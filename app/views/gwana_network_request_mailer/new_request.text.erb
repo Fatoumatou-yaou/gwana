@@ -1,0 +1,10 @@
+Nouvelle demande de rejoindre le réseau GWANA
+
+Bonjour <%= @admin.full_name || @admin.email %>,
+
+Une nouvelle demande de rejoindre le réseau GWANA a été soumise par <%= @request.full_name %>.
+
+Date de la demande : <%= l(@request.created_at, format: :long) %>
+
+Voir la demande : <%= admin_gwana_network_request_url(@request, locale: I18n.locale) %>
+

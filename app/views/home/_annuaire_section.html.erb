@@ -1,29 +1,8 @@
 <!-- Annuaire Section -->
 <% if @directory_gwanas.any? %>
-  <section class="mb-20 relative py-20 bg-gradient-to-b from-purple-50 to-purple-50 overflow-hidden" aria-labelledby="annuaire-title">
+  <section class="relative py-16 md:py-20 bg-gradient-to-b from-purple-50 to-purple-50 overflow-hidden" aria-labelledby="annuaire-title">
     <!-- Background geometric shapes -->
     <div class="absolute inset-0 overflow-hidden pointer-events-none">
-      <!-- Spiral shapes -->
-      <svg 
-        class="absolute top-10 left-10 w-96 h-96 opacity-20"
-        viewBox="0 0 400 400"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          d="M 200 200 
-             m -150 0 
-             a 150 150 0 1 1 300 0 
-             a 120 120 0 1 1 -240 0 
-             a 90 90 0 1 1 180 0 
-             a 60 60 0 1 1 -120 0 
-             a 30 30 0 1 1 60 0"
-          fill="none"
-          stroke="rgb(126,34,206)"
-          stroke-width="3"
-          opacity="0.3"
-        />
-      </svg>
-
       <!-- Wavy lines background -->
       <svg class="absolute bottom-0 left-0 w-full h-64 opacity-15"
         viewBox="0 0 1200 200"
@@ -32,7 +11,7 @@
       >
         <path
           d="M 0 100 Q 150 50 300 100 T 600 100 T 900 100 T 1200 100 L 1200 200 L 0 200 Z"
-          fill="rgb(192,132,252)"
+          fill="rgb(192,152,252)"
         />
         <path
           d="M 0 120 Q 200 70 400 120 T 800 120 T 1200 120 L 1200 200 L 0 200 Z"
@@ -44,217 +23,51 @@
       <!-- Additional geometric shapes -->
       <div class="absolute top-1/4 right-20 w-32 h-32 rounded-full bg-purple-400 opacity-10 blur-2xl"></div>
       <div class="absolute bottom-1/4 left-1/4 w-48 h-48 rounded-full bg-purple-700 opacity-10 blur-3xl"></div>
-      
-      <!-- Circular accent shapes -->
-      <svg 
-        class="absolute top-1/2 right-10 w-64 h-64 opacity-15"
-        viewBox="0 0 200 200"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <circle
-          cx="100"
-          cy="100"
-          r="80"
-          fill="none"
-          stroke="rgb(126,34,206)"
-          stroke-width="2"
-        />
-        <circle
-          cx="100"
-          cy="100"
-          r="50"
-          fill="none"
-          stroke="rgb(192,132,252)"
-          stroke-width="2"
-        />
-      </svg>
     </div>
 
     <!-- Content -->
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-      <!-- Title and Description -->
-      <div class="text-center mb-16">
-       
-        <h2 id="annuaire-title" class="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 bg-gradient-to-r from-gray-900 via-purple-700 to-gray-900 bg-clip-text text-transparent">
+    <div class="container mx-auto px-4 sm:px-4 lg:px-5 relative z-10">
+      <!-- Title -->
+      <div class="text-center mb-12 md:mb-16">
+        <h2 id="annuaire-title" class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-purple-800">
           Annuaire GWANA
         </h2>
       </div>
+
+      <div class="text-center mb-12 md:mb-16">
+        <p class="text-gray-600 text-lg">Découvrez ces femmes qui s'imposent dans des métiers dits masculins et qui font la différence!</p>
+      </div>
       
-      <!-- Swiper Container with 2 rows (4 top, 3 bottom with offset) -->
-      <div class="swiper annuaire-swiper" data-controller="annuaire-swiper">
-        <div class="swiper-wrapper">
-          <% # Group gwanas in sets of 7 (4 top + 3 bottom) %>
-          <% @directory_gwanas.each_slice(7).with_index do |group, group_index| %>
-            <div class="swiper-slide">
-              <div class="flex flex-col gap-8">
-                <!-- Top row: 4 circles -->
-                <div class="flex justify-center items-center gap-6 lg:gap-8">
-                  <% group.first(4).each_with_index do |gwana, index| %>
-                    <div class="flex flex-col items-center">
-                      <div class="relative group">
-                        <!-- Dark ring around photo -->
-                        <svg 
-                          class="absolute -top-6 -left-6 w-64 h-64"
-                          viewBox="0 0 240 240"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <defs>
-                            <filter id="gwanaRingShadow<%= gwana.id %>" x="-50%" y="-50%" width="200%" height="200%">
-                              <feGaussianBlur in="SourceAlpha" stdDeviation="4"/>
-                              <feOffset dx="2" dy="3" result="offsetblur"/>
-                              <feComponentTransfer>
-                                <feFuncA type="linear" slope="0.3"/>
-                              </feComponentTransfer>
-                              <feMerge>
-                                <feMergeNode/>
-                                <feMergeNode in="SourceGraphic"/>
-                              </feMerge>
-                            </filter>
-                          </defs>
-                          <!-- Light purple accent above ring -->
-                          <path
-                            d="M 30 30 A 90 90 0 0 1 210 30"
-                            fill="none"
-                            stroke="rgb(250,245,255)"
-                            stroke-width="10"
-                            opacity="0.9"
-                            stroke-linecap="round"
-                          />
-                          <!-- Dark ring -->
-                          <circle
-                            cx="120"
-                            cy="120"
-                            r="90"
-                            fill="none"
-                            stroke="rgb(26, 13, 46)"
-                            stroke-width="14"
-                            opacity="0.9"
-                            filter="url(#gwanaRingShadow<%= gwana.id %>)"
-                          />
-                        </svg>
-                        
-                        <!-- Gwana photo with name overlay -->
-                        <div class="relative z-10">
-                          <% if gwana.photo.attached? %>
-                            <div class="relative w-48 h-48 rounded-full overflow-hidden border-4 border-white shadow-xl group-hover:scale-105 transition-transform duration-300">
-                              <%= image_tag gwana.photo, 
-                                  alt: gwana.full_name, 
-                                  class: "w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-300" %>
-                              <!-- Name overlay on photo -->
-                              <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent flex items-end justify-center pb-4 rounded-full">
-                                <h3 class="text-white text-sm font-bold px-3 text-center leading-tight">
-                                  <%= link_to gwana.full_name, gwana_path(gwana), class: "hover:text-amber-500 transition-colors" %>
-                                </h3>
-                              </div>
-                            </div>
-                          <% else %>
-                            <div class="relative w-48 h-48 rounded-full bg-gradient-to-br from-purple-700 to-purple-800 flex flex-col items-center justify-center border-4 border-white shadow-xl group-hover:scale-105 transition-transform duration-300">
-                              <div class="text-4xl font-bold text-white mb-2">
-                                <%= gwana.first_name[0].upcase %><%= gwana.last_name[0].upcase %>
-                              </div>
-                              <!-- Name overlay -->
-                              <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent flex items-end justify-center pb-4 rounded-full">
-                                <h3 class="text-white text-sm font-bold px-3 text-center leading-tight">
-                                  <%= link_to gwana.full_name, gwana_path(gwana), class: "hover:text-amber-500 transition-colors" %>
-                                </h3>
-                              </div>
-                            </div>
-                          <% end %>
-                        </div>
-                      </div>
-                      
-                      <!-- Profession below -->
-                      <div class="mt-4 text-center">
-                        <p class="text-sm text-gray-600 font-medium"><%= gwana.profession %></p>
+      <!-- Carousel Container -->
+      <div class="annuaire-carousel-container" data-controller="annuaire-carousel">
+        <div class="annuaire-carousel-track" data-annuaire-carousel-target="track">
+          <% @directory_gwanas.each do |gwana| %>
+            <div class="annuaire-carousel-item" data-annuaire-carousel-target="item">
+              <%= link_to gwana_path(gwana), class: "group flex flex-col items-center focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 rounded-full transition-all duration-300" do %>
+                <div class="relative gwana-avatar">
+                  <% if gwana.photo.attached? %>
+                    <div class="relative w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 rounded-full overflow-hidden group-hover:scale-105 transition-transform duration-300">
+                      <%= image_tag gwana.photo, 
+                          alt: gwana.full_name, 
+                          class: "w-full h-full object-cover transition-all duration-300" %>
+                    </div>
+                  <% else %>
+                    <div class="relative w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 rounded-full bg-gradient-to-br from-purple-700 to-purple-800 flex items-center justify-center border-4 border-white shadow-xl group-hover:scale-105 transition-transform duration-300">
+                      <div class="text-2xl sm:text-3xl md:text-4xl font-bold text-white">
+                        <%= gwana.first_name[0].upcase %><%= gwana.last_name[0].upcase %>
                       </div>
                     </div>
                   <% end %>
                 </div>
-                
-                <!-- Bottom row: 3 circles with offset -->
-                <div class="flex justify-center items-center gap-6 lg:gap-8 ml-16 lg:ml-24">
-                  <% (group[4..6] || []).each do |gwana| %>
-                    <% next unless gwana %>
-                    <div class="flex flex-col items-center">
-                      <div class="relative group">
-                        <!-- Dark ring around photo -->
-                        <svg 
-                          class="absolute -top-6 -left-6 w-64 h-64"
-                          viewBox="0 0 240 240"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <defs>
-                            <filter id="gwanaRingShadow<%= gwana.id %>" x="-50%" y="-50%" width="200%" height="200%">
-                              <feGaussianBlur in="SourceAlpha" stdDeviation="4"/>
-                              <feOffset dx="2" dy="3" result="offsetblur"/>
-                              <feComponentTransfer>
-                                <feFuncA type="linear" slope="0.3"/>
-                              </feComponentTransfer>
-                              <feMerge>
-                                <feMergeNode/>
-                                <feMergeNode in="SourceGraphic"/>
-                              </feMerge>
-                            </filter>
-                          </defs>
-                          <!-- Light purple accent above ring -->
-                          <path
-                            d="M 30 30 A 90 90 0 0 1 210 30"
-                            fill="none"
-                            stroke="rgb(250,245,255)"
-                            stroke-width="10"
-                            opacity="0.9"
-                            stroke-linecap="round"
-                          />
-                          <!-- Dark ring -->
-                          <circle
-                            cx="120"
-                            cy="120"
-                            r="90"
-                            fill="none"
-                            stroke="rgb(26, 13, 46)"
-                            stroke-width="14"
-                            opacity="0.9"
-                            filter="url(#gwanaRingShadow<%= gwana.id %>)"
-                          />
-                        </svg>
-                        
-                        <!-- Gwana photo with name overlay -->
-                        <div class="relative z-10">
-                          <% if gwana.photo.attached? %>
-                            <div class="relative w-48 h-48 rounded-full overflow-hidden border-4 border-white shadow-xl group-hover:scale-105 transition-transform duration-300">
-                              <%= image_tag gwana.photo, 
-                                  alt: gwana.full_name, 
-                                  class: "w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-300" %>
-                              <!-- Name overlay on photo -->
-                              <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent flex items-end justify-center pb-4 rounded-full">
-                                <h3 class="text-white text-sm font-bold px-3 text-center leading-tight">
-                                  <%= link_to gwana.full_name, gwana_path(gwana), class: "hover:text-amber-500 transition-colors" %>
-                                </h3>
-                              </div>
-                            </div>
-                          <% else %>
-                            <div class="relative w-48 h-48 rounded-full bg-gradient-to-br from-purple-700 to-purple-800 flex flex-col items-center justify-center border-4 border-white shadow-xl group-hover:scale-105 transition-transform duration-300">
-                              <div class="text-4xl font-bold text-white mb-2">
-                                <%= gwana.first_name[0].upcase %><%= gwana.last_name[0].upcase %>
-                              </div>
-                              <!-- Name overlay -->
-                              <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent flex items-end justify-center pb-4 rounded-full">
-                                <h3 class="text-white text-sm font-bold px-3 text-center leading-tight">
-                                  <%= link_to gwana.full_name, gwana_path(gwana), class: "hover:text-amber-500 transition-colors" %>
-                                </h3>
-                              </div>
-                            </div>
-                          <% end %>
-                        </div>
-                      </div>
-                      
-                      <!-- Profession below -->
-                      <div class="mt-4 text-center">
-                        <p class="text-sm text-gray-600 font-medium"><%= gwana.profession %></p>
-                      </div>
-                    </div>
-                  <% end %>
-                </div>
+              <% end %>
+              
+              <!-- Name below photo -->
+              <div class="mt-4 text-center max-w-[200px] px-0">
+                <h3 class="text-base sm:text-lg font-semibold text-purple-800 mb-1 line-clamp-2 leading-tight">
+                  <%= link_to gwana.full_name, gwana_path(gwana), class: "hover:text-purple-600 transition-colors focus:outline-none focus:ring-2 focus:ring-purple-500 rounded px-1" %>
+                </h3>
+                <!-- Profession below name -->
+                <p class="text-sm text-gray-600 font-medium line-clamp-2 leading-snug"><%= gwana.profession %></p>
               </div>
             </div>
           <% end %>
@@ -262,8 +75,8 @@
       </div>
 
       <!-- Link to full directory -->
-      <div class="text-center mt-12">
-        <%= link_to gwanas_path, class: "group inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-purple-700 to-purple-800 text-white rounded-xl font-semibold text-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105" do %>
+      <div class="text-center mt-0">
+        <%= link_to gwanas_path, class: "group inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-purple-700 to-purple-800 text-white rounded-xl font-semibold text-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2" do %>
           <span>Voir tout l'annuaire</span>
           <svg class="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
