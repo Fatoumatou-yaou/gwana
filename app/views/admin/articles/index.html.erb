@@ -1,42 +1,40 @@
 <% content_for :title, "Gestion des articles" %>
 
-<div class="max-w-7xl mx-auto px-4 py-8">
-  <!-- Filtres de recherche -->
-  <div class="bg-white rounded-lg p-6 mb-6 border border-gray-200 shadow-sm">
-    <%= form_with url: admin_articles_path, method: :get, local: true, class: "space-y-4" do |f| %>
-      <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <div class="md:col-span-2">
-          <%= f.text_field :search, placeholder: "Rechercher par titre ou tags...", value: params[:search], class: "w-full px-4 py-2 bg-white border border-gray-300 rounded-lg text-gray-900 focus:outline-none focus:border-purple-700 focus:ring-2 focus:ring-purple-700/20" %>
+    <!-- Filtres de recherche -->
+    <div class="bg-white rounded-lg p-6 mb-6 border border-gray-200 shadow-sm">
+      <%= form_with url: admin_articles_path, method: :get, local: true, class: "space-y-4" do |f| %>
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div class="md:col-span-2">
+            <%= f.text_field :search, placeholder: "Rechercher par titre ou tags...", value: params[:search], class: "w-full px-4 py-2 bg-white border border-gray-300 rounded-lg text-gray-900 focus:outline-none focus:border-purple-700 focus:ring-2 focus:ring-purple-700/20" %>
+          </div>
+          <div>
+            <%= f.select :category, options_for_select([["Toutes les catégories", ""]] + Article.distinct.pluck(:category).compact.map { |c| [c, c] }, params[:category]), {}, { class: "w-full px-4 py-2 bg-white border border-gray-300 rounded-lg text-gray-900 focus:outline-none focus:border-purple-700 focus:ring-2 focus:ring-purple-700/20" } %>
+          </div>
+          <div>
+            <%= f.select :media_type, options_for_select([["Tous les médias", ""], ["Photo", "photo"], ["Vidéo", "video"]], params[:media_type]), {}, { class: "w-full px-4 py-2 bg-white border border-gray-300 rounded-lg text-gray-900 focus:outline-none focus:border-purple-700 focus:ring-2 focus:ring-purple-700/20" } %>
+          </div>
         </div>
-        <div>
-          <%= f.select :category, options_for_select([["Toutes les catégories", ""]] + Article.distinct.pluck(:category).compact.map { |c| [c, c] }, params[:category]), {}, { class: "w-full px-4 py-2 bg-white border border-gray-300 rounded-lg text-gray-900 focus:outline-none focus:border-purple-700 focus:ring-2 focus:ring-purple-700/20" } %>
+        <div class="flex gap-2">
+          <%= f.submit "Rechercher", class: "bg-purple-700 hover:bg-purple-800 text-white px-4 py-2 rounded-lg transition-colors" %>
+          <%= link_to "Réinitialiser", admin_articles_path, class: "bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg transition-colors" %>
         </div>
-        <div>
-          <%= f.select :media_type, options_for_select([["Tous les médias", ""], ["Photo", "photo"], ["Vidéo", "video"]], params[:media_type]), {}, { class: "w-full px-4 py-2 bg-white border border-gray-300 rounded-lg text-gray-900 focus:outline-none focus:border-purple-700 focus:ring-2 focus:ring-purple-700/20" } %>
-        </div>
-      </div>
-      <div class="flex gap-2">
-        <%= f.submit "Rechercher", class: "bg-purple-700 hover:bg-purple-800 text-white px-4 py-2 rounded-lg transition-colors" %>
-        <%= link_to "Réinitialiser", admin_articles_path, class: "bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg transition-colors" %>
-      </div>
-    <% end %>
-  </div>
+      <% end %>
+    </div>
 
-  <%= render ItemTableComponent.new(
-    items: @articles,
-    columns: {
-      title: "Titre",
-      "author.email" => "Auteur",
-      category: "Catégorie",
-      published_status: "Statut",
-      formatted_created_at: "Date de création"
-    },
-    item_type: "article",
-    scope: ["admin"],
-    actions: [:show, :edit, :delete],
-    display_new_button: true,
-    empty_message: "Aucun article créé pour le moment.",
-    pagy: @pagy
-  ) %>
-</div>
+    <%= render ItemTableComponent.new(
+      items: @articles,
+      columns: {
+        title: "Titre",
+        "author.email" => "Auteur",
+        category: "Catégorie",
+        published_status: "Statut",
+        formatted_created_at: "Date de création"
+      },
+      item_type: "article",
+      scope: ["admin"],
+      actions: [:show, :edit, :delete],
+      display_new_button: true,
+      empty_message: "Aucun article créé pour le moment.",
+      pagy: @pagy
+    ) %>
 

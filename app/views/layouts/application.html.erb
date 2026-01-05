@@ -28,16 +28,23 @@
   </head>
 
   <body class="bg-gray-50">
+    <!-- Flash messages -->
     <%= render "shared/flash" %>
 
+    <!-- Header -->
     <div class="flex min-h-screen">
-    <%= render "shared/sidebar" %>
+      <!-- Sidebar -->
+      <%= render "shared/sidebar" %>
 
-      <main id="main-content" class="flex-1 ml-64">
-        <div class="p-6">
-      <%= yield %>
+      <main id="main-content" class="flex-1"> 
+        <!-- Header -->
+        <%= render "shared/header" %>
+
+        <!-- Main content -->
+        <div class="p-4 max-w-9xl mx-auto md:ml-64">
+          <%= yield %>
         </div>
-    </main>
+      </main>
     </div>
     
   </body>

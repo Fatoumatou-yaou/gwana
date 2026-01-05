@@ -127,6 +127,7 @@ class Admin::GwanasController < Admin::BaseController
 
     def edit
       authorize [:admin, @gwana]
+      @gwana = @gwana.decorate
       @regions = Region.ordered
       @departments = @gwana.commune&.department&.region&.departments&.ordered || []
       @communes = @gwana.commune&.department&.communes&.ordered || []
@@ -147,6 +148,7 @@ class Admin::GwanasController < Admin::BaseController
         
         redirect_to admin_gwana_path(@gwana), notice: "Compte gwana mis à jour avec succès"
       else
+        @gwana = @gwana.decorate
         @regions = Region.ordered
         @departments = @gwana.commune&.department&.region&.departments&.ordered || []
         @communes = @gwana.commune&.department&.communes&.ordered || []

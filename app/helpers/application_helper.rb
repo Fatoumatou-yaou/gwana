@@ -41,4 +41,18 @@ module ApplicationHelper
     error_classes = "border-red-500 focus:border-red-500 focus:ring-red-500"
     "#{base_classes} #{error_classes}".strip
   end
+
+  def mentorship_request_path_for_user
+    return new_user_session_path unless user_signed_in?
+
+    if current_user.admin?
+      admin_gwanas_path
+    elsif current_user.gwana?
+      gwanas_path
+    elsif current_user.user?
+      new_mentorship_request_path
+    else
+      new_user_session_path
+    end
+  end
 end

@@ -3,6 +3,9 @@ class Admin::GwanaUpdateRequestsController < Admin::BaseController
 
     def index
       authorize [:admin, GwanaUpdateRequest]
+      requests = policy_scope([:admin, GwanaUpdateRequest]).includes(:gwana, :reviewed_by).recent
+      @pagy, requests = pagy(requests)
+      @gwana_update_requests = decorate(requests)
       @pending_requests = policy_scope([:admin, GwanaUpdateRequest]).pending.includes(:gwana).recent
       @approved_requests = policy_scope([:admin, GwanaUpdateRequest]).approved.includes(:gwana, :reviewed_by).recent.limit(20)
       @rejected_requests = policy_scope([:admin, GwanaUpdateRequest]).rejected.includes(:gwana, :reviewed_by).recent.limit(20)

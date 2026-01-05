@@ -5,6 +5,7 @@ class ProfilesController < ApplicationController
 
   def show
     @gwana = current_user.gwana_profile || build_gwana
+    @gwana = @gwana.decorate if @gwana.persisted?
   end
 
   def edit

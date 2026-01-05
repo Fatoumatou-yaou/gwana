@@ -142,14 +142,7 @@
    <!-- Bottom Section -->
     <% if current_user %>
       <div class="flex-shrink-0 px-4 py-4 border-t border-gray-200 bg-gray-50" data-controller="logout" data-logout-logout-url-value="<%= destroy_user_session_path %>">
-        <div class="space-y-2">
-          <!-- Mon profil -->
-          <% if policy(current_user).profile? %>
-            <%= link_to profile_path, class: "flex items-center px-4 py-2 text-gray-600 hover:text-purple-700 transition-colors duration-200" do %>
-              <span class="material-symbols-outlined text-gray-500">person</span>
-              <span data-sidebar-target="label" class="ml-3 text-sm">Profil</span>
-            <% end %>
-          <% end %>
+        <div class="space-y-2">        
           <!-- Déconnexion -->  
           <%= link_to destroy_user_session_path, method: :delete, class: "flex items-center px-4 py-2 text-gray-600 hover:text-purple-700 transition-colors duration-200",
             data: { confirm: 'Êtes-vous sûr de vouloir vous déconnecter ?' } do %>

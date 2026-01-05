@@ -8,6 +8,10 @@ class MentorshipRequestPolicy < ApplicationPolicy
     user.present? && (record.requester == user || record.mentor == user || user.admin?)
   end
 
+  def new?
+    create?
+  end
+
   def create?
     user.present? && user.user?
   end

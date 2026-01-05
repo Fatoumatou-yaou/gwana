@@ -1,106 +1,157 @@
 <!-- Masculinity Section -->
-<section class="mb-20 py-20 bg-white" aria-labelledby="masculinity-title">
-  <!-- Title -->
-  <div class="container mx-auto px-4 sm:px-6 lg:px-8 mb-16">
+<section class="relative py-20 bg-gradient-to-b from-slate-50 via-white to-purple-50 overflow-hidden" aria-labelledby="masculinity-title">
+  <!-- Background decorative elements -->
+  <div class="absolute inset-0 overflow-hidden pointer-events-none">
+    <div class="absolute -top-32 -left-32 w-96 h-96 rounded-full bg-gradient-to-br from-purple-600/8 to-blue-500/5 blur-3xl"></div>
+    <div class="absolute -bottom-32 -right-32 w-96 h-96 rounded-full bg-gradient-to-br from-amber-500/6 to-purple-600/4 blur-3xl"></div>
+  </div>
+
+  <!-- Title and Description -->
+  <div class="container mx-auto px-4 sm:px-6 lg:px-8 mb-16 relative z-10">
     <div class="text-center">
-      <h2 id="masculinity-title" class="text-4xl md:text-5xl lg:text-6xl font-bold text-purple-800  uppercase tracking-tight">
-        Nous sommes des défenseurs
+      <h2 id="masculinity-title" class="text-4xl md:text-5xl lg:text-6xl font-bold text-purple-800 uppercase tracking-tight mb-6">
+        Masculinité Positive
       </h2>
+      <p class="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+        Des hommes engagés pour l'égalité des genres et l'autonomisation des femmes au Niger
+      </p>
     </div>
   </div>
 
-  <!-- Cards Grid - 4 cards verticales en grille 2x2 avec décalage -->
-  <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 lg:gap-x-8 gap-y-2 lg:gap-y-4 max-w-6xl mx-auto">
-      
-      <!-- Card 1: Pour les jeunes filles - Ligne 1, Colonne 1 (pas de décalage) -->
-      <div class="relative h-[600px] md:h-[650px] lg:h-[700px] rounded-lg overflow-hidden shadow-2xl transform hover:scale-[1.02] transition-transform duration-300">
+  <!-- Cards Grid - 4 cards avec design amélioré -->
+  <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 max-w-6xl mx-auto">
+
+      <!-- Card 1: Abdoul Aziz - Pour les jeunes filles -->
+      <div class="group relative h-[500px] md:h-[550px] rounded-2xl overflow-hidden shadow-2xl transform hover:scale-[1.02] transition-all duration-300">
         <!-- Background Image -->
         <div class="absolute inset-0">
-          <%= image_tag "masculinity1.jpeg", alt: "Pour les jeunes filles", class: "w-full h-full object-cover" %>
+          <%= image_tag "masculinity1.jpeg", alt: "Abdoul Aziz - Engagement pour les jeunes filles", class: "w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" %>
         </div>
-        <!-- Overlay - Teal Blue -->
-        <div class="absolute inset-0 bg-gradient-to-t from-teal-600/95 via-teal-600/85 to-teal-600/70"></div>
+        <!-- Overlay - Purple gradient -->
+        <div class="absolute inset-0 bg-gradient-to-t from-purple-700/95 via-purple-700/80 to-purple-700/60"></div>
         <!-- Content -->
         <div class="absolute inset-0 flex flex-col justify-end p-6 md:p-8 text-white z-10">
-          <div class="space-y-3">
-            <p class="text-sm md:text-base italic font-light opacity-90">POUR</p>
-            <h3 class="text-3xl md:text-4xl lg:text-5xl font-bold uppercase leading-tight">
-              Les jeunes filles
+          <div class="space-y-4">
+            <div class="flex items-center gap-3 mb-2">
+              <div class="w-12 h-12 rounded-full bg-amber-500/20 backdrop-blur-sm flex items-center justify-center">
+                <span class="text-amber-400 font-bold text-lg">A</span>
+              </div>
+              <div>
+                <p class="text-xs md:text-sm font-medium text-amber-400 uppercase tracking-wider">Abdoul Aziz</p>
+                <p class="text-xs opacity-80">Défenseur de l'éducation</p>
+              </div>
+            </div>
+            <h3 class="text-2xl md:text-3xl lg:text-4xl font-bold uppercase leading-tight">
+              Éducation & Avenir
             </h3>
-            <p class="text-sm md:text-base leading-relaxed mt-4 text-white/95">
-              Abdoul Aziz s'engage pour un meilleur avenir des jeunes filles au Niger, en créant des opportunités d'éducation et d'autonomisation.
+            <p class="text-sm md:text-base leading-relaxed text-white/95">
+              Création d'opportunités éducatives pour les jeunes filles nigériennes, brisant les barrières culturelles et ouvrant la voie à un avenir meilleur.
             </p>
           </div>
         </div>
       </div>
 
-      <!-- Card 2: Pour l'égalité des genres - Ligne 1, Colonne 2 (décalée vers le bas) -->
-      <div class="relative h-[600px] md:h-[650px] lg:h-[700px] rounded-lg overflow-hidden shadow-2xl transform hover:scale-[1.02] transition-transform duration-300 md:mt-24 lg:mt-32">
+      <!-- Card 2: Moussa Harouna - Pour l'égalité des genres -->
+      <div class="group relative h-[500px] md:h-[550px] rounded-2xl overflow-hidden shadow-2xl transform hover:scale-[1.02] transition-all duration-300 md:mt-12">
         <!-- Background Image -->
         <div class="absolute inset-0">
-          <%= image_tag "masculinity2.png", alt: "Pour l'égalité des genres", class: "w-full h-full object-cover" %>
+          <%= image_tag "masculinity2.png", alt: "Moussa Harouna - Défenseur de l'égalité des genres", class: "w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" %>
         </div>
-        <!-- Overlay - Red -->
-        <div class="absolute inset-0 bg-gradient-to-t from-red-600/95 via-red-600/85 to-red-600/70"></div>
+        <!-- Overlay - Blue gradient -->
+        <div class="absolute inset-0 bg-gradient-to-t from-blue-600/95 via-blue-600/80 to-blue-600/60"></div>
         <!-- Content -->
         <div class="absolute inset-0 flex flex-col justify-end p-6 md:p-8 text-white z-10">
-          <div class="space-y-3">
-            <p class="text-sm md:text-base italic font-light opacity-90">POUR</p>
-            <h3 class="text-3xl md:text-4xl lg:text-5xl font-bold uppercase leading-tight">
-              L'égalité des genres
+          <div class="space-y-4">
+            <div class="flex items-center gap-3 mb-2">
+              <div class="w-12 h-12 rounded-full bg-amber-500/20 backdrop-blur-sm flex items-center justify-center">
+                <span class="text-amber-400 font-bold text-lg">M</span>
+              </div>
+              <div>
+                <p class="text-xs md:text-sm font-medium text-amber-400 uppercase tracking-wider">Moussa Harouna</p>
+                <p class="text-xs opacity-80">Champion de l'égalité</p>
+              </div>
+            </div>
+            <h3 class="text-2xl md:text-3xl lg:text-4xl font-bold uppercase leading-tight">
+              Égalité Professionnelle
             </h3>
-            <p class="text-sm md:text-base leading-relaxed mt-4 text-white/95">
-              Moussa Harouna défend l'égalité des genres dans tous les secteurs professionnels, en promouvant une culture d'inclusion et de respect mutuel.
+            <p class="text-sm md:text-base leading-relaxed text-white/95">
+              Promotion active de l'égalité des genres dans tous les secteurs, favorisant une culture d'inclusion et de respect mutuel au travail.
             </p>
           </div>
         </div>
       </div>
 
-      <!-- Card 3: Pour les familles unies - Ligne 2, Colonne 1 (pas de décalage) -->
-      <div class="relative h-[600px] md:h-[650px] lg:h-[700px] rounded-lg overflow-hidden shadow-2xl transform hover:scale-[1.02] transition-transform duration-300">
+      <!-- Card 3: Ibrahim Amadou - Pour les familles unies -->
+      <div class="group relative h-[500px] md:h-[550px] rounded-2xl overflow-hidden shadow-2xl transform hover:scale-[1.02] transition-all duration-300">
         <!-- Background Image -->
         <div class="absolute inset-0">
-          <%= image_tag "masculinity3.png", alt: "Pour les familles unies", class: "w-full h-full object-cover" %>
+          <%= image_tag "masculinity3.png", alt: "Ibrahim Amadou - Défenseur des familles unies", class: "w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" %>
         </div>
-        <!-- Overlay - Dark Gray -->
-        <div class="absolute inset-0 bg-gradient-to-t from-gray-800/95 via-gray-800/85 to-gray-800/70"></div>
+        <!-- Overlay - Teal gradient -->
+        <div class="absolute inset-0 bg-gradient-to-t from-teal-600/95 via-teal-600/80 to-teal-600/60"></div>
         <!-- Content -->
         <div class="absolute inset-0 flex flex-col justify-end p-6 md:p-8 text-white z-10">
-          <div class="space-y-3">
-            <p class="text-sm md:text-base italic font-light opacity-90">POUR</p>
-            <h3 class="text-3xl md:text-4xl lg:text-5xl font-bold uppercase leading-tight">
-              Les familles unies
+          <div class="space-y-4">
+            <div class="flex items-center gap-3 mb-2">
+              <div class="w-12 h-12 rounded-full bg-amber-500/20 backdrop-blur-sm flex items-center justify-center">
+                <span class="text-amber-400 font-bold text-lg">I</span>
+              </div>
+              <div>
+                <p class="text-xs md:text-sm font-medium text-amber-400 uppercase tracking-wider">Ibrahim Amadou</p>
+                <p class="text-xs opacity-80">Gardien des traditions</p>
+              </div>
+            </div>
+            <h3 class="text-2xl md:text-3xl lg:text-4xl font-bold uppercase leading-tight">
+              Familles Harmonieuses
             </h3>
-            <p class="text-sm md:text-base leading-relaxed mt-4 text-white/95">
-              Ibrahim Amadou œuvre pour renforcer les liens familiaux et soutenir les femmes dans leur rôle essentiel au sein de la famille nigérienne.
+            <p class="text-sm md:text-base leading-relaxed text-white/95">
+              Renforcement des liens familiaux tout en valorisant le rôle essentiel des femmes dans la société nigérienne moderne.
             </p>
           </div>
         </div>
       </div>
 
-      <!-- Card 4: Pour l'autonomisation - Ligne 2, Colonne 2 (décalée vers le bas) -->
-      <div class="relative h-[600px] md:h-[650px] lg:h-[700px] rounded-lg overflow-hidden shadow-2xl transform hover:scale-[1.02] transition-transform duration-300 md:mt-16 lg:mt-20">
+      <!-- Card 4: Ousmane Diallo - Pour l'autonomisation -->
+      <div class="group relative h-[500px] md:h-[550px] rounded-2xl overflow-hidden shadow-2xl transform hover:scale-[1.02] transition-all duration-300 md:mt-8">
         <!-- Background Image -->
         <div class="absolute inset-0">
-          <%= image_tag "masculinity4.png", alt: "Pour l'autonomisation", class: "w-full h-full object-cover" %>
+          <%= image_tag "masculinity4.png", alt: "Ousmane Diallo - Promoteur de l'autonomisation économique", class: "w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" %>
         </div>
-        <!-- Overlay - Teal Blue -->
-        <div class="absolute inset-0 bg-gradient-to-t from-teal-600/95 via-teal-600/85 to-teal-600/70"></div>
+        <!-- Overlay - Purple gradient -->
+        <div class="absolute inset-0 bg-gradient-to-t from-purple-700/95 via-purple-700/80 to-purple-700/60"></div>
         <!-- Content -->
         <div class="absolute inset-0 flex flex-col justify-end p-6 md:p-8 text-white z-10">
-          <div class="space-y-3">
-            <p class="text-sm md:text-base italic font-light opacity-90">POUR</p>
-            <h3 class="text-3xl md:text-4xl lg:text-5xl font-bold uppercase leading-tight">
-              L'autonomisation
+          <div class="space-y-4">
+            <div class="flex items-center gap-3 mb-2">
+              <div class="w-12 h-12 rounded-full bg-amber-500/20 backdrop-blur-sm flex items-center justify-center">
+                <span class="text-amber-400 font-bold text-lg">O</span>
+              </div>
+              <div>
+                <p class="text-xs md:text-sm font-medium text-amber-400 uppercase tracking-wider">Ousmane Diallo</p>
+                <p class="text-xs opacity-80">Catalyseur économique</p>
+              </div>
+            </div>
+            <h3 class="text-2xl md:text-3xl lg:text-4xl font-bold uppercase leading-tight">
+              Autonomisation Économique
             </h3>
-            <p class="text-sm md:text-base leading-relaxed mt-4 text-white/95">
-              Ousmane Diallo s'engage pour l'autonomisation économique des femmes, en créant des opportunités de formation et d'entrepreneuriat.
+            <p class="text-sm md:text-base leading-relaxed text-white/95">
+              Développement de programmes d'entrepreneuriat et de formation professionnelle pour l'indépendance économique des femmes.
             </p>
           </div>
         </div>
       </div>
 
+    </div>
+
+    <!-- Call to Action -->
+    <div class="text-center mt-16">
+      <%= link_to "#", class: "group inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-purple-700 to-purple-800 text-white rounded-xl font-semibold text-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105" do %>
+        <span>Rejoignez le mouvement</span>
+        <svg class="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+        </svg>
+      <% end %>
     </div>
   </div>
 </section>
