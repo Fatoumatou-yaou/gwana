@@ -21,8 +21,9 @@ Rails.application.configure do
   # Enable serving of images, stylesheets, and JavaScripts from an asset server.
   # config.asset_host = "http://assets.example.com"
 
-  # Store uploaded files on Hetzner Object Storage (see config/storage.yml for options).
-  # Change to :local for local storage or :hetzner for Hetzner Object Storage
+  # Store uploaded files (see config/storage.yml for options).
+  # Options: :local, :digitalocean (Spaces), :hetzner (Object Storage)
+  # Set ACTIVE_STORAGE_SERVICE environment variable to choose the service
   config.active_storage.service = ENV.fetch("ACTIVE_STORAGE_SERVICE", "local").to_sym
 
   # Assume all access to the app is happening through a SSL-terminating reverse proxy.
@@ -58,16 +59,31 @@ Rails.application.configure do
   # config.action_mailer.raise_delivery_errors = false
 
   # Set host to be used by links generated in mailer templates.
-  config.action_mailer.default_url_options = { host: "example.com" }
+  config.action_mailer.default_url_options = { 
+    host: ENV.fetch("APP_DOMAIN", "example.com")
+  }
 
   # Specify outgoing SMTP server. Remember to add smtp/* credentials via rails credentials:edit.
-  # config.action_mailer.smtp_settings = {
-  #   user_name: Rails.application.credentials.dig(:smtp, :user_name),
-  #   password: Rails.application.credentials.dig(:smtp, :password),
-  #   address: "smtp.example.com",
-  #   port: 587,
-  #   authentication: :plain
-  # }
+  # Configuration via variables d'environnement pour DigitalOcean App Platform
+  # if ENV["SMTP_ADDRESS"].present?
+  #   config.action_mailer.smtp_settings = {
+  #     address: ENV["SMTP_ADDRESS"],
+  #     port: ENV.fetch("SMTP_PORT", 587).to_i,
+  #     user_name: ENV["SMTP_USER_NAME"],
+  #     password: ENV["SMTP_PASSWORD"],
+  #     authentication: (ENV["SMTP_AUTHENTICATION"] || "plain").to_sym,
+  #     enable_starttls_auto: ENV["SMTP_ENABLE_STARTTLS_AUTO"] != "false"
+  #   }
+  # else
+    # Fallback vers credentials Rails si les variables d'environnement ne sont pas définies
+    # config.action_mailer.smtp_settings = {
+    #   user_name: Rails.application.credentials.dig(:smtp, :user_name),
+    #   password: Rails.application.credentials.dig(:smtp, :password),
+    #   address: Rails.application.credentials.dig(:smtp, :address) || "smtp.example.com",
+    #   port: Rails.application.credentials.dig(:smtp, :port) || 587,
+    #   authentication: :plain
+    # }
+  end
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation cannot be found).

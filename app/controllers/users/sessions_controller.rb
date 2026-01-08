@@ -1,5 +1,5 @@
 class Users::SessionsController < Devise::SessionsController
-  layout "slim"
+  layout "auth"
   before_action :configure_sign_in_params, only: [:create]
 
   def create

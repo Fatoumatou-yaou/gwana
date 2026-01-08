@@ -92,3 +92,4 @@ yarn-debug.log*
 
 .cursor/
 HETZNER_STORAGE_SETUP.md
+DIGITALOCEAN_DEPLOY.md
