@@ -43,9 +43,10 @@ class RenameMembersToGwanas < ActiveRecord::Migration[8.0]
     remove_foreign_key :gwana_update_requests, :members if foreign_key_exists?(:gwana_update_requests, :members)
     remove_foreign_key :gwanas, :members if foreign_key_exists?(:gwanas, :members)
     
-    add_foreign_key :gwana_update_requests, :gwanas, column: :gwana_id
-    add_foreign_key :gwanas, :users
-    add_foreign_key :gwanas, :communes
+    # Ajouter les foreign keys uniquement si elles n'existent pas déjà
+    add_foreign_key :gwana_update_requests, :gwanas, column: :gwana_id unless foreign_key_exists?(:gwana_update_requests, :gwanas, column: :gwana_id)
+    add_foreign_key :gwanas, :users unless foreign_key_exists?(:gwanas, :users)
+    add_foreign_key :gwanas, :communes unless foreign_key_exists?(:gwanas, :communes)
   end
 
   def down

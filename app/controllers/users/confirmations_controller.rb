@@ -1,6 +1,6 @@
 
 class Users::ConfirmationsController < Devise::ConfirmationsController
-  layout "slim"
+  layout "auth"
   
   protected
 

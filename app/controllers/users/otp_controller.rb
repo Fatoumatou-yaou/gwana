@@ -1,5 +1,5 @@
 class Users::OtpController < ApplicationController
-  layout "slim"
+  layout "auth"
   before_action :set_user, only: [:create, :resend]
 
   def new
