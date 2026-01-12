@@ -1,51 +1,44 @@
 <!-- Hero Section -->
 <section 
-  class="relative h-screen w-full flex items-center justify-center overflow-hidden"
+  class="relative min-h-screen w-full flex items-center justify-center overflow-hidden"
   data-controller="hero"
-      aria-label="Réseau de Valorisation des Femmes GWANA" >
+  aria-label="Réseau de Valorisation des Femmes GWANA" >
+  
   <!-- Background Image avec effet parallaxe -->
   <div class="absolute inset-0 z-0" data-hero-target="image">
-
     <%= image_tag "group-photo.jpeg", 
         alt: "Groupe de femmes pionnières GWANA",
         class: "w-full h-full object-cover object-center",
         loading: "eager" %>
 
-    <!-- Gradient Overlay moderne pour lisibilité (réduit pour mieux voir les visages) -->
+    <!-- Gradient Overlay moderne pour lisibilité -->
     <div class="absolute inset-0 bg-gradient-to-br from-black/50 via-slate-800/40 to-purple-700/45"
       data-hero-target="overlay">
     </div>
     
-    <!-- Overlay supplémentaire avec effet de lumière (réduit) -->
+    <!-- Overlay supplémentaire avec effet de lumière -->
     <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
     
-    <!-- Effet de lumière animé (spotlight effect) -->
+    <!-- Effet de lumière animé -->
     <div class="absolute top-0 left-1/4 w-[600px] h-[600px] bg-gradient-radial from-purple-700/20 via-transparent to-transparent rounded-full blur-3xl animate-pulse-slow"></div>
     <div class="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-gradient-radial from-blue-500/15 via-transparent to-transparent rounded-full blur-3xl animate-pulse-slow" style="animation-delay: 1s;"></div>
   </div>
 
-  <!-- Decorative geometric shapes flottants - Simplifiés -->
+  <!-- Decorative geometric shapes flottants -->
   <div class="absolute inset-0 z-10 pointer-events-none overflow-hidden">
-    <!-- Cercle décoratif flottant -->
     <div class="absolute top-20 right-20 w-32 h-32 border-2 border-white/10 rounded-full animate-float"></div>
     <div class="absolute bottom-32 left-16 w-24 h-24 border-2 border-purple-700/30 rounded-full animate-float" style="animation-delay: 1.5s;"></div>
   </div>
 
-  <!-- Content Container - Carte large (90% de largeur) avec photo visible sur les bords -->
-  <div class="container mx-auto px-0 sm:px-4 lg:px-0 xl:px-8 relative z-20 py-4 sm:py-6 md:py-8">
-    <div class="w-full flex justify-center h-full items-center">
+  <!-- Content Container MODIFIÉ -->
+  <div class="container mx-auto px-0 relative z-20 h-full flex ">
+    <div class="w-full">
       
-      <!-- Glassmorphism Card large - Blur réduit, fond plus opaque -->
-      <div class="w-full sm:w-[95%] lg:w-[50%] xl:w-[100%]  bg-white/15 rounded-2xl md:rounded-3xl border border-white/25 shadow-2xl p-6 sm:p-8 md:p-12 lg:p-2">
+      <!-- Glassmorphism Card - Ajout de margin-top négatif -->
+      <div class="w-full relative mx-auto bg-white/15 rounded-2xl md:rounded-3xl border border-white/25 shadow-2xl p-6 sm:p-8 md:p-12 -mt-28 sm:-mt-12">
         
-        <!-- Badge/Tag moderne -->
-        <%# <div class="md:ml-4 md:mt-0 inline-block px-4 py-2 bg-gradient-to-r from-purple-700/80 to-amber-500/80 rounded-full text-white text-sm font-semibold mb-8 backdrop-blur-sm border border-white/20 shadow-lg opacity-0 translate-y-8 transition-all duration-700 ease-out"
-          data-hero-target="text">
-          Réseau de Valorisation des Femmes Pionnières
-        </div> %>
-
-        <!-- Titre principal avec animation -->
-        <h2 class="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white mb-6 leading-tight tracking-tight opacity-0 translate-y-8 transition-all duration-700 ease-out"
+        <!-- Titre principal -->
+        <h2 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight tracking-tight opacity-0 translate-y-8 transition-all duration-700 ease-out"
           data-hero-target="text">
           Valoriser les Femmes <span class="text-amber-500">GWANA</span> et Transformer les Métiers au Niger
         </h2>
@@ -56,7 +49,7 @@
           Rejoignez notre communauté de femmes expertes qui transforment les métiers traditionnellement masculins au Niger et créent un impact durable.
         </p>
 
-        <!-- CTA Buttons avec glassmorphism -->
+        <!-- CTA Buttons -->
         <div 
           class="flex flex-col sm:flex-row gap-4 mb-8 opacity-0 scale-95 transition-all duration-500 ease-out"
           data-hero-target="cta">
@@ -68,9 +61,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
               </svg>
             </span>
-            <!-- Effet de brillance au survol amélioré -->
             <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/25 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 ease-out"></div>
-            <!-- Effet de glow au survol -->
             <div class="absolute inset-0 bg-gradient-to-r from-purple-700 to-purple-800 opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-300 -z-10"></div>
           <% end %>
 
@@ -82,42 +73,43 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
               </svg>
             </span>
-            <!-- Effet de brillance au survol -->
             <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-500 ease-out rounded-xl"></div>
           <% end %>
         </div>
 
-        <!-- Stats rapides avec glassmorphism et interactions -->
+        <!-- Stats rapides -->
         <div 
           class="grid grid-cols-3 gap-2 sm:gap-4 md:gap-6 mt-8 sm:mt-12 pt-6 sm:pt-8 border-t border-white/25 opacity-0 translate-y-8 transition-all duration-700 ease-out"
           data-hero-target="text" >
           <div class="group text-center cursor-default transform transition-all duration-300 hover:scale-110 hover:-translate-y-1 relative">
             <div class="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-1 sm:mb-2 transition-colors duration-300 group-hover:text-purple-50">500+</div>
             <div class="text-xs sm:text-sm md:text-base text-white/80 group-hover:text-white/95 transition-colors duration-300">Membres</div>
-            <!-- Effet de brillance au survol -->
             <div class="absolute inset-0 bg-gradient-to-b from-transparent via-white/5 to-transparent rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
           </div>
           <div class="group text-center cursor-default transform transition-all duration-300 hover:scale-110 hover:-translate-y-1 relative">
             <div class="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-1 sm:mb-2 transition-colors duration-300 group-hover:text-purple-50">150+</div>
             <div class="text-xs sm:text-sm md:text-base text-white/80 group-hover:text-white/95 transition-colors duration-300">Mentors</div>
-            <!-- Effet de brillance au survol -->
             <div class="absolute inset-0 bg-gradient-to-b from-transparent via-white/5 to-transparent rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
           </div>
           <div class="group text-center cursor-default transform transition-all duration-300 hover:scale-110 hover:-translate-y-1 relative">
             <div class="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-1 sm:mb-2 transition-colors duration-300 group-hover:text-purple-50">300+</div>
             <div class="text-xs sm:text-sm md:text-base text-white/80 group-hover:text-white/95 transition-colors duration-300 leading-tight">Demandes de mentorat</div>
-            <!-- Effet de brillance au survol -->
             <div class="absolute inset-0 bg-gradient-to-b from-transparent via-white/5 to-transparent rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
           </div>
         </div>
+        <div class="absolute md:-bottom-24 -bottom-16 left-1/2 transform -translate-x-1/2 z-20 animate-bounce -mt-10">
+            <div class="w-6 h-10 border-2 border-white/50 rounded-full flex items-start justify-center p-2">
+              <div class="w-1 h-3 bg-white/70 rounded-full animate-scroll-indicator"></div>
+            </div>
+          </div>
       </div>
     </div>
   </div>
 
   <!-- Scroll Indicator -->
-  <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20 animate-bounce">
+  <%# <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-20 animate-bounce -mt-10">
     <div class="w-6 h-10 border-2 border-white/50 rounded-full flex items-start justify-center p-2">
       <div class="w-1 h-3 bg-white/70 rounded-full animate-scroll-indicator"></div>
     </div>
-  </div>
+  </div> %>
 </section>

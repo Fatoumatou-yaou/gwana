@@ -26,7 +26,7 @@
               </li>
               <li class="flex">
                 <%= button_to destroy_user_session_path, method: :delete, class: 'inline-flex items-center w-full px-3 py-2 text-sm font-semibold transition-colors duration-150 rounded-md hover:bg-purple-50 hover:text-purple-700',
-                    data: {confirm: 'Êtes-vous sûr de vouloir vous déconnecter ?'}, :"data-turbolinks" => false do %>
+                    data: { turbo_confirm: 'Êtes-vous sûr de vouloir vous déconnecter ?' } do %>
                   <span class="material-symbols-outlined text-lg mr-2">logout</span>
                   <span>Déconnexion</span>
                 <% end %>

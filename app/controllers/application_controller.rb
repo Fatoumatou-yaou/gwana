@@ -37,4 +37,11 @@ class ApplicationController < ActionController::Base
     flash[:alert] = "Vous n'êtes pas autorisé à effectuer cette action."
     redirect_to(request.referer || root_path)
   end
+
+  def authenticate_user!(options = {})
+    unless user_signed_in?
+      flash[:alert] = "Vous devez vous connecter pour acceder à cette page"
+    end
+    super
+  end
 end
