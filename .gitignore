@@ -90,6 +90,6 @@ yarn-debug.log*
 /tmp/*
 !/tmp/.keep
 
-.cursor/
+.cursor/rules/
 HETZNER_STORAGE_SETUP.md
 DIGITALOCEAN_DEPLOY.md
