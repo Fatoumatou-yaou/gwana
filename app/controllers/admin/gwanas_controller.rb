@@ -17,6 +17,8 @@ class Admin::GwanasController < Admin::BaseController
       @gwana = Gwana.new
       @gwana.build_user
       @regions = Region.ordered
+      @departments = []
+      @communes = []
       authorize [:admin, @gwana]
     end
 
@@ -127,10 +129,17 @@ class Admin::GwanasController < Admin::BaseController
 
     def edit
       authorize [:admin, @gwana]
-      @gwana = @gwana.decorate
       @regions = Region.ordered
-      @departments = @gwana.commune&.department&.region&.departments&.ordered || []
-      @communes = @gwana.commune&.department&.communes&.ordered || []
+      # Accéder à l'objet original avant de décorer pour éviter le conflit avec la méthode commune du decorator
+      commune = @gwana.commune
+      if commune.present?
+        @departments = commune.department.region.departments.ordered
+        @communes = commune.department.communes.ordered
+      else
+        @departments = []
+        @communes = []
+      end
+      @gwana = @gwana.decorate
     end
 
     def update

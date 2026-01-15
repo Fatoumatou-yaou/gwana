@@ -8,6 +8,9 @@
   </div>
 <% end %>
 
+<%# Récupérer l'objet Commune original (non décoré) pour éviter le conflit avec la méthode commune du decorator %>
+<% commune_obj = gwana.respond_to?(:object) ? gwana.object.commune : gwana.commune %>
+
 <div class="bg-white rounded-2xl shadow-xl p-8 md:p-12 relative overflow-hidden">
   <!-- Decorative shapes -->
   <div class="absolute top-0 right-0 w-32 h-32 bg-purple-700/10 rounded-full -mr-16 -mt-16"></div>
@@ -87,7 +90,7 @@
               class="<%= field_error_class(gwana, :region_id, "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-700 focus:border-transparent outline-none transition-all") %>">
         <option value="">Sélectionnez une région</option>
         <% @regions ||= Region.ordered %>
-        <% selected_region_id = gwana.commune&.department&.region_id || params[:region_id] || params.dig(:gwana, :region_id) %>
+        <% selected_region_id = commune_obj&.department&.region_id || params[:region_id] || params.dig(:gwana, :region_id) %>
         <% @regions.each do |region| %>
           <option value="<%= region.id %>" 
                   <%= "selected" if selected_region_id.to_s == region.id.to_s %>>
@@ -104,7 +107,7 @@
       <select name="department_id" 
               id="department_id"
               data-location-cascade-target="department"
-              <% selected_department_id = gwana.commune&.department_id || params[:department_id] || params.dig(:gwana, :department_id) %>
+              <% selected_department_id = commune_obj&.department_id || params[:department_id] || params.dig(:gwana, :department_id) %>
               <% if selected_department_id.present? %>
                 data-selected-value="<%= selected_department_id %>"
               <% end %>

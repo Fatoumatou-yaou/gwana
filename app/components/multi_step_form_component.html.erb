@@ -1,0 +1,365 @@
+<div data-controller="multi-step-form" 
+     data-multi-step-form-total-steps-value="4"
+     data-multi-step-form-current-step-value="1"
+     class="max-w-5xl mx-auto px-4 py-4">
+  
+  <% if has_errors? %>
+    <div class="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg">
+      <ul class="list-disc list-inside text-red-600">
+        <% errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="bg-white rounded-2xl shadow-xl p-6 md:p-8 relative overflow-hidden">
+    <!-- Decorative shapes -->
+    <div class="absolute top-0 right-0 w-32 h-32 bg-purple-700/10 rounded-full -mr-16 -mt-16"></div>
+    <div class="absolute bottom-0 left-0 w-40 h-40 bg-purple-700/5 rounded-full -ml-20 -mb-20"></div>
+
+    <div class="relative z-10">
+      <!-- Progress Bar intégrée dans le formulaire -->
+      <div class="mb-6">
+        <div class="flex items-center justify-between mb-3">
+          <% step_titles.each_with_index do |title, index| %>
+            <div class="flex-1 flex items-center">
+              <div class="flex flex-col items-center flex-1">
+                <div data-multi-step-form-target="stepIndicator"
+                     class="w-8 h-8 rounded-full flex items-center justify-center font-semibold text-sm transition-all
+                            <%= index == 0 ? 'bg-purple-700 text-white' : 'bg-gray-200 text-gray-600' %>">
+                  <%= index + 1 %>
+                </div>
+                <span class="mt-1 text-xs text-center text-gray-600 hidden md:block"><%= title %></span>
+              </div>
+              <% unless index == step_titles.length - 1 %>
+                <div class="flex-1 h-1 mx-2 bg-gray-200 rounded"></div>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+        <div class="w-full h-1.5 bg-gray-200 rounded-full overflow-hidden">
+          <div data-multi-step-form-target="progressBar" 
+               class="h-full bg-gradient-to-r from-purple-700 to-purple-800 rounded-full transition-all duration-300"
+               style="width: 25%"></div>
+        </div>
+      </div>
+
+      <!-- Étape 1: Informations personnelles -->
+      <div data-multi-step-form-target="step" class="block">
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+          <!-- Prénom -->
+          <div>
+            <%= f.label :first_name, "Prénom <span class='text-red-500'>*</span>".html_safe, class: "block text-sm font-semibold text-purple-700 mb-2" %>
+            <%= f.text_field :first_name, 
+                required: true,
+                placeholder: "Prénom",
+                data: { action: "blur->multi-step-form#validateRequiredField" },
+                class: field_error_class(model, :first_name, "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-700 focus:border-transparent outline-none transition-all") %>
+            <%= field_error_message(model, :first_name) %>
+          </div>
+
+          <!-- Nom -->
+          <div>
+            <%= f.label :last_name, "Nom <span class='text-red-500'>*</span>".html_safe, class: "block text-sm font-semibold text-purple-700 mb-2" %>
+            <%= f.text_field :last_name, 
+                required: true,
+                placeholder: "Nom",
+                data: { action: "blur->multi-step-form#validateRequiredField" },
+                class: field_error_class(model, :last_name, "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-700 focus:border-transparent outline-none transition-all") %>
+            <%= field_error_message(model, :last_name) %>
+          </div>
+        </div>
+
+        <!-- Email -->
+        <div class="mb-4">
+          <% if is_gwana_with_user? %>
+            <%= f.fields_for :user do |user_form| %>
+              <%= user_form.label :email, "Email <span class='text-red-500'>*</span>".html_safe, class: "block text-sm font-semibold text-purple-700 mb-2" %>
+              <% 
+                user_obj = model.user || model.build_user
+                email_errors = user_obj.errors[:email]
+                email_has_errors = email_errors.any? || model.errors[:email].any?
+              %>
+              <%= user_form.email_field :email, 
+                  required: true,
+                  placeholder: "email@exemple.com",
+                  data: { action: "blur->multi-step-form#validateEmail" },
+                  class: (email_has_errors ? "w-full px-4 py-3 border border-red-500 focus:border-red-500 focus:ring-red-500 rounded-lg focus:ring-2 outline-none transition-all" : "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-700 focus:border-transparent outline-none transition-all") %>
+              <% if email_has_errors %>
+                <div class="mt-1 text-sm text-red-600 flex items-center gap-1">
+                  <span class="text-red-500">⚠</span>
+                  <%= email_errors.first || model.errors[:email].first %>
+                </div>
+              <% end %>
+            <% end %>
+          <% else %>
+            <%= f.label :email, "Email <span class='text-red-500'>*</span>".html_safe, class: "block text-sm font-semibold text-purple-700 mb-2" %>
+            <%= f.email_field :email, 
+                required: true,
+                placeholder: "email@exemple.com",
+                data: { action: "blur->multi-step-form#validateEmail" },
+                class: field_error_class(model, :email, "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-700 focus:border-transparent outline-none transition-all") %>
+            <%= field_error_message(model, :email) %>
+          <% end %>
+        </div>
+
+        <!-- Téléphone -->
+        <div class="mb-4">
+          <%= f.label :phone, "Téléphone", class: "block text-sm font-semibold text-purple-700 mb-2" %>
+          <%= f.text_field :phone, 
+              placeholder: "12345678", 
+              pattern: "[0-9]{8}",
+              maxlength: 8,
+              inputmode: "numeric",
+              data: { action: "input->multi-step-form#validatePhone" },
+              class: field_error_class(model, :phone, "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-700 focus:border-transparent outline-none transition-all") %>
+          <%= field_error_message(model, :phone) %>
+        </div>
+
+        <!-- Adresse -->
+        <div class="mb-4">
+          <%= f.label :address, "Adresse", class: "block text-sm font-semibold text-purple-700 mb-2" %>
+          <%= f.text_field :address, 
+              placeholder: "Adresse", 
+              class: field_error_class(model, :address, "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-700 focus:border-transparent outline-none transition-all") %>
+          <%= field_error_message(model, :address) %>
+        </div>
+
+        <!-- Disponible pour mentorat -->
+        <% if model.is_a?(Gwana) %>
+          <div class="mb-6">
+            <div class="flex items-center">
+              <%= f.check_box :available_for_mentorship, 
+                  { class: "w-4 h-4 text-purple-700 bg-white border-gray-300 rounded focus:ring-purple-700/50" }, 
+                  true, 
+                  false %>
+              <%= f.label :available_for_mentorship, "Disponible pour mentorat", class: "ml-3 text-sm font-semibold text-purple-700 cursor-pointer hover:text-purple-800 transition-colors" %>
+            </div>
+            <p class="mt-1 text-xs text-gray-500 ml-7">Cochez cette case si cette personne est disponible pour offrir du mentorat</p>
+          </div>
+        <% end %>
+      </div>
+
+      <!-- Étape 2: Localisation -->
+      <div data-multi-step-form-target="step" class="hidden">
+        <div data-controller="location-cascade" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <!-- Région -->
+          <div>
+            <label for="region_id" class="block text-sm font-semibold text-purple-700 mb-2">Région <span class="text-red-500">*</span></label>
+            <select name="region_id" 
+                    id="region_id"
+                    data-location-cascade-target="region"
+                    data-action="change->multi-step-form#validateRequiredField"
+                    required
+                    class="<%= field_error_class(model, :commune_id, "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-700 focus:border-transparent outline-none transition-all") %>">
+              <option value="">Sélectionnez une région</option>
+              <% regions.each do |region| %>
+                <% selected_region_id = model.commune&.department&.region_id %>
+                <option value="<%= region.id %>" <%= "selected" if selected_region_id.to_s == region.id.to_s %>>
+                  <%= region.name %>
+                </option>
+              <% end %>
+            </select>
+          </div>
+
+          <!-- Département -->
+          <div>
+            <%= f.label :department_id, "Département", class: "block text-sm font-semibold text-purple-700 mb-2" %>
+            <select name="department_id" 
+                    id="department_id"
+                    data-location-cascade-target="department"
+                    <% selected_department_id = model.commune&.department_id %>
+                    <% if selected_department_id.present? %>
+                      data-selected-value="<%= selected_department_id %>"
+                    <% end %>
+                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-700 focus:border-transparent outline-none transition-all">
+              <option value="">Sélectionnez un département</option>
+              <% if departments.present? %>
+                <% departments.each do |department| %>
+                  <option value="<%= department.id %>" <%= "selected" if selected_department_id.to_s == department.id.to_s %>>
+                    <%= department.name %>
+                  </option>
+                <% end %>
+              <% end %>
+            </select>
+          </div>
+
+          <!-- Commune -->
+          <div>
+            <%= f.label :commune_id, "Commune", class: "block text-sm font-semibold text-purple-700 mb-2" %>
+            <%= f.select :commune_id,
+                options_for_select(
+                  communes.map { |c| [c.name, c.id] },
+                  model.commune_id
+                ),
+                { prompt: "Sélectionnez une commune" },
+                { 
+                  data: { 
+                    location_cascade_target: "commune",
+                    selected_value: model.commune_id
+                  },
+                  class: field_error_class(model, :commune_id, "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-700 focus:border-transparent outline-none transition-all")
+                } %>
+            <%= field_error_message(model, :commune_id) %>
+          </div>
+        </div>
+      </div>
+
+      <!-- Étape 3: Profil professionnel -->
+      <div data-multi-step-form-target="step" class="hidden">
+        <!-- Profession -->
+        <div class="mb-4">
+          <%= f.label :profession, "Profession <span class='text-red-500'>*</span>".html_safe, class: "block text-sm font-semibold text-purple-700 mb-2" %>
+          <%= f.text_field :profession, 
+              required: true,
+              placeholder: "Profession",
+              data: { action: "blur->multi-step-form#validateRequiredField" },
+              class: field_error_class(model, :profession, "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-700 focus:border-transparent outline-none transition-all") %>
+          <%= field_error_message(model, :profession) %>
+        </div>
+
+        <!-- Expériences -->
+        <div class="mb-4">
+          <%= f.label :experiences, "Expériences <span class='text-red-500'>*</span>".html_safe, class: "block text-sm font-semibold text-purple-700 mb-2" %>
+          <%= f.text_area :experiences, 
+              required: true,
+              rows: 3,
+              placeholder: "Expériences",
+              data: { action: "blur->multi-step-form#validateRequiredField" },
+              class: field_error_class(model, :experiences, "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-700 focus:border-transparent outline-none transition-all") %>
+          <%= field_error_message(model, :experiences) %>
+        </div>
+
+        <!-- Formations -->
+        <div class="mb-4">
+          <%= f.label :formations, "Formations <span class='text-red-500'>*</span>".html_safe, class: "block text-sm font-semibold text-purple-700 mb-2" %>
+          <%= f.text_area :formations, 
+              required: true,
+              rows: 3,
+              placeholder: "Formations",
+              data: { action: "blur->multi-step-form#validateRequiredField" },
+              class: field_error_class(model, :formations, "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-700 focus:border-transparent outline-none transition-all") %>
+          <%= field_error_message(model, :formations) %>
+        </div>
+
+        <!-- Bio -->
+        <div class="mb-4">
+          <%= f.label :bio, "Bio <span class='text-red-500'>*</span>".html_safe, class: "block text-sm font-semibold text-purple-700 mb-2" %>
+          <%= f.text_area :bio, 
+              required: true,
+              rows: 3,
+              placeholder: "Biographie...",
+              data: { action: "blur->multi-step-form#validateRequiredField" },
+              class: field_error_class(model, :bio, "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-700 focus:border-transparent outline-none transition-all") %>
+          <%= field_error_message(model, :bio) %>
+        </div>
+      </div>
+
+      <!-- Étape 4: Réseaux sociaux et documents -->
+      <div data-multi-step-form-target="step" class="hidden">
+        <!-- LinkedIn URL -->
+        <div class="mb-4">
+          <%= f.label :linkedin_url, "LinkedIn URL", class: "block text-sm font-semibold text-purple-700 mb-2" %>
+          <%= f.text_field :linkedin_url, 
+              placeholder: "https://www.linkedin.com/in/your-profile", 
+              class: field_error_class(model, :linkedin_url, "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-700 focus:border-transparent outline-none transition-all") %>
+          <%= field_error_message(model, :linkedin_url) %>
+        </div>
+
+        <!-- Twitter URL -->
+        <div class="mb-4">
+          <%= f.label :twitter_url, "Twitter URL", class: "block text-sm font-semibold text-purple-700 mb-2" %>
+          <%= f.text_field :twitter_url, 
+              placeholder: "https://twitter.com/your-profile", 
+              class: field_error_class(model, :twitter_url, "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-700 focus:border-transparent outline-none transition-all") %>
+          <%= field_error_message(model, :twitter_url) %>
+        </div>
+
+        <!-- Website URL -->
+        <div class="mb-4">
+          <%= f.label :website_url, "Website URL", class: "block text-sm font-semibold text-purple-700 mb-2" %>
+          <%= f.text_field :website_url, 
+              placeholder: "https://your-website.com", 
+              class: field_error_class(model, :website_url, "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-700 focus:border-transparent outline-none transition-all") %>
+          <%= field_error_message(model, :website_url) %>
+        </div>
+
+        <!-- Photo -->
+        <div class="mb-4">
+          <%= f.label :photo, "Photo <span class='text-red-500'>*</span>".html_safe, class: "block text-sm font-semibold text-purple-700 mb-2" %>
+          <% if model.persisted? && model.photo.attached? %>
+            <div class="mb-4">
+              <%= image_tag model.photo, class: "w-32 h-32 rounded-full object-cover border-4 border-purple-700/20" %>
+              <input type="hidden" data-existing-file="true" />
+            </div>
+          <% end %>
+          <%= f.file_field :photo, 
+              accept: "image/*",
+              required: true,
+              data: { action: "change->multi-step-form#validateFileField" },
+              class: field_error_class(model, :photo, "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-700 focus:border-transparent outline-none transition-all") %>
+          <%= field_error_message(model, :photo) %>
+        </div>
+
+        <!-- Carte d'identité (si applicable) -->
+        <% if show_identity_document %>
+          <div class="mb-4">
+            <%= f.label :identity_document, "Carte d'identité ou passeport (PDF) <span class='text-red-500'>*</span>".html_safe, class: "block text-sm font-semibold text-purple-700 mb-2" %>
+            <%= f.file_field :identity_document, 
+                accept: "application/pdf",
+                required: true,
+                data: { action: "change->multi-step-form#validateFileField" },
+                class: field_error_class(model, :identity_document, "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-700 focus:border-transparent outline-none transition-all") %>
+            <%= field_error_message(model, :identity_document) %>
+          </div>
+        <% end %>
+      </div>
+
+      <!-- Navigation buttons -->
+      <div class="flex justify-between gap-4 mt-6 pt-4 border-t border-gray-200">
+        <button type="button" 
+                data-action="click->multi-step-form#previous"
+                class="px-4 sm:px-6 py-3 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors font-semibold flex items-center justify-center gap-2">
+          <svg class="w-5 h-5 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+          </svg>
+          <span class="hidden md:inline">Précédent</span>
+        </button>
+        
+        <div class="flex gap-4">
+          <% if cancel_path %>
+            <%= link_to cancel_path, class: "px-4 sm:px-6 py-3 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors font-semibold flex items-center justify-center gap-2" do %>
+              <svg class="w-5 h-5 sm:w-5 sm:h-5 hidden md:inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+              </svg>
+              <span class="hidden md:inline"><%= cancel_label %></span>
+              <span class="md:hidden">✕</span>
+            <% end %>
+          <% end %>
+          
+          <button type="button" 
+                  data-action="click->multi-step-form#next"
+                  data-multi-step-form-target="nextButton"
+                  class="px-4 sm:px-6 py-3 bg-gradient-to-r from-purple-700 to-purple-800 text-white rounded-lg hover:from-purple-800 hover:to-purple-700 transition-all font-semibold cursor-pointer flex items-center justify-center gap-2">
+            <span class="hidden md:inline">Suivant</span>
+            <svg class="w-5 h-5 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+            </svg>
+          </button>
+          
+          <button type="submit" 
+                  data-multi-step-form-target="submitButton"
+                  class="flex items-center justify-center gap-2 px-4 sm:px-6 py-3 bg-gradient-to-r from-purple-700 to-purple-800 text-white rounded-lg hover:from-purple-800 hover:to-purple-700 transition-all font-semibold cursor-pointer">
+            <span class="hidden md:inline"><%= submit_label %></span>
+            <svg class="w-5 h-5 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

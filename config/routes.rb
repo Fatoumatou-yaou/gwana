@@ -31,6 +31,7 @@ Rails.application.routes.draw do
     resources :gwanas, only: %i[index show], path: "gwanas"
     resources :articles, only: %i[index show]
     resources :gwana_network_requests, only: %i[new create show], path: "gwana_network_requests"
+    get "impact", to: "impact#index", as: :impact
 
     # API routes for location data
     namespace :api do

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_12_30_094509) do
+ActiveRecord::Schema[8.0].define(version: 2026_01_15_110433) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -112,6 +112,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_30_094509) do
     t.index ["commune_id"], name: "index_gwana_network_requests_on_commune_id"
     t.index ["created_at"], name: "index_gwana_network_requests_on_created_at"
     t.index ["email"], name: "index_gwana_network_requests_on_email"
+    t.index ["phone"], name: "index_gwana_network_requests_on_phone_unique", unique: true, where: "(phone IS NOT NULL)"
     t.index ["reviewed_by_id"], name: "index_gwana_network_requests_on_reviewed_by_id"
     t.index ["status"], name: "index_gwana_network_requests_on_status"
   end
@@ -151,6 +152,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_30_094509) do
     t.text "formations"
     t.index ["available_for_mentorship"], name: "index_gwanas_on_available_for_mentorship"
     t.index ["commune_id"], name: "index_gwanas_on_commune_id"
+    t.index ["phone"], name: "index_gwanas_on_phone_unique", unique: true, where: "(phone IS NOT NULL)"
     t.index ["region"], name: "index_gwanas_on_region"
     t.index ["slug"], name: "index_gwanas_on_slug", unique: true
     t.index ["user_id"], name: "index_gwanas_on_user_id", unique: true

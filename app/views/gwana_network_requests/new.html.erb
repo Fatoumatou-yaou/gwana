@@ -1,221 +1,26 @@
 <% content_for :title, "Rejoindre le réseau GWANA" %>
 
-<div class="max-w-4xl mx-auto px-4 py-8">
-  <h1 class="text-4xl font-bold mb-8 text-gray-900">Rejoindre le réseau GWANA</h1>
+<div class="max-w-5xl mx-auto px-4 py-2">
+  <h1 class="text-3xl font-bold mb-4 text-purple-700 text-center">Rejoindre le réseau</h1>
+  
+  <div class="mb-6 p-4 bg-blue-50 border-l-4 border-blue-500 rounded-r-lg">
+    <p class="text-sm text-blue-800">
+      <strong>Information importante :</strong> Veuillez remplir tous les champs obligatoires (marqués d'une étoile <span class="text-red-500">*</span>) et soumettre votre demande. Vous recevrez une réponse par email dans un délai d'un mois.
+    </p>
+  </div>
 
   <%= form_with model: @gwana_network_request, url: gwana_network_requests_path, multipart: true, class: "space-y-6" do |f| %>
-    <% if @gwana_network_request.errors.any? %>
-      <div class="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
-        <ul class="list-disc list-inside text-red-600">
-          <% @gwana_network_request.errors.full_messages.each do |message| %>
-            <li><%= message %></li>
-          <% end %>
-        </ul>
-      </div>
-    <% end %>
-
-    <div class="bg-white rounded-2xl shadow-xl p-8 md:p-12 relative overflow-hidden">
-      <!-- Decorative shapes -->
-      <div class="absolute top-0 right-0 w-32 h-32 bg-purple-700/10 rounded-full -mr-16 -mt-16"></div>
-      <div class="absolute bottom-0 left-0 w-40 h-40 bg-purple-700/5 rounded-full -ml-20 -mb-20"></div>
-
-      <div class="relative z-10">
-        <!-- Informations personnelles -->
-        <h2 class="text-2xl font-bold mb-6 text-purple-700">Informations personnelles</h2>
-        
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-          <!-- Prénom -->
-          <div>
-            <%= f.label :first_name, "Prénom", class: "block text-sm font-semibold text-purple-700 mb-2" %>
-            <%= f.text_field :first_name, 
-                required: true,
-                placeholder: "Prénom", 
-                class: field_error_class(@gwana_network_request, :first_name, "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-700 focus:border-transparent outline-none transition-all") %>
-            <%= field_error_message(@gwana_network_request, :first_name) %>
-          </div>
-
-          <!-- Nom -->
-          <div>
-            <%= f.label :last_name, "Nom", class: "block text-sm font-semibold text-purple-700 mb-2" %>
-            <%= f.text_field :last_name, 
-                required: true,
-                placeholder: "Nom", 
-                class: field_error_class(@gwana_network_request, :last_name, "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-700 focus:border-transparent outline-none transition-all") %>
-            <%= field_error_message(@gwana_network_request, :last_name) %>
-          </div>
-        </div>
-
-        <!-- Email -->
-        <div class="mb-6">
-          <%= f.label :email, "Email", class: "block text-sm font-semibold text-purple-700 mb-2" %>
-          <%= f.email_field :email, 
-              required: true,
-              placeholder: "email@exemple.com", 
-              class: field_error_class(@gwana_network_request, :email, "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-700 focus:border-transparent outline-none transition-all") %>
-          <%= field_error_message(@gwana_network_request, :email) %>
-        </div>
-
-        <!-- Adresse -->
-        <div class="mb-6">
-          <%= f.label :address, "Adresse", class: "block text-sm font-semibold text-purple-700 mb-2" %>
-          <%= f.text_field :address, 
-              placeholder: "Adresse", 
-              class: field_error_class(@gwana_network_request, :address, "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-700 focus:border-transparent outline-none transition-all") %>
-          <%= field_error_message(@gwana_network_request, :address) %>
-        </div>
-
-        <!-- Téléphone -->
-        <div class="mb-6">
-          <%= f.label :phone, "Téléphone", class: "block text-sm font-semibold text-purple-700 mb-2" %>
-          <%= f.text_field :phone, 
-              placeholder: "12345678", 
-              class: field_error_class(@gwana_network_request, :phone, "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-700 focus:border-transparent outline-none transition-all") %>
-          <%= field_error_message(@gwana_network_request, :phone) %>
-        </div>
-
-        <!-- Localisation -->
-        <div data-controller="location-cascade" class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-          <!-- Région -->
-          <div>
-            <%= f.label :region_id, "Région", class: "block text-sm font-semibold text-purple-700 mb-2" %>
-            <select name="region_id" 
-                    id="region_id"
-                    data-location-cascade-target="region"
-                    class="<%= field_error_class(@gwana_network_request, :commune_id, "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-700 focus:border-transparent outline-none transition-all") %>">
-              <option value="">Sélectionnez une région</option>
-              <% @regions.each do |region| %>
-                <option value="<%= region.id %>">
-                  <%= region.name %>
-                </option>
-              <% end %>
-            </select>
-          </div>
-
-          <!-- Département -->
-          <div>
-            <%= f.label :department_id, "Département", class: "block text-sm font-semibold text-purple-700 mb-2" %>
-            <select name="department_id" 
-                    id="department_id"
-                    data-location-cascade-target="department"
-                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-700 focus:border-transparent outline-none transition-all">
-              <option value="">Sélectionnez un département</option>
-            </select>
-          </div>
-
-          <!-- Commune -->
-          <div>
-            <%= f.label :commune_id, "Commune", class: "block text-sm font-semibold text-purple-700 mb-2" %>
-            <%= f.select :commune_id,
-                [],
-                { prompt: "Sélectionnez une commune" },
-                { 
-                  data: { 
-                    location_cascade_target: "commune"
-                  },
-                  class: field_error_class(@gwana_network_request, :commune_id, "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-700 focus:border-transparent outline-none transition-all")
-                } %>
-            <%= field_error_message(@gwana_network_request, :commune_id) %>
-          </div>
-        </div>
-
-        <!-- Profession -->
-        <div class="mb-6">
-          <%= f.label :profession, "Profession", class: "block text-sm font-semibold text-purple-700 mb-2" %>
-          <%= f.text_field :profession, 
-              placeholder: "Profession", 
-              class: field_error_class(@gwana_network_request, :profession, "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-700 focus:border-transparent outline-none transition-all") %>
-          <%= field_error_message(@gwana_network_request, :profession) %>
-        </div>
-
-        <!-- Expériences -->
-        <div class="mb-6">
-          <%= f.label :experiences, "Expériences", class: "block text-sm font-semibold text-purple-700 mb-2" %>
-          <%= f.text_area :experiences, 
-              rows: 4,
-              placeholder: "Expériences", 
-              class: field_error_class(@gwana_network_request, :experiences, "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-700 focus:border-transparent outline-none transition-all") %>
-          <%= field_error_message(@gwana_network_request, :experiences) %>
-        </div>
-
-        <!-- Formations -->
-        <div class="mb-6">
-          <%= f.label :formations, "Formations", class: "block text-sm font-semibold text-purple-700 mb-2" %>
-          <%= f.text_area :formations, 
-              rows: 4,
-              placeholder: "Formations", 
-              class: field_error_class(@gwana_network_request, :formations, "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-700 focus:border-transparent outline-none transition-all") %>
-          <%= field_error_message(@gwana_network_request, :formations) %>
-        </div>
-
-        <!-- LinkedIn URL -->
-        <div class="mb-6">
-          <%= f.label :linkedin_url, "LinkedIn URL", class: "block text-sm font-semibold text-purple-700 mb-2" %>
-          <%= f.text_field :linkedin_url, 
-              placeholder: "https://www.linkedin.com/in/your-profile", 
-              class: field_error_class(@gwana_network_request, :linkedin_url, "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-700 focus:border-transparent outline-none transition-all") %>
-          <%= field_error_message(@gwana_network_request, :linkedin_url) %>
-        </div>
-
-        <!-- Twitter URL -->
-        <div class="mb-6">
-          <%= f.label :twitter_url, "Twitter URL", class: "block text-sm font-semibold text-purple-700 mb-2" %>
-          <%= f.text_field :twitter_url, 
-              placeholder: "https://twitter.com/your-profile", 
-              class: field_error_class(@gwana_network_request, :twitter_url, "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-700 focus:border-transparent outline-none transition-all") %>
-          <%= field_error_message(@gwana_network_request, :twitter_url) %>
-        </div>
-
-        <!-- Website URL -->
-        <div class="mb-6">
-          <%= f.label :website_url, "Website URL", class: "block text-sm font-semibold text-purple-700 mb-2" %>
-          <%= f.text_field :website_url, 
-              placeholder: "https://your-website.com", 
-              class: field_error_class(@gwana_network_request, :website_url, "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-700 focus:border-transparent outline-none transition-all") %>
-          <%= field_error_message(@gwana_network_request, :website_url) %>
-        </div>
-
-        <!-- Bio -->
-        <div class="mb-6">
-          <%= f.label :bio, "Bio", class: "block text-sm font-semibold text-purple-700 mb-2" %>
-          <%= f.text_area :bio, 
-              rows: 5,
-              placeholder: "Biographie...", 
-              class: field_error_class(@gwana_network_request, :bio, "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-700 focus:border-transparent outline-none transition-all") %>
-          <%= field_error_message(@gwana_network_request, :bio) %>
-        </div>
-
-        <!-- Documents -->
-        <h2 class="text-2xl font-bold mb-6 mt-8 text-purple-700">Documents requis</h2>
-
-        <!-- Carte d'identité ou passeport -->
-        <div class="mb-6">
-          <%= f.label :identity_document, "Carte d'identité ou passeport (PDF)", class: "block text-sm font-semibold text-purple-700 mb-2" %>
-          <p class="text-xs text-gray-500 mb-2">Fichier PDF obligatoire</p>
-          <%= f.file_field :identity_document, 
-              accept: "application/pdf",
-              required: true,
-              class: field_error_class(@gwana_network_request, :identity_document, "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-700 focus:border-transparent outline-none transition-all") %>
-          <%= field_error_message(@gwana_network_request, :identity_document) %>
-        </div>
-
-        <!-- Photo -->
-        <div class="mb-8">
-          <%= f.label :photo, "Photo", class: "block text-sm font-semibold text-purple-700 mb-2" %>
-          <p class="text-xs text-gray-500 mb-2">Photo obligatoire</p>
-          <%= f.file_field :photo, 
-              accept: "image/*",
-              required: true,
-              class: field_error_class(@gwana_network_request, :photo, "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-700 focus:border-transparent outline-none transition-all") %>
-          <%= field_error_message(@gwana_network_request, :photo) %>
-        </div>
-
-        <!-- Actions -->
-        <div class="flex justify-end gap-4 mt-8">
-          <%= link_to "Annuler", root_path, class: "px-6 py-3 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors" %>
-          <%= f.submit "Envoyer la demande", class: "px-6 py-3 bg-gradient-to-r from-purple-700 to-purple-800 text-white rounded-lg hover:from-purple-800 hover:to-purple-700 transition-all font-semibold cursor-pointer" %>
-        </div>
-      </div>
-    </div>
+    <%= render MultiStepFormComponent.new(
+      form_builder: f,
+      model: @gwana_network_request,
+      regions: @regions,
+      departments: @departments,
+      communes: @communes,
+      show_identity_document: true,
+      submit_label: "Envoyer la demande",
+      cancel_path: root_path,
+      cancel_label: "Annuler"
+    ) %>
   <% end %>
 </div>
 

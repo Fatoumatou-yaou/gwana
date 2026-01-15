@@ -1,20 +1,24 @@
 <% content_for :title, "Créer un compte Gwana" %>
 
-<div class="min-h-screen bg-gradient-to-b from-white to-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-  <div class="max-w-4xl mx-auto">
-    <div class="text-center mb-8">
-      <h1 class="text-4xl font-bold text-purple-700 mb-2">Créer un compte Gwana</h1>
-      <p class="text-gray-600">Ajouter un nouveau membre à l'annuaire GWANA</p>
+<div class="min-h-screen bg-gradient-to-b from-white to-gray-50 py-4 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-5xl mx-auto">
+    <div class="text-center mb-4">
+      <h1 class="text-3xl font-bold text-purple-700 mb-1">Créer un compte Gwana</h1>
+      <p class="text-sm text-gray-600">Ajouter un nouveau membre à l'annuaire GWANA</p>
     </div>
 
     <%= form_with model: [:admin, @gwana], local: true, multipart: true do |f| %>
-      <%= render "admin/gwanas/form", gwana: @gwana, f: f %>
-      
-      <div class="flex justify-center gap-4 mt-8">
-        <%= f.submit "Créer le compte", 
-            class: "bg-gradient-to-r from-purple-700 to-purple-800 hover:from-purple-800 hover:to-purple-700 text-white font-bold py-4 px-12 rounded-lg transition-all shadow-lg transform hover:scale-105 flex items-center gap-2" %>
-        <%= link_to "Annuler", admin_gwanas_path, class: "bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-4 px-12 rounded-lg transition-all" %>
-      </div>
+      <%= render MultiStepFormComponent.new(
+        form_builder: f,
+        model: @gwana,
+        regions: @regions,
+        departments: @departments || [],
+        communes: @communes || [],
+        show_identity_document: false,
+        submit_label: "Créer le compte",
+        cancel_path: admin_gwanas_path,
+        cancel_label: "Annuler"
+      ) %>
     <% end %>
 
     <div class="text-center mt-6">

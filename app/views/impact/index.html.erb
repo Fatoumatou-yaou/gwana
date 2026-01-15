@@ -1,0 +1,90 @@
+<% content_for :title, "Notre Impact" %>
+
+<section class="min-h-screen bg-gradient-to-b from-white via-gray-50 to-white py-8 md:py-12">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Header Section -->
+    <div class="text-center mb-12">
+      <h1 class="text-5xl md:text-6xl font-bold mb-4 text-purple-700">
+        Notre Impact
+      </h1>
+      <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+        Des résultats concrets qui transforment la vie des femmes et des communautés au Niger
+      </p>
+    </div>
+
+
+    <!-- Events Grid -->
+    <div class="mb-8">
+      
+      <% if @events.any? %>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+          <% @events.each do |event| %>
+            <article class="group bg-white rounded-2xl overflow-hidden border border-gray-200 hover:border-purple-700/40 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 relative">
+              <!-- Icon Header -->
+              <div class="bg-gradient-to-br from-purple-700/10 to-blue-500/10 p-6 flex items-center justify-center">
+                <div class="text-6xl"><%= event[:icon] %></div>
+              </div>
+              
+              <!-- Content -->
+              <div class="p-6">
+                <!-- Type Badge -->
+                <div class="mb-3">
+                  <span class="px-3 py-1.5 bg-purple-700/20 text-purple-700 text-xs font-semibold rounded-full border border-purple-700/30">
+                    <%= event[:type].capitalize %>
+                  </span>
+                </div>
+                
+                <h3 class="text-xl font-bold mb-3 text-gray-900 group-hover:text-purple-700 transition-colors duration-300 line-clamp-2">
+                  <%= event[:title] %>
+                </h3>
+                
+                <p class="text-gray-600 text-sm mb-4 line-clamp-3 leading-relaxed">
+                  <%= event[:description] %>
+                </p>
+                
+                <!-- Event Details -->
+                <div class="space-y-2 mb-4">
+                  <div class="flex items-center gap-2 text-gray-600 text-sm">
+                    <svg class="w-4 h-4 text-purple-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                    </svg>
+                    <span><%= event[:date] %></span>
+                  </div>
+                  
+                  <div class="flex items-center gap-2 text-gray-600 text-sm">
+                    <svg class="w-4 h-4 text-purple-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                    </svg>
+                    <span><%= event[:location] %></span>
+                  </div>
+                  
+                  <div class="flex items-center gap-2 text-gray-600 text-sm">
+                    <svg class="w-4 h-4 text-purple-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
+                    </svg>
+                    <span><%= event[:participants] %> participants</span>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Shine Effect on Hover -->
+              <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000 pointer-events-none"></div>
+            </article>
+          <% end %>
+        </div>
+      <% else %>
+        <div class="text-center py-16">
+          <div class="max-w-md mx-auto">
+            <svg class="w-24 h-24 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            <h3 class="text-xl font-semibold text-gray-700 mb-2">Aucun événement disponible</h3>
+            <p class="text-gray-500">Les événements seront bientôt disponibles</p>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</section>
+

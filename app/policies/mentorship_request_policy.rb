@@ -1,11 +1,11 @@
 
 class MentorshipRequestPolicy < ApplicationPolicy
   def index?
-    user.present?
+    user? && !admin? && !gwana?
   end
 
   def show?
-    user.present? && (record.requester == user || record.mentor == user || user.admin?)
+    user? && !admin? && !gwana?
   end
 
   def new?
@@ -13,15 +13,15 @@ class MentorshipRequestPolicy < ApplicationPolicy
   end
 
   def create?
-    user.present? && user.user?
+    user? && !admin? && !gwana?
   end
 
   def update?
-    user.present? && (record.mentor == user || user.admin?)
+    user? && !admin? && !gwana?
   end
 
   def destroy?
-    user.present? && (record.requester == user || user.admin?)
+    !gwana?
   end
 
   def accept?
