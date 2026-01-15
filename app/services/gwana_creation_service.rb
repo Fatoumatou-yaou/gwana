@@ -71,8 +71,8 @@ class GwanaCreationService
 
       gwana.save!
 
-      # Envoyer le mot de passe temporaire par email
-      send_temporary_password(user, temporary_password)
+      # Envoyer le mot de passe temporaire par email uniquement en développement
+      send_temporary_password(user, temporary_password) if Rails.env.development?
 
       { success: true, user: user, gwana: gwana }
     end
