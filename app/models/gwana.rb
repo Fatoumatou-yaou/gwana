@@ -18,7 +18,9 @@ class Gwana < ApplicationRecord
   validates :first_name, :last_name,  presence: true
   validates :user_id, uniqueness: true
   validates :slug, uniqueness: true, allow_nil: true
+  validates :phone, format: { with: /\A\d{8}\z/ }, uniqueness: true, allow_blank: true
   validate :validate_url_format
+  validate :normalize_phone_before_validation
 
   # Scopes
   scope :available_for_mentorship, -> { where(available_for_mentorship: true) }
@@ -40,6 +42,11 @@ class Gwana < ApplicationRecord
   end
 
   private
+
+  def normalize_phone_before_validation
+    return unless phone.present?
+    self.phone = phone.gsub(/\D/, "")
+  end
 
   def validate_url_format
     url_fields = { linkedin_url: linkedin_url, twitter_url: twitter_url, website_url: website_url }

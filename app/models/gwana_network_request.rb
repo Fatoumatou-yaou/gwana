@@ -17,12 +17,16 @@ class GwanaNetworkRequest < ApplicationRecord
 
   # Validations
   validates :first_name, :last_name, :email, presence: true
-  validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }
+  validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }, uniqueness: true
+  validates :phone, format: { with: /\A\d{8}\z/ }, uniqueness: true, allow_blank: true
+  validates :profession, :experiences, :formations, :bio, presence: true
   validates :identity_document, presence: true
   validates :photo, presence: true
   validate :identity_document_must_be_pdf
   validate :validate_url_format
   validate :rejection_reason_present_if_rejected
+  validate :normalize_phone_before_validation
+  validate :commune_belongs_to_selected_region
 
   # Scopes
   scope :pending, -> { where(status: :pending) }
@@ -57,6 +61,11 @@ class GwanaNetworkRequest < ApplicationRecord
 
   private
 
+  def normalize_phone_before_validation
+    return unless phone.present?
+    self.phone = phone.gsub(/\D/, "")
+  end
+
   def identity_document_must_be_pdf
     return unless identity_document.attached?
 
@@ -84,5 +93,6 @@ class GwanaNetworkRequest < ApplicationRecord
       errors.add(:rejection_reason, "doit être rempli lors du rejet")
     end
   end
+
 end
 

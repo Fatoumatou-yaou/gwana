@@ -1,10 +1,14 @@
 class GwanaNetworkRequestPolicy < ApplicationPolicy
   def show?
-    true
+    true && !admin? || gwana?
   end
 
   def create?
-    true
+    true && !admin? || gwana?
+  end
+
+  def new?
+    true && !admin? || gwana?
   end
 
   class Scope < Scope

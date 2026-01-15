@@ -93,7 +93,7 @@ class ItemTableComponent < ViewComponent::Base
   def decorate_item(item)
     case @item_type.to_s
     when "gwana"
-      item # Gwana n'a pas besoin de decorator pour l'instant
+      GwanaDecorator.new(item)
     when "article"
       item # Article n'a pas besoin de decorator pour l'instant
     when "user"

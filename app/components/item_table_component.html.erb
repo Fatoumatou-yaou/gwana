@@ -41,9 +41,18 @@
                   <% parts.each do |part| %>
                     <% result = result.send(part) if result.respond_to?(part) %>
                   <% end %>
-                  <%= result %>
+                  <% if result.respond_to?(:html_safe) %>
+                    <%= result.html_safe %>
+                  <% else %>
+                    <%= result %>
+                  <% end %>
                 <% else %>
-                  <%= decorated.send(column) %>
+                  <% value = decorated.send(column) %>
+                  <% if value.respond_to?(:html_safe) %>
+                    <%= value.html_safe %>
+                  <% else %>
+                    <%= value %>
+                  <% end %>
                 <% end %>
               </td>
             <% end %>

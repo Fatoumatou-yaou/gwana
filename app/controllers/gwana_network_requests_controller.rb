@@ -1,6 +1,7 @@
 class GwanaNetworkRequestsController < ApplicationController
   layout "slim"
   before_action :set_gwana_network_request, only: [:show]
+  before_action :authorize_gwana_network_request, only: [:new, :create]
 
   def new
     @gwana_network_request = GwanaNetworkRequest.new
@@ -50,8 +51,13 @@ class GwanaNetworkRequestsController < ApplicationController
 
   private
 
+  def authorize_gwana_network_request
+    authorize GwanaNetworkRequest
+  end
+
   def set_gwana_network_request
     @gwana_network_request = GwanaNetworkRequest.find(params[:id])
+    authorize @gwana_network_request
   end
 
   def gwana_network_request_params
