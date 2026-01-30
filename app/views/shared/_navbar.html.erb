@@ -5,35 +5,38 @@
       <!-- Logo à gauche -->
       <div class="flex items-center">
         <%= link_to root_path, class: "flex items-center space-x-2 hover:opacity-80 transition-opacity" do %>
-          <h1 class="text-4xl font-bold text-purple-800 drop-shadow-lg">
+          <h1 class="text-4xl font-bold text-purple-600 drop-shadow-lg">
             gwana
           </h1>
         <% end %>
       </div>
 
       <!-- Menu desktop -->
-      <div class="hidden md:flex items-center gap-3">
-        <%= link_to root_path, class: "inline-flex items-center px-6 py-2.5 font-semibold hover:from-purple-800 hover:to-purple-700 transition-all duration-300 hover:-translate-y-0.5" do %>
+      <div class="hidden md:flex items-center gap-2">
+        <%= link_to root_path, class: "inline-flex items-center px-4 py-2.5 hover:text-purple-600 transition-all duration-300 hover:-translate-y-0.5" do %>
           Accueil
         <% end %>
-        <%= link_to "#mission-title", class: "inline-flex items-center px-6 py-2.5 font-semibold hover:from-purple-800 hover:to-purple-700 transition-all duration-300 hover:-translate-y-0.5" do %>
-          A propos
+        <%= link_to "#mission-title", class: "inline-flex items-center px-4 py-2.5 hover:text-purple-600 transition-all duration-300 hover:-translate-y-0.5" do %>
+         Présentation
+        <% end %>
+        <%= link_to gwana_activities_path, class: "inline-flex items-center px-4 py-2.5 hover:text-purple-600 transition-all duration-300 hover:-translate-y-0.5" do %>
+         Activités des Gwanas
         <% end %>
         
         <% if user_signed_in? %>
           <% if current_user.admin? %>
-            <%= link_to admin_dashboard_path, class: "inline-flex items-center gap-2 px-6 py-2.5 rounded-xl text-white font-semibold bg-purple-800 hover:bg-purple-700 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-0.5" do %>
+            <%= link_to admin_dashboard_path, class: "inline-flex items-center gap-2 px-6 py-2.5 rounded-xl text-white font-semibold bg-purple-600 hover:bg-purple-500 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-0.5" do %>
               <span class="material-symbols-outlined text-lg">dashboard</span>
               Mon Espace
             <% end %>
           <% else %>
-            <%= link_to dashboard_path, class: "inline-flex items-center gap-2 px-6 py-2.5 rounded-xl text-white font-semibold bg-purple-800 hover:bg-purple-700 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-0.5" do %>
+            <%= link_to dashboard_path, class: "inline-flex items-center gap-2 px-6 py-2.5 rounded-xl text-white font-semibold bg-purple-600 hover:bg-purple-500 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-0.5" do %>
               <span class="material-symbols-outlined text-lg">dashboard</span>
               Mon Espace
             <% end %>
           <% end %>
         <% else %>
-          <%= link_to new_user_session_path, class: "inline-flex items-center gap-2 px-6 py-2.5 rounded-xl text-white font-semibold bg-purple-800 hover:bg-purple-700 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-0.5" do %>
+          <%= link_to new_user_session_path, class: "inline-flex items-center gap-2 px-6 py-2.5 rounded-xl text-white font-semibold bg-purple-600 hover:bg-purple-500 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-0.5" do %>
             <span class="material-symbols-outlined text-lg">login</span>
             Se connecter
           <% end %>
@@ -60,7 +63,7 @@
       data-mobile-menu-target="menu">
       
       <div class="px-4 py-6 space-y-4">
-        <%= link_to root_path, class: "block px-4 py-3 text-gray-700 hover:text-purple-700 hover:bg-purple-50 rounded-lg transition-colors duration-300" do %>
+        <%= link_to root_path, class: "block px-4 py-3 text-gray-700 hover:text-purple-700 transition-colors duration-300" do %>
           <div class="flex items-center gap-3">
             <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
@@ -74,25 +77,34 @@
             <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
             </svg>
-            A propos
+            Présentation
+          </div>
+        <% end %>
+
+        <%= link_to gwana_activities_path, class: "block px-4 py-3 text-gray-700 hover:text-purple-700 hover:bg-purple-50 rounded-lg transition-colors duration-300" do %>
+          <div class="flex items-center gap-3">
+            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            Activités des Gwanas
           </div>
         <% end %>
         
         <div class="pt-4 border-t border-gray-200">
           <% if user_signed_in? %>
             <% if current_user.admin? %>
-              <%= link_to admin_dashboard_path, class: "flex items-center justify-center gap-2 w-full px-4 py-3 text-center text-white font-semibold bg-purple-800 rounded-lg hover:bg-purple-700 transition-all duration-300" do %>
+              <%= link_to admin_dashboard_path, class: "flex items-center justify-center gap-2 w-full px-4 py-3 text-center text-white font-semibold bg-purple-600 rounded-lg hover:bg-purple-500 transition-all duration-300" do %>
                 <span class="material-symbols-outlined text-lg">dashboard</span>
                 Mon Espace  
               <% end %>
             <% else %>
-              <%= link_to dashboard_path, class: "flex items-center justify-center gap-2 w-full px-4 py-3 text-center text-white font-semibold bg-purple-800 rounded-lg hover:bg-purple-700 transition-all duration-300" do %>
+              <%= link_to dashboard_path, class: "flex items-center justify-center gap-2 w-full px-4 py-3 text-center text-white font-semibold bg-purple-600 rounded-lg hover:bg-purple-500 transition-all duration-300" do %>
                 <span class="material-symbols-outlined text-lg">dashboard</span>
                 Mon Espace
               <% end %>
             <% end %>
           <% else %>
-            <%= link_to new_user_session_path, class: "flex items-center justify-center gap-2 w-full px-4 py-3 text-center text-white font-semibold bg-purple-800 hover:bg-purple-700 shadow-lg hover:shadow-xl border-2  rounded-lg transition-colors duration-300" do %>
+            <%= link_to new_user_session_path, class: "flex items-center justify-center gap-2 w-full px-4 py-3 text-center text-white font-semibold bg-purple-600 hover:bg-purple-500 shadow-lg hover:shadow-xl border-2 border-purple-600 rounded-lg transition-colors duration-300" do %>
               <span class="material-symbols-outlined text-lg">login</span>
               Se connecter
             <% end %>

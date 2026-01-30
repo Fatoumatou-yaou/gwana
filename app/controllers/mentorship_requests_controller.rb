@@ -19,6 +19,13 @@ class MentorshipRequestsController < ApplicationController
 
   def new
     @mentorship_request = MentorshipRequest.new
+    # Pré-sélectionner le mentor si mentor_id est passé en paramètre
+    if params[:mentor_id].present?
+      mentor_user = User.find_by(id: params[:mentor_id])
+      if mentor_user&.gwana? && mentor_user.gwana_profile&.available_for_mentorship?
+        @mentorship_request.mentor_id = params[:mentor_id]
+      end
+    end
     @gwanas = User.gwana.joins(:gwana_profile).where(gwanas: { available_for_mentorship: true }).includes(:gwana_profile).order("gwanas.first_name, gwanas.last_name")
     @regions = Region.ordered
     authorize @mentorship_request

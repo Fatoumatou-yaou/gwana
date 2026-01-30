@@ -51,7 +51,8 @@ class GwanaCreationService
         skills: @params[:skills] || @params["skills"],
         commune_id: @params[:commune_id] || @params["commune_id"],
         experiences: @params[:experiences] || @params["experiences"],
-        formations: @params[:formations] || @params["formations"]
+        formations: @params[:formations] || @params["formations"],
+        available_for_mentorship: @params[:available_for_mentorship] || @params["available_for_mentorship"] || false
       )
 
       # Ajouter address et phone si présents

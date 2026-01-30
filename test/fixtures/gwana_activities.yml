@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  gwana: one
+  activity_type: MyString
+  youtube_video_id: MyString
+  description: MyText
+
+two:
+  gwana: two
+  activity_type: MyString
+  youtube_video_id: MyString
+  description: MyText

@@ -67,6 +67,72 @@
             </div>
           </div>
         <% end %>
+
+        <!-- Activités -->
+        <div class="bg-gradient-to-br from-white to-gray-50 rounded-xl p-6 border border-purple-700/30 shadow-lg overflow-hidden">
+          <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-full bg-purple-700/20 flex items-center justify-center">
+                <svg class="w-6 h-6 text-purple-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                </svg>
+              </div>
+              <h2 class="text-2xl font-bold text-purple-700">Activités</h2>
+            </div>
+            <%= link_to "Nouvelle activité", new_admin_gwana_activity_path(@gwana), class: "bg-purple-700 hover:bg-purple-800 text-white px-4 py-2 rounded-lg transition-colors text-sm" %>
+          </div>
+
+          <!-- Liste des activités -->
+          <% if @gwana.activities.any? %>
+            <div class="space-y-4">
+              <% @gwana.activities.recent.each do |activity| %>
+                <div class="bg-white rounded-lg p-4 border border-gray-200 overflow-hidden">
+                  <div class="flex items-start justify-between mb-2 gap-4">
+                    <div class="flex-1 min-w-0">
+                      <div class="flex items-center gap-2 mb-2 flex-wrap">
+                        <span class="px-3 py-1 bg-purple-700/20 text-purple-700 rounded-full text-xs font-semibold whitespace-nowrap">
+                          <%= activity.activity_type.humanize %>
+                        </span>
+                        <span class="text-xs text-gray-500 whitespace-nowrap">
+                          <%= l(activity.created_at, format: :short) %>
+                        </span>
+                      </div>
+                      <p class="text-gray-700 text-sm line-clamp-2 break-words overflow-hidden"><%= activity.description %></p>
+                    </div>
+                    <div class="flex gap-2 ml-4 flex-shrink-0">
+                      <%= link_to "Modifier", edit_admin_gwana_activity_path(@gwana, activity), class: "text-purple-700 hover:text-purple-800 text-sm whitespace-nowrap" %>
+                      <%= link_to "Supprimer", admin_gwana_activity_path(@gwana, activity), method: :delete, 
+                          data: { confirm: "Êtes-vous sûr de vouloir supprimer cette activité ?" },
+                          class: "text-red-600 hover:text-red-700 text-sm whitespace-nowrap" %>
+                    </div>
+                  </div>
+                  <% if activity.has_video? %>
+                    <div class="mt-2 text-xs text-gray-500">
+                      <span class="inline-flex items-center gap-1">
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                          <path d="M2 6a2 2 0 012-2h6a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V6zM14.553 7.106A1 1 0 0014 8v4a1 1 0 00.553.894l2 1A1 1 0 0018 13V7a1 1 0 00-1.447-.894l-2 1z"/>
+                        </svg>
+                        Vidéo YouTube
+                      </span>
+                    </div>
+                  <% end %>
+                  <% if activity.has_photos? %>
+                    <div class="mt-2 text-xs text-gray-500">
+                      <span class="inline-flex items-center gap-1">
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                          <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd"/>
+                        </svg>
+                        <%= activity.photos.count %> photo<%= "s" if activity.photos.count > 1 %>
+                      </span>
+                    </div>
+                  <% end %>
+                </div>
+              <% end %>
+            </div>
+          <% else %>
+            <p class="text-gray-500 text-sm">Aucune activité enregistrée pour le moment.</p>
+          <% end %>
+        </div>
       </div>
 
       <!-- Right Column - Sidebar Info -->
@@ -91,8 +157,9 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
               </svg>
               <span><%= @gwana.region %></span>
-              <% if @gwana.commune.present? %>
-                <span class="text-gray-500">• <%= @gwana.commune.name %></span>
+              <% commune_name = @gwana.commune %>
+              <% if commune_name.present? && commune_name != "non fourni" %>
+                <span class="text-gray-500">• <%= commune_name %></span>
               <% end %>
             </div>
           <% end %>

@@ -211,6 +211,18 @@
     <%= field_error_message(gwana, :bio) %>
   </div>
 
+  <!-- Disponible pour mentorat -->
+  <div class="mb-6">
+    <div class="flex items-center">
+      <%= f.check_box :available_for_mentorship, 
+          { class: "w-4 h-4 text-purple-700 bg-white border-gray-300 rounded focus:ring-purple-700/50" }, 
+          true, 
+          false %>
+      <%= f.label :available_for_mentorship, "Disponible pour mentorat", class: "ml-3 text-sm font-semibold text-purple-700 cursor-pointer hover:text-purple-600 transition-colors" %>
+    </div>
+    <p class="mt-1 text-xs text-gray-500 ml-7">Cochez cette case si le gwana est disponible pour offrir du mentorat</p>
+  </div>
+
   <!-- Photo -->
   <div class="mb-8">
     <%= f.label :photo, "Photo", class: "block text-sm font-semibold text-purple-700 mb-2" %>

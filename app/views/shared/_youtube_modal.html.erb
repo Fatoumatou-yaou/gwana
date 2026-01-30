@@ -1,0 +1,24 @@
+<!-- YouTube Modal -->
+<div id="youtube-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm" data-controller="youtube-modal" data-youtube-modal-target="modal">
+  <div class="relative w-full max-w-4xl mx-4">
+    <button 
+      type="button"
+      class="absolute -top-12 right-0 text-white hover:text-gray-300 text-2xl font-bold"
+      data-action="click->youtube-modal#close"
+    >
+      ×
+    </button>
+    <div class="relative w-full" style="padding-bottom: 56.25%;">
+      <iframe 
+        id="youtube-iframe"
+        class="absolute top-0 left-0 w-full h-full"
+        src=""
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen
+        data-youtube-modal-target="iframe"
+      ></iframe>
+    </div>
+  </div>
+</div>
+

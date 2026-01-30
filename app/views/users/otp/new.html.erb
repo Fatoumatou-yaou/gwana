@@ -63,7 +63,7 @@
           <div class="mt-6 space-y-3">
             <%= form_with url: resend_users_otp_index_path, method: :post, local: true do |f| %>
               <%= hidden_field_tag :email, @email %>
-              <button type="submit" class="w-full text-sm font-semibold text-purple-700 hover:text-purple-800 transition-colors duration-200 hover:underline">
+              <button type="submit" class="w-full text-sm font-semibold text-purple-700 hover:text-purple-600 transition-colors duration-200 hover:underline">
                 Renvoyer le code
               </button>
             <% end %>
