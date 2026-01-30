@@ -15,6 +15,10 @@ class GwanaDecorator < ApplicationDecorator
     object.commune&.name || "non fourni"
   end
 
+  def region
+    object.commune&.department&.region&.name || "non fourni"
+  end
+
   def available_for_mentorship
     if object.available_for_mentorship?
       helpers.content_tag(:span, "Oui", class: "inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800")

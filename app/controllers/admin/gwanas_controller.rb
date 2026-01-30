@@ -3,7 +3,7 @@ class Admin::GwanasController < Admin::BaseController
     before_action :set_gwana, only: %i[show edit update destroy]
 
     def index
-      gwanas = policy_scope(Gwana).includes(:user).order(created_at: :desc)
+      gwanas = policy_scope(Gwana).includes(:user, commune: { department: :region }).order(created_at: :desc)
       @pagy, gwanas = pagy(gwanas)
       @gwanas = decorate(gwanas)
     end

@@ -12,6 +12,7 @@ class Gwana < ApplicationRecord
   has_many :mentorship_requests_as_mentor, class_name: "MentorshipRequest", foreign_key: "mentor_id"
   has_many :mentorship_requests_as_requester, class_name: "MentorshipRequest", foreign_key: "requester_id"
   has_many :gwana_update_requests, class_name: "GwanaUpdateRequest", dependent: :destroy
+  has_many :activities, class_name: "GwanaActivity", dependent: :destroy
   has_one_attached :photo
 
   # Validations

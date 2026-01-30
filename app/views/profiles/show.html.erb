@@ -96,8 +96,8 @@
                   <p class="text-xs text-gray-500 uppercase">Localisation</p>
                   <p class="text-gray-900 font-medium">
                     <%= @gwana.region %>
-                    <% if @gwana.commune.present? %>
-                      <span class="text-gray-600">• <%= @gwana.commune.name %></span>
+                    <% if @gwana.commune.present? && @gwana.commune != "non fourni" %>
+                      <span class="text-gray-600">• <%= @gwana.commune %></span>
                     <% end %>
                   </p>
                 </div>

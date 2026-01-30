@@ -1,0 +1,97 @@
+<% content_for :title, "Modifier l'activité" %>
+
+<div class="max-w-4xl mx-auto px-4 py-8">
+  <div class="mb-6">
+    <h1 class="text-4xl font-bold text-gray-900 mb-2">Modifier l'activité</h1>
+    <p class="text-gray-600">Modifier une activité de <%= @gwana.full_name %></p>
+  </div>
+
+  <%= form_with model: [:admin, @gwana.object, @activity], url: admin_gwana_activity_path(@gwana, @activity), local: true, multipart: true do |f| %>
+    <% if @activity.errors.any? %>
+      <div class="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+        <ul class="list-disc list-inside text-red-600">
+          <% @activity.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="bg-white rounded-lg p-8 border border-gray-200 shadow-sm">
+      <!-- Type d'activité -->
+      <div class="mb-6">
+        <%= f.label :activity_type, "Type d'activité", class: "block text-sm font-semibold text-gray-700 mb-2" %>
+        <%= f.select :activity_type, 
+            options_for_select([
+              ["Formation", "formation"],
+              ["Séminaire", "seminaire"],
+              ["Caravane", "caravane"],
+              ["Atelier", "atelier"],
+              ["Sensibilisation", "sensibilisation"],
+              ["Mentorat", "mentorat"],
+              ["Autre", "autre"]
+            ], @activity.activity_type), 
+            {}, 
+            { class: "w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-gray-900 focus:outline-none focus:border-purple-700 focus:ring-2 focus:ring-purple-700/20 transition-all" } %>
+      </div>
+
+      <!-- Description -->
+      <div class="mb-6">
+        <%= f.label :description, "Description", class: "block text-sm font-semibold text-gray-700 mb-2" %>
+        <%= f.text_area :description, 
+            rows: 6,
+            placeholder: "Décrivez l'activité réalisée...", 
+            class: "w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-gray-900 focus:outline-none focus:border-purple-700 focus:ring-2 focus:ring-purple-700/20 transition-all" %>
+      </div>
+
+      <!-- Vidéo YouTube -->
+      <div class="mb-6">
+        <%= f.label :youtube_video_id, "ID de la vidéo YouTube (optionnel)", class: "block text-sm font-semibold text-gray-700 mb-2" %>
+        <%= f.text_field :youtube_video_id, 
+            placeholder: "Ex: dQw4w9WgXcQ (l'ID de l'URL youtube.com/watch?v=...)", 
+            class: "w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-gray-900 focus:outline-none focus:border-purple-700 focus:ring-2 focus:ring-purple-700/20 transition-all" %>
+        <p class="text-xs text-gray-500 mt-2">Indiquez uniquement l'ID de la vidéo (pas l'URL complète)</p>
+        <% if @activity.has_video? %>
+          <div class="mt-2">
+            <iframe width="560" height="315" src="<%= @activity.youtube_embed_url %>" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen class="rounded-lg"></iframe>
+          </div>
+        <% end %>
+      </div>
+
+      <!-- Photos existantes -->
+      <% if @activity.has_photos? %>
+        <div class="mb-6">
+          <label class="block text-sm font-semibold text-gray-700 mb-2">Photos actuelles</label>
+          <div class="grid grid-cols-3 gap-4">
+            <% @activity.photos.each do |photo| %>
+              <div class="relative">
+                <%= image_tag photo, class: "w-full h-32 object-cover rounded-lg border border-gray-300" %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+
+      <!-- Photos -->
+      <div class="mb-6">
+        <%= f.label :photos, "Ajouter des photos (optionnel)", class: "block text-sm font-semibold text-gray-700 mb-2" %>
+        <%= f.file_field :photos, 
+            multiple: true,
+            accept: "image/jpeg,image/jpg,image/png,image/webp",
+            class: "w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-gray-900 focus:outline-none focus:border-purple-700 focus:ring-2 focus:ring-purple-700/20 transition-all" %>
+        <p class="text-xs text-gray-500 mt-2">Formats acceptés : JPEG, PNG, WebP. Vous pouvez sélectionner plusieurs photos.</p>
+      </div>
+
+      <div class="text-xs text-gray-500 mb-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+        <strong>Note :</strong> L'activité doit avoir au moins une vidéo YouTube ou des photos.
+      </div>
+    </div>
+
+    <div class="flex justify-end gap-4 mt-8">
+      <%= link_to "Annuler", admin_gwana_path(@gwana), class: "bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-lg transition-colors" %>
+      <%= f.submit "Mettre à jour l'activité", 
+          class: "bg-purple-700 hover:bg-purple-800 text-white px-6 py-3 rounded-lg transition-colors font-semibold" %>
+    </div>
+  <% end %>
+</div>
+

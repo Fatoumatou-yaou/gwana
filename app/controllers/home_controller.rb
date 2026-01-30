@@ -8,5 +8,6 @@ class HomeController < ApplicationController
     @recent_articles = decorate(Article.published.recent.limit(3))
     @featured_gwanas = decorate(Gwana.available_for_mentorship.limit(6))
     @directory_gwanas = decorate(Gwana.limit(14))
+    @recent_activities = decorate(GwanaActivity.recent.limit(6))
   end
 end

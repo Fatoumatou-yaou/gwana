@@ -31,6 +31,7 @@ Rails.application.routes.draw do
     resources :gwanas, only: %i[index show], path: "gwanas"
     resources :articles, only: %i[index show]
     resources :gwana_network_requests, only: %i[new create show], path: "gwana_network_requests"
+    resources :gwana_activities, only: [:index, :show], path: "activites-gwanas"
     get "impact", to: "impact#index", as: :impact
 
     # API routes for location data
@@ -61,7 +62,9 @@ Rails.application.routes.draw do
       root "dashboard#show"
       resource :dashboard, only: [:show], controller: "dashboard"
       
-      resources :gwanas
+      resources :gwanas do
+        resources :activities, controller: "gwana_activities", except: [:show]
+      end
       resources :mentorship_requests, only: %i[index show]
       resources :gwana_update_requests, only: %i[index show], path: "gwana_update_requests" do
         member do
