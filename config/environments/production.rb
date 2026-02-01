@@ -56,8 +56,8 @@ Rails.application.configure do
 
   # Bloquer tous les envois d'emails en production pour éviter les erreurs
   # Les emails ne seront pas envoyés mais ne généreront pas d'erreur
-  config.action_mailer.delivery_method = :test
-  config.action_mailer.perform_deliveries = false
+  # config.action_mailer.delivery_method = :test
+  # config.action_mailer.perform_deliveries = false
 
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
@@ -69,26 +69,25 @@ Rails.application.configure do
   }
 
   # Specify outgoing SMTP server. Remember to add smtp/* credentials via rails credentials:edit.
-  # Configuration via variables d'environnement pour DigitalOcean App Platform
-  # if ENV["SMTP_ADDRESS"].present?
-  #   config.action_mailer.smtp_settings = {
-  #     address: ENV["SMTP_ADDRESS"],
-  #     port: ENV.fetch("SMTP_PORT", 587).to_i,
-  #     user_name: ENV["SMTP_USER_NAME"],
-  #     password: ENV["SMTP_PASSWORD"],
-  #     authentication: (ENV["SMTP_AUTHENTICATION"] || "plain").to_sym,
-  #     enable_starttls_auto: ENV["SMTP_ENABLE_STARTTLS_AUTO"] != "false"
-  #   }
-  # else
-    # Fallback vers credentials Rails si les variables d'environnement ne sont pas définies
-    # config.action_mailer.smtp_settings = {
-    #   user_name: Rails.application.credentials.dig(:smtp, :user_name),
-    #   password: Rails.application.credentials.dig(:smtp, :password),
-    #   address: Rails.application.credentials.dig(:smtp, :address) || "smtp.example.com",
-    #   port: Rails.application.credentials.dig(:smtp, :port) || 587,
-    #   authentication: :plain
-    # }
-  end
+
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+    port: Rails.application.credentials.dig(:smtp, :smtp_port) || 587,
+    address: Rails.application.credentials.dig(:smtp, :smtp_server) || "smtp.mailgun.org",
+    user_name: Rails.application.credentials.dig(:smtp, :smtp_login),
+    password: Rails.application.credentials.dig(:smtp, :smtp_password),
+    domain: Rails.application.credentials.dig(:smtp, :domain),
+    authentication: :plain,
+    enable_starttls_auto: true
+}
+
+  config.action_mailer.perform_deliveries = true
+  config.action_mailer.raise_delivery_errors = true
+
+  config.action_mailer.default_options = {
+    host: ENV.fetch("APP_DOMAIN", "gwanas.org"),
+    protocol: "https"
+  }
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation cannot be found).
