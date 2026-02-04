@@ -29,9 +29,10 @@ threads threads_count, threads_count
 
 # En production, utiliser un socket Unix pour Nginx
 # En développement/test, utiliser le port TCP
-if Rails.env.production?
-  bind "unix://#{Rails.root}/tmp/sockets/puma.sock"
-  pidfile ENV.fetch("PIDFILE", "#{Rails.root}/tmp/pids/puma.pid")
+if ENV["RAILS_ENV"] == "production"
+  app_root = File.expand_path("../..", __FILE__)
+  bind "unix://#{app_root}/tmp/sockets/puma.sock"
+  pidfile ENV.fetch("PIDFILE", "#{app_root}/tmp/pids/puma.pid")
 else
   # Specifies the `port` that Puma will listen on to receive requests; default is 3000.
   port ENV.fetch("PORT", 3000)
