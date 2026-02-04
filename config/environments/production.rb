@@ -71,7 +71,9 @@ Rails.application.configure do
     if mailgun_creds[:api_key].present?
       # L'initializer mailgun_api_delivery.rb configurera automatiquement :mailgun_api
       config.action_mailer.delivery_method = :mailgun_api
-      Rails.logger.info "Mailgun API delivery activé"
+      config.after_initialize do
+        Rails.logger.info "Mailgun API delivery activé" if Rails.logger
+      end
     else
       # Fallback vers SMTP si pas d'API key
       config.action_mailer.delivery_method = :smtp
@@ -86,7 +88,9 @@ Rails.application.configure do
         open_timeout: 30,
         read_timeout: 30
       }
-      Rails.logger.info "Mailgun SMTP delivery activé"
+      config.after_initialize do
+        Rails.logger.info "Mailgun SMTP delivery activé" if Rails.logger
+      end
     end
 
     # Configurer l'expéditeur par défaut
@@ -99,7 +103,9 @@ Rails.application.configure do
     # Fallback : bloquer les emails si Mailgun n'est pas configuré
     config.action_mailer.delivery_method = :test
     config.action_mailer.perform_deliveries = false
-    Rails.logger.warn "Mailgun credentials not found, emails are disabled"
+    config.after_initialize do
+      Rails.logger.warn "Mailgun credentials not found, emails are disabled" if Rails.logger
+    end
   end
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to

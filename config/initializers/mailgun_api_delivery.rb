@@ -149,7 +149,9 @@ if mailgun_creds && mailgun_creds[:api_key].present?
   # Activer automatiquement en production, optionnel en développement
   if Rails.env.production?
     Rails.application.config.action_mailer.delivery_method = :mailgun_api
-    Rails.logger.info "Mailgun API delivery method activé (production)"
+    Rails.application.config.after_initialize do
+      Rails.logger.info "Mailgun API delivery method activé (production)" if Rails.logger
+    end
   end
 end
 
