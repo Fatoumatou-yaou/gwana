@@ -54,40 +54,52 @@ Rails.application.configure do
   # Replace the default in-process and non-durable queuing backend for Active Job.
   config.active_job.queue_adapter = :sidekiq
 
-  # Bloquer tous les envois d'emails en production pour éviter les erreurs
-  # Les emails ne seront pas envoyés mais ne généreront pas d'erreur
-  config.action_mailer.delivery_method = :test
-  config.action_mailer.perform_deliveries = false
-
-  # Ignore bad email addresses and do not raise email delivery errors.
-  # Set this to true and configure the email server for immediate delivery to raise delivery errors.
-  config.action_mailer.raise_delivery_errors = false
+  # Configuration Mailgun pour l'envoi d'emails
+  config.action_mailer.perform_deliveries = true
+  config.action_mailer.raise_delivery_errors = true
 
   # Set host to be used by links generated in mailer templates.
   config.action_mailer.default_url_options = { 
-    host: ENV.fetch("APP_DOMAIN", "example.com")
+    host: ENV.fetch("APP_DOMAIN", "gwanas.org"),
+    protocol: "https"
   }
 
-  # Specify outgoing SMTP server. Remember to add smtp/* credentials via rails credentials:edit.
-  # Configuration via variables d'environnement pour DigitalOcean App Platform
-  # if ENV["SMTP_ADDRESS"].present?
-  #   config.action_mailer.smtp_settings = {
-  #     address: ENV["SMTP_ADDRESS"],
-  #     port: ENV.fetch("SMTP_PORT", 587).to_i,
-  #     user_name: ENV["SMTP_USER_NAME"],
-  #     password: ENV["SMTP_PASSWORD"],
-  #     authentication: (ENV["SMTP_AUTHENTICATION"] || "plain").to_sym,
-  #     enable_starttls_auto: ENV["SMTP_ENABLE_STARTTLS_AUTO"] != "false"
-  #   }
-  # else
-    # Fallback vers credentials Rails si les variables d'environnement ne sont pas définies
-    # config.action_mailer.smtp_settings = {
-    #   user_name: Rails.application.credentials.dig(:smtp, :user_name),
-    #   password: Rails.application.credentials.dig(:smtp, :password),
-    #   address: Rails.application.credentials.dig(:smtp, :address) || "smtp.example.com",
-    #   port: Rails.application.credentials.dig(:smtp, :port) || 587,
-    #   authentication: :plain
-    # }
+  # Configuration Mailgun depuis les credentials Rails
+  mailgun_creds = Rails.application.credentials.dig(:mailgun)
+  if mailgun_creds
+    # Utiliser l'API Mailgun si disponible (plus fiable que SMTP)
+    if mailgun_creds[:api_key].present?
+      # L'initializer mailgun_api_delivery.rb configurera automatiquement :mailgun_api
+      config.action_mailer.delivery_method = :mailgun_api
+      Rails.logger.info "Mailgun API delivery activé"
+    else
+      # Fallback vers SMTP si pas d'API key
+      config.action_mailer.delivery_method = :smtp
+      config.action_mailer.smtp_settings = {
+        address: mailgun_creds[:smtp_server] || "smtp.mailgun.org",
+        port: (mailgun_creds[:smtp_port] || 587).to_i,
+        domain: mailgun_creds[:domain] || "gwanas.org",
+        user_name: mailgun_creds[:smtp_login],
+        password: mailgun_creds[:smtp_password],
+        authentication: (mailgun_creds[:authentication] || "plain").to_sym,
+        enable_starttls_auto: mailgun_creds[:enable_starttls_auto] != false,
+        open_timeout: 30,
+        read_timeout: 30
+      }
+      Rails.logger.info "Mailgun SMTP delivery activé"
+    end
+
+    # Configurer l'expéditeur par défaut
+    defaut_creds = Rails.application.credentials.dig(:defaut)
+    if defaut_creds
+      ActionMailer::Base.default from: defaut_creds[:email_from] || "no-reply@gwanas.org"
+      ActionMailer::Base.default reply_to: defaut_creds[:email_reply_to] if defaut_creds[:email_reply_to]
+    end
+  else
+    # Fallback : bloquer les emails si Mailgun n'est pas configuré
+    config.action_mailer.delivery_method = :test
+    config.action_mailer.perform_deliveries = false
+    Rails.logger.warn "Mailgun credentials not found, emails are disabled"
   end
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to

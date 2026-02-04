@@ -31,8 +31,31 @@ Rails.application.configure do
   # Store uploaded files on the local file system (see config/storage.yml for options).
   config.active_storage.service = :local
 
-  # Don't care if the mailer can't send.
-  config.action_mailer.raise_delivery_errors = false
+  # Configuration email pour développement
+  # Par défaut, utiliser :test (emails dans ActionMailer::Base.deliveries)
+  # Pour tester avec Mailgun API, définir USE_MAILGUN_API=true
+  if ENV["USE_MAILGUN_API"] == "true"
+    mailgun_creds = Rails.application.credentials.dig(:mailgun)
+    if mailgun_creds && mailgun_creds[:api_key].present?
+      config.action_mailer.delivery_method = :mailgun_api
+      config.action_mailer.perform_deliveries = true
+      config.action_mailer.raise_delivery_errors = true
+      # Le logger sera disponible après l'initialisation complète
+      config.after_initialize do
+        Rails.logger.info "Mailgun API activé en développement" if Rails.logger
+      end
+    else
+      config.action_mailer.delivery_method = :test
+      config.action_mailer.perform_deliveries = false
+      config.after_initialize do
+        Rails.logger.warn "Mailgun credentials non trouvés, utilisation de :test" if Rails.logger
+      end
+    end
+  else
+    config.action_mailer.delivery_method = :test
+    config.action_mailer.perform_deliveries = true
+    config.action_mailer.raise_delivery_errors = false
+  end
 
   # Make template changes take effect immediately.
   config.action_mailer.perform_caching = false
