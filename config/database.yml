@@ -82,7 +82,7 @@ production:
   primary: &primary_production
     <<: *default
     database: gwana_production
-    username: gwana
+    username: deploy
     password: <%= ENV["GWANA_DATABASE_PASSWORD"] %>
   cache:
     <<: *primary_production
