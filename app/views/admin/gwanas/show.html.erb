@@ -133,6 +133,62 @@
             <p class="text-gray-500 text-sm">Aucune activité enregistrée pour le moment.</p>
           <% end %>
         </div>
+
+        <!-- Vidéos Portraits -->
+        <div class="bg-gradient-to-br from-white to-gray-50 rounded-xl p-6 border border-purple-700/30 shadow-lg overflow-hidden">
+          <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-full bg-purple-700/20 flex items-center justify-center">
+                <svg class="w-6 h-6 text-purple-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                </svg>
+              </div>
+              <h2 class="text-2xl font-bold text-purple-700">Vidéos Portraits</h2>
+            </div>
+            <%= link_to "Nouvelle vidéo", new_admin_gwana_portrait_video_path(@gwana), class: "bg-purple-700 hover:bg-purple-800 text-white px-4 py-2 rounded-lg transition-colors text-sm" %>
+          </div>
+
+          <!-- Liste des vidéos portraits -->
+          <% if @gwana.portrait_videos.any? %>
+            <div class="space-y-4">
+              <% @gwana.portrait_videos.ordered.each do |portrait_video| %>
+                <div class="bg-white rounded-lg p-4 border border-gray-200 overflow-hidden">
+                  <div class="flex items-start justify-between mb-2 gap-4">
+                    <div class="flex-1 min-w-0">
+                      <div class="flex items-center gap-2 mb-2 flex-wrap">
+                        <span class="px-3 py-1 bg-purple-700/20 text-purple-700 rounded-full text-xs font-semibold whitespace-nowrap">
+                          Ordre: <%= portrait_video.display_order %>
+                        </span>
+                        <span class="text-xs text-gray-500 whitespace-nowrap">
+                          <%= l(portrait_video.created_at, format: :short) %>
+                        </span>
+                      </div>
+                      <p class="text-gray-700 text-sm line-clamp-2 break-words overflow-hidden"><%= portrait_video.teaser_text %></p>
+                      <% if portrait_video.youtube_video_id.present? %>
+                        <div class="mt-2 text-xs text-gray-500">
+                          <span class="inline-flex items-center gap-1">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                              <path d="M2 6a2 2 0 012-2h6a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V6zM14.553 7.106A1 1 0 0014 8v4a1 1 0 00.553.894l2 1A1 1 0 0018 13V7a1 1 0 00-1.447-.894l-2 1z"/>
+                            </svg>
+                            Vidéo YouTube
+                          </span>
+                        </div>
+                      <% end %>
+                    </div>
+                    <div class="flex gap-2 ml-4 flex-shrink-0">
+                      <%= link_to "Modifier", edit_admin_gwana_portrait_video_path(@gwana, portrait_video), class: "text-purple-700 hover:text-purple-800 text-sm whitespace-nowrap" %>
+                      <%= link_to "Supprimer", admin_gwana_portrait_video_path(@gwana, portrait_video), method: :delete, 
+                          data: { confirm: "Êtes-vous sûr de vouloir supprimer cette vidéo portrait ?" },
+                          class: "text-red-600 hover:text-red-700 text-sm whitespace-nowrap" %>
+                    </div>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          <% else %>
+            <p class="text-gray-500 text-sm">Aucune vidéo portrait enregistrée pour le moment.</p>
+          <% end %>
+        </div>
       </div>
 
       <!-- Right Column - Sidebar Info -->

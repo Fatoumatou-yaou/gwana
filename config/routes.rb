@@ -64,6 +64,7 @@ Rails.application.routes.draw do
       
       resources :gwanas do
         resources :activities, controller: "gwana_activities", except: [:show]
+        resources :portrait_videos, controller: "gwana_portrait_videos", except: [:show]
       end
       resources :mentorship_requests, only: %i[index show]
       resources :gwana_update_requests, only: %i[index show], path: "gwana_update_requests" do

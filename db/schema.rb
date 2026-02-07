@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_01_30_161737) do
+ActiveRecord::Schema[8.0].define(version: 2026_02_05_194929) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -128,6 +128,17 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_30_161737) do
     t.index ["status"], name: "index_gwana_network_requests_on_status"
   end
 
+  create_table "gwana_portrait_videos", force: :cascade do |t|
+    t.bigint "gwana_id", null: false
+    t.string "youtube_video_id"
+    t.text "teaser_text"
+    t.integer "display_order"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["display_order"], name: "index_gwana_portrait_videos_on_display_order"
+    t.index ["gwana_id"], name: "index_gwana_portrait_videos_on_gwana_id"
+  end
+
   create_table "gwana_update_requests", force: :cascade do |t|
     t.bigint "gwana_id", null: false
     t.text "bio"
@@ -234,6 +245,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_30_161737) do
   add_foreign_key "communes", "departments"
   add_foreign_key "departments", "regions"
   add_foreign_key "gwana_activities", "gwanas"
+  add_foreign_key "gwana_portrait_videos", "gwanas"
   add_foreign_key "gwana_update_requests", "gwanas"
   add_foreign_key "gwana_update_requests", "users", column: "reviewed_by_id"
   add_foreign_key "gwanas", "communes"

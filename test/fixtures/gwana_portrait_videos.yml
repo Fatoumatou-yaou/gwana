@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  gwana: one
+  youtube_video_id: MyString
+  teaser_text: MyText
+  display_order: 1
+
+two:
+  gwana: two
+  youtube_video_id: MyString
+  teaser_text: MyText
+  display_order: 1
