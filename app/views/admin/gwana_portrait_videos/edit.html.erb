@@ -1,0 +1,13 @@
+<% content_for :title, "Modifier la vidéo portrait" %>
+
+<div class="max-w-4xl mx-auto px-4 py-8">
+  <div class="mb-6">
+    <h1 class="text-4xl font-bold text-gray-900 mb-2">Modifier la vidéo portrait</h1>
+    <p class="text-gray-600">Modifier une vidéo portrait de <%= @gwana.full_name %></p>
+  </div>
+
+  <% form_url = admin_gwana_portrait_video_path(@gwana, @portrait_video) %>
+  <% submit_text = "Mettre à jour la vidéo portrait" %>
+  <%= render "form", form_url: form_url, submit_text: submit_text %>
+</div>
+

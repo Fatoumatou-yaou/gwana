@@ -6,7 +6,7 @@
   
   <!-- Background Image avec effet parallaxe -->
   <div class="absolute inset-0 z-0" data-hero-target="image">
-    <%= image_tag "group-photo.jpeg", 
+    <%= image_tag "group-photo.jpg", 
         alt: "Groupe de femmes pionnières GWANA",
         class: "w-full h-full object-cover object-center",
         loading: "eager" %>
@@ -51,29 +51,29 @@
 
         <!-- CTA Buttons -->
         <div 
-          class="flex flex-col sm:flex-row gap-4 mb-8 opacity-0 scale-95 transition-all duration-500 ease-out"
+          class="flex flex-col sm:flex-row gap-4 mb-8 opacity-0 scale-95 transition-all duration-500 ease-out relative"
           data-hero-target="cta">
           <%= link_to new_gwana_network_request_path, 
-              class: "group relative px-6 sm:px-8 py-3 sm:py-4 bg-purple-600 text-white rounded-xl font-semibold text-base sm:text-lg shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 hover:-translate-y-0.5 overflow-hidden will-change-transform" do %>
+              class: "group relative px-6 sm:px-8 py-3 sm:py-4 bg-purple-600 text-white rounded-xl font-semibold text-base sm:text-lg shadow-xl hover:shadow-2xl transition-all duration-300 overflow-hidden isolate" do %>
             <span class="relative z-10 flex items-center justify-center gap-2">
               Rejoindre le réseau
-              <svg class="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg class="w-5 h-5 duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
               </svg>
             </span>
-            <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/25 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 ease-out"></div>
-            <div class="absolute inset-0 bg-purple-600 opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-300 -z-10"></div>
+            <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-500 ease-out rounded-xl pointer-events-none"></div>
+
           <% end %>
 
           <%= link_to mentorship_request_path_for_user, 
-              class: "group relative px-6 sm:px-8 py-3 sm:py-4 bg-white/10 text-white rounded-xl font-semibold text-base sm:text-lg border-2 border-white/30 hover:bg-white/20 hover:border-white/50 transition-all duration-300 hover:scale-105 hover:-translate-y-0.5 will-change-transform" do %>
+              class: "group relative px-6 sm:px-8 py-3 sm:py-4 bg-white/10 text-white rounded-xl font-semibold text-base sm:text-lg border-2 border-white/30 hover:bg-white/20 hover:border-white/50 transition-all duration-300 overflow-hidden isolate" do %>
             <span class="relative z-10 flex items-center justify-center gap-2">
               Demander un mentorat
-              <svg class="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg class="w-5 h-5 duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
               </svg>
             </span>
-            <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-500 ease-out rounded-xl"></div>
+            <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-500 ease-out rounded-xl pointer-events-none"></div>
           <% end %>
         </div>
 

@@ -228,7 +228,7 @@
                 else 'bg-gray-100 text-gray-800 border border-gray-200'
                 end
               %>">
-                <%= request.status.humanize %>
+                <%= request.decorate.status_label %>
               </span>
             </div>
           <% end %>

@@ -9,5 +9,6 @@ class HomeController < ApplicationController
     @featured_gwanas = decorate(Gwana.available_for_mentorship.limit(6))
     @directory_gwanas = decorate(Gwana.limit(14))
     @recent_activities = decorate(GwanaActivity.recent.limit(6))
+    @portrait_videos = decorate(GwanaPortraitVideo.ordered.includes(:gwana))
   end
 end

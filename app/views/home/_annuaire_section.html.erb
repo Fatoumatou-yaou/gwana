@@ -4,7 +4,7 @@
     <!-- Background geometric shapes -->
     <div class="absolute inset-0 overflow-hidden pointer-events-none">
       <!-- Wavy lines background -->
-      <svg class="absolute bottom-0 left-0 w-full h-64 opacity-15"
+      <svg class="absolute bottom-0 left-0 w-full h-32 md:h-40 opacity-15"
         viewBox="0 0 1200 200"
         xmlns="http://www.w3.org/2000/svg"
         preserveAspectRatio="none"
@@ -29,7 +29,8 @@
     <div class="container mx-auto px-4 sm:px-4 lg:px-5 relative z-10">
       <!-- Title -->
       <div class="text-center mb-12 md:mb-16">
-        <h2 id="annuaire-title" class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-purple-600">
+        <h2 id="annuaire-title" class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-purple-600 text-center">
+        
           Annuaire GWANA
         </h2>
       </div>
@@ -75,9 +76,9 @@
       </div>
 
       <!-- Link to full directory -->
-      <div class="text-center mt-0">
-        <%= link_to gwanas_path, class: "group inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-purple-700 to-purple-800 text-white rounded-xl font-semibold text-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2" do %>
-          <span>Voir tout l'annuaire</span>
+      <div class="text-center mt-4 mb-2">
+        <%= link_to gwanas_path, class: "group inline-flex items-center gap-2 px-8 py-4 bg-purple-600 text-white rounded-xl font-semibold text-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2" do %>
+          <span>Toutes les Gwanas</span>
           <svg class="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
           </svg>

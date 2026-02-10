@@ -1,0 +1,99 @@
+<% content_for :title, "Détails de la demande de mentorat" %>
+
+<div class="max-w-9xl mx-auto px-4 py-8">
+  <div class="mb-6">
+    <%= link_to "← Retour à la liste", admin_mentorship_requests_path, class: "text-purple-700 hover:text-purple-600 transition-colors" %>
+  </div>
+
+  <div class="bg-white rounded-lg p-8 border border-gray-200 shadow-sm">
+    <!-- Header -->
+    <div class="flex justify-between items-start mb-8">
+      <div>
+        <h1 class="text-4xl font-bold text-gray-900 mb-2">Détails de la demande de mentorat</h1>
+        <div class="flex items-center gap-4">
+          <%= @mentorship_request.decorate.status_badge %>
+          <span class="text-sm text-gray-600">
+            Créée le <%= l(@mentorship_request.created_at, format: :long) %>
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Informations principales -->
+    <div class="mb-8">
+      <h2 class="text-xl font-semibold text-gray-900 mb-4">Informations principales</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <span class="text-sm font-semibold text-purple-700">Demandeur</span>
+          <p class="text-gray-700"><%= @mentorship_request.decorate.requester_name %></p>
+          <p class="text-sm text-gray-500"><%= @mentorship_request.requester.email %></p>
+        </div>
+        <div>
+          <span class="text-sm font-semibold text-purple-700">Mentor</span>
+          <p class="text-gray-700"><%= @mentorship_request.decorate.mentor_name %></p>
+          <p class="text-sm text-gray-500"><%= @mentorship_request.mentor.email %></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Informations académiques -->
+    <div class="mb-8">
+      <h2 class="text-xl font-semibold text-gray-900 mb-4">Informations académiques</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <% if @mentorship_request.niveau_etudes.present? %>
+          <div>
+            <span class="text-sm font-semibold text-purple-700">Niveau d'études</span>
+            <p class="text-gray-700"><%= @mentorship_request.niveau_etudes.humanize %></p>
+          </div>
+        <% end %>
+        <% if @mentorship_request.filiere.present? %>
+          <div>
+            <span class="text-sm font-semibold text-purple-700">Filière</span>
+            <p class="text-gray-700"><%= @mentorship_request.filiere %></p>
+          </div>
+        <% end %>
+        <% if @mentorship_request.commune.present? %>
+          <div>
+            <span class="text-sm font-semibold text-purple-700">Localisation</span>
+            <p class="text-gray-700">
+              <%= @mentorship_request.commune.name %>, 
+              <%= @mentorship_request.commune.department.name %>, 
+              <%= @mentorship_request.commune.department.region.name %>
+            </p>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- Motivation -->
+    <% if @mentorship_request.motivation.present? %>
+      <div class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-900 mb-4">Motivation</h2>
+        <div class="bg-gray-50 rounded-lg p-6">
+          <p class="text-gray-700 whitespace-pre-wrap"><%= @mentorship_request.motivation %></p>
+        </div>
+      </div>
+    <% end %>
+
+    <!-- Objectifs -->
+    <% if @mentorship_request.objectives.present? %>
+      <div class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-900 mb-4">Objectifs</h2>
+        <div class="bg-gray-50 rounded-lg p-6">
+          <p class="text-gray-700 whitespace-pre-wrap"><%= @mentorship_request.objectives %></p>
+        </div>
+      </div>
+    <% end %>
+
+    <!-- Message -->
+    <% if @mentorship_request.message.present? %>
+      <div class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-900 mb-4">Message</h2>
+        <div class="bg-gray-50 rounded-lg p-6">
+          <p class="text-gray-700 whitespace-pre-wrap"><%= @mentorship_request.message %></p>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+

@@ -53,7 +53,8 @@
         <p class="text-xs text-gray-500 mt-2">Indiquez uniquement l'ID de la vidéo (pas l'URL complète)</p>
         <% if @activity.has_video? %>
           <div class="mt-2">
-            <iframe width="560" height="315" src="<%= @activity.youtube_embed_url %>" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen class="rounded-lg"></iframe>
+            <iframe width="560" height="315" src="<%= @activity.youtube_embed_url %>" frameborder="0" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen class="rounded-lg"></iframe>
+            
           </div>
         <% end %>
       </div>

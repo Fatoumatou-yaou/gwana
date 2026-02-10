@@ -13,6 +13,7 @@ class Gwana < ApplicationRecord
   has_many :mentorship_requests_as_requester, class_name: "MentorshipRequest", foreign_key: "requester_id"
   has_many :gwana_update_requests, class_name: "GwanaUpdateRequest", dependent: :destroy
   has_many :activities, class_name: "GwanaActivity", dependent: :destroy
+  has_many :portrait_videos, class_name: "GwanaPortraitVideo", dependent: :destroy
   has_one_attached :photo
 
   # Validations
@@ -25,7 +26,12 @@ class Gwana < ApplicationRecord
 
   # Scopes
   scope :available_for_mentorship, -> { where(available_for_mentorship: true) }
-  scope :by_region, ->(region) { where(region: region) if region.present? }
+  scope :by_region, ->(region_name) {
+    if region_name.present?
+      joins(commune: { department: :region })
+        .where(regions: { name: region_name })
+    end
+  }
   scope :by_profession, ->(profession) { where(profession: profession) if profession.present? }
 
   # Full-text search

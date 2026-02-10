@@ -1,0 +1,13 @@
+<% content_for :title, "Nouvelle vidéo portrait" %>
+
+<div class="max-w-4xl mx-auto px-4 py-8">
+  <div class="mb-6">
+    <h1 class="text-4xl font-bold text-gray-900 mb-2">Nouvelle vidéo portrait</h1>
+    <p class="text-gray-600">Ajouter une vidéo portrait pour <%= @gwana.full_name %></p>
+  </div>
+
+  <% form_url = admin_gwana_portrait_videos_path(@gwana) %>
+  <% submit_text = "Créer la vidéo portrait" %>
+  <%= render "form", form_url: form_url, submit_text: submit_text %>
+</div>
+

@@ -1,12 +1,12 @@
 class ApplicationController < ActionController::Base
   # Only allow modern browsers supporting webp images, web push, badges, import maps, CSS nesting, and CSS :has.
+  # Skip browser check for Turbo/AJAX requests to avoid 406 errors on mobile
   allow_browser versions: :modern
+  before_action :set_locale
+  before_action :skip_browser_check_for_turbo, if: -> { request.headers["Turbo-Frame"].present? || request.xhr? }
 
   include Pundit::Authorization
   include Pagy::Backend
-
-  # Set locale
-  before_action :set_locale
 
   # Handle Pundit errors
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
@@ -43,5 +43,9 @@ class ApplicationController < ActionController::Base
       flash[:alert] = "Vous devez vous connecter pour acceder à cette page"
     end
     super
+  end
+
+  def skip_browser_check_for_turbo
+    true
   end
 end

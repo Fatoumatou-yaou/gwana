@@ -1,0 +1,179 @@
+<!-- Vidéos Portraits des Gwanas Section -->
+<% if @portrait_videos.any? %>
+  <section 
+    class="relative py-12 md:py-10 overflow-hidden" 
+    aria-labelledby="portrait-videos-title"
+    data-controller="portrait-videos-carousel">
+    <div class="absolute -inset-4 bg-gradient-to-r from-purple-200 to-purple-300 rounded-3xl blur-2xl opacity-20 group-hover:opacity-30 transition-opacity duration-500"></div>
+    <div class="hero-floating-shapes">
+      <div class="floating-shape shape-1"></div>
+      <div class="floating-shape shape-2"></div>
+      <div class="floating-shape shape-3"></div>
+    </div>
+    
+    <div class="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
+      <!-- Header -->
+      <div class="max-w-3xl mx-auto text-center mb-10">
+        <h2 id="portrait-videos-title" 
+          class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-purple-600 text-center mb-6">
+          Vidéos Portraits
+        </h2>
+        <p class="text-lg md:text-xl text-gray-600 leading-relaxed">
+          Découvrez les portraits vidéo des membres du réseau GWANA
+        </p>
+      </div>
+
+      <!-- Carousel Container -->
+      <div class="max-w-7xl mx-auto relative px-4 sm:px-6 lg:px-8">
+        <div 
+          class="relative"
+          data-portrait-videos-carousel-target="container">
+          
+          <!-- Navigation Buttons -->
+          <button
+            type="button"
+            data-portrait-videos-carousel-target="prevButton"
+            data-action="click->portrait-videos-carousel#previous"
+            class="flex absolute left-0 md:-left-12 top-1/2 -translate-y-1/2 z-20 w-12 h-12 bg-white rounded-full shadow-lg items-center justify-center hover:bg-gray-50 transition-colors border border-purple-200"
+            aria-label="Vidéo précédente">
+            <svg class="w-6 h-6 text-gray-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+            </svg>
+          </button>
+
+          <button
+            type="button"
+            data-portrait-videos-carousel-target="nextButton"
+            data-action="click->portrait-videos-carousel#next"
+            class="flex absolute right-0 md:-right-12 top-1/2 -translate-y-1/2 z-20 w-12 h-12 bg-white rounded-full shadow-lg items-center justify-center hover:bg-gray-50 transition-colors border border-purple-200"
+            aria-label="Vidéo suivante">
+            <svg class="w-6 h-6 text-gray-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+            </svg>
+          </button>
+
+          <!-- Cards Track -->
+          <div 
+            class="overflow-hidden mx-4 md:mx-0"
+            data-portrait-videos-carousel-target="track">
+            <div 
+              class="flex gap-6 transition-transform duration-500 ease-in-out"
+              data-portrait-videos-carousel-target="trackInner">
+              <% @portrait_videos.each_with_index do |portrait_video, index| %>
+                <div 
+                  class="flex-shrink-0 w-full md:w-1/2 lg:w-1/3 xl:w-1/4"
+                  data-portrait-videos-carousel-target="card">
+                  <button
+                    type="button"
+                    class="group relative w-full text-left bg-white rounded-xl overflow-hidden border border-purple-200 hover:shadow-2xl isolate <%= 'border-purple-700 border-2' if index == 0 %>"
+                    data-action="click->portrait-videos-carousel#loadVideo"
+                    data-portrait-videos-carousel-video-url-param="<%= portrait_video.youtube_embed_url %>"
+                    data-portrait-videos-carousel-index-param="<%= index %>">
+                    
+                    <!-- Background decorative shapes -->
+                    <div class="absolute inset-0 pointer-events-none overflow-hidden rounded-xl">
+                      <!-- Gradient overlay -->
+                      <div class="absolute inset-0 bg-gradient-to-br from-purple-50/30 via-transparent to-blue-50/20 group-hover:from-purple-50/50 group-hover:to-blue-50/30 transition-all duration-500"></div>
+                      
+                      <!-- Animated circles - visibles par défaut -->
+                      <div class="absolute -top-8 -right-8 w-32 h-32 bg-gradient-radial from-purple-400/15 via-purple-300/8 to-transparent rounded-full blur-2xl opacity-60 group-hover:scale-150 group-hover:opacity-100 group-hover:from-purple-400/25 transition-all duration-700 ease-out"></div>
+                      <div class="absolute -bottom-6 -left-6 w-24 h-24 bg-gradient-radial from-blue-400/15 via-blue-300/8 to-transparent rounded-full blur-xl opacity-50 group-hover:scale-125 group-hover:opacity-100 group-hover:from-blue-400/25 transition-all duration-700 ease-out" style="transition-delay: 100ms;"></div>
+                      
+                      <!-- Geometric shapes - visibles par défaut -->
+                      <div class="absolute top-0 right-0 w-20 h-20 transform rotate-45 translate-x-6 -translate-y-6 group-hover:translate-x-0 group-hover:translate-y-0 transition-all duration-500">
+                        <div class="w-full h-full bg-gradient-to-br from-purple-200/20 to-transparent rounded-lg blur-sm opacity-70 group-hover:opacity-100 group-hover:from-purple-200/40 transition-all duration-500"></div>
+                      </div>
+                      <div class="absolute bottom-0 left-0 w-16 h-16 transform -rotate-12 -translate-x-4 translate-y-4 group-hover:translate-x-0 group-hover:translate-y-0 transition-all duration-500" style="transition-delay: 150ms;">
+                        <div class="w-full h-full bg-gradient-to-tr from-blue-200/20 to-transparent rounded-lg blur-sm opacity-60 group-hover:opacity-100 group-hover:from-blue-200/40 transition-all duration-500"></div>
+                      </div>
+                      
+                      <!-- Shimmer effect -->
+                      <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out"></div>
+                      
+                      <!-- Subtle pattern overlay -->
+                      <div class="absolute inset-0 opacity-[0.03] group-hover:opacity-[0.06] transition-opacity duration-500" style="background-image: radial-gradient(circle at 2px 2px, purple 1px, transparent 0); background-size: 24px 24px;"></div>
+                      
+                      <!-- Additional decorative dots -->
+                      <div class="absolute top-4 right-4 w-2 h-2 bg-purple-400/30 rounded-full group-hover:bg-purple-400/50 group-hover:scale-150 transition-all duration-300"></div>
+                      <div class="absolute bottom-4 left-4 w-1.5 h-1.5 bg-purple-400/30 rounded-full group-hover:bg-purple-400/50 group-hover:scale-150 transition-all duration-300" style="transition-delay: 100ms;"></div>
+                    </div>
+                    
+                    <!-- Content -->
+                    <div class="relative z-10 p-6">
+                      <h3 class="text-xl font-bold text-gray-900 mb-2 group-hover:text-purple-700 transition-colors duration-300">
+                        <%= portrait_video.gwana.full_name %>
+                      </h3>
+                      <p class="text-gray-600 text-sm leading-relaxed line-clamp-2 group-hover:text-gray-700 transition-colors duration-300">
+                        <%= portrait_video.teaser_text %>
+                      </p>
+                      
+                      <!-- Play icon indicator -->
+                      <div class="mt-4 flex items-center text-purple-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M8 5v14l11-7z"/>
+                        </svg>
+                        <span class="text-sm font-medium">Voir la vidéo</span>
+                      </div>
+                    </div>
+                    
+                    <!-- Border glow effect -->
+                    <div class="absolute inset-0 rounded-xl border-2 border-purple-400/0 group-hover:border-purple-400/50 transition-all duration-500 pointer-events-none"></div>
+                  </button>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Video Player Section -->
+      <div class="max-w-5xl mx-auto mt-12 px-4 md:px-0">
+        <div class="relative w-full" style="padding-bottom: 56.25%;">
+          <% clip_id = "video-wave-clip-#{SecureRandom.hex(4)}" %>
+          <svg class="absolute inset-0 w-full h-full" style="pointer-events: none;">
+            <defs>
+              <clipPath id="<%= clip_id %>" clipPathUnits="objectBoundingBox">
+                <!-- Forme polygonale exacte avec segments inclinés + 4 coins arrondis uniformisés (rayon 0.05) -->
+                <path d="
+                  M 0.05,0
+                  Q 0,0 0,0.05
+                  
+                  L 0,0.80
+                  Q 0,0.82 0.03,0.82
+                  
+                  L 0.30,0.82
+                  Q 0.34,0.82 0.38,0.88
+                  Q 0.40,0.91 0.43,0.91
+                  
+                  L 0.57,0.91
+                  Q 0.60,0.91 0.62,0.88
+                  Q 0.66,0.82 0.70,0.82
+                  
+                  L 0.97,0.82
+                  Q 1,0.82 1,0.80
+                  
+                  L 1,0.08
+                  Q 1,0 0.92,0
+                  Z
+                " fill-rule="evenodd"/>
+              </clipPath>
+            </defs>
+          </svg>
+          <div 
+            class="absolute inset-0 bg-black overflow-hidden shadow-2xl rounded-2xl"
+            style="clip-path: url(#<%= clip_id %>);">
+            <iframe
+              data-portrait-videos-carousel-target="videoFrame"
+              src="<%= @portrait_videos.first.youtube_embed_url %>"
+              frameborder="0"
+              allow="autoplay; encrypted-media; picture-in-picture"
+              allowfullscreen
+              class="absolute inset-0 w-full h-full">
+            </iframe>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+<% end %>
+

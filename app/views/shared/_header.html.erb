@@ -1,23 +1,43 @@
-<header class="w-full ml-32 py-4 md:py-6.5 bg-white shadow">
-  <div class="container flex items-center justify-between h-full mx-auto">
-    <div class="flex items-center">
-      <h1 class="text-3xl font-bold text-purple-700"><%= content_for :title %></h1>
+<header class="w-full md:ml-32 py-3 sm:py-4 md:py-6.5 bg-white shadow">
+  <div class="container flex items-center justify-between h-full mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Bouton hamburger mobile - Dans le header -->
+    <button 
+      type="button" 
+      class="md:hidden mr-4 text-gray-700 hover:text-purple-700 transition-colors flex-shrink-0" 
+      aria-label="Menu"
+      data-action="click->mobile-sidebar#toggle"
+    >
+      <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+      </svg>
+    </button>
+    <div class="flex items-center min-w-0 flex-1">
+      <h1 class="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-purple-700 truncate"><%= content_for :title %></h1>
     </div>
 
     <ul class="flex items-center flex-shrink-0 space-x-4 md:space-x-6 text-sm md:text-base">
       <% if user_signed_in? %>
-        <li class="relative group dropdown">
-          <div class="group relative dropdown cursor-pointer text-base tracking-wide bg-white py-1 rounded-lg px-3 hover:bg-purple-50 transition-colors" aria-label="Account" aria-haspopup="true">
-            <div class="flex items-center">
+        <li class="relative" data-controller="dropdown">
+          <button 
+            type="button"
+            class="group relative cursor-pointer text-base tracking-wide bg-white py-1 rounded-lg px-3 hover:bg-purple-50 transition-colors flex items-center"
+            aria-label="Account"
+            aria-haspopup="true"
+            data-action="click->dropdown#toggle"
+            data-dropdown-target="button"
+          >
               <% user = decorated_current_user %>
               <div class="hidden md:block mr-2">
                 <p class="font-semibold text-sm uppercase text-wrap"><%= decorated_current_user&.last_name %></p>
               </div>
               <span class="material-symbols-outlined text-xl text-gray-500 group-hover:text-purple-700 transition-colors">more_vert</span>
-            </div>
-          </div>
-          <div class="group-hover:block dropdown-menu absolute hidden h-auto z-10 right-0">
-            <ul class="top-0 bg-white px-4 py-3 w-56 mt-2 space-y-2 text-gray-700 border border-gray-200 rounded-lg shadow-lg" aria-label="submenu">
+          </button>
+          <div 
+            class="hidden absolute h-auto z-50 right-0 mt-2"
+            data-dropdown-target="menu"
+            data-action="mouseenter->dropdown#show mouseleave->dropdown#hide"
+          >
+            <ul class="bg-white px-4 py-3 w-56 space-y-2 text-gray-700 border border-gray-200 rounded-lg shadow-lg" aria-label="submenu">
               <li class="flex">
                 <%= link_to profile_path, class: "inline-flex items-center w-full px-3 py-2 text-sm font-semibold transition-colors duration-150 rounded-md hover:bg-purple-50 hover:text-purple-700" do %>
                   <span class="material-symbols-outlined text-lg mr-2">person</span>
