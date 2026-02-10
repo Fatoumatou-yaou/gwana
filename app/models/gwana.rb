@@ -26,7 +26,12 @@ class Gwana < ApplicationRecord
 
   # Scopes
   scope :available_for_mentorship, -> { where(available_for_mentorship: true) }
-  scope :by_region, ->(region) { where(region: region) if region.present? }
+  scope :by_region, ->(region_name) {
+    if region_name.present?
+      joins(commune: { department: :region })
+        .where(regions: { name: region_name })
+    end
+  }
   scope :by_profession, ->(profession) { where(profession: profession) if profession.present? }
 
   # Full-text search

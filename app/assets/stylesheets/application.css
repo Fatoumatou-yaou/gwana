@@ -81,6 +81,20 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
+/* Mobile filters panel - ensure selects dropdown stays within panel */
+@media (max-width: 1023px) {
+  /* Style pour limiter la hauteur du dropdown des selects dans le panneau mobile */
+  [data-filters-toggle-target="panel"] select {
+    /* Le dropdown sera limité par le conteneur parent */
+  }
+  
+  /* S'assurer que le panneau permet au dropdown de s'afficher */
+  [data-filters-toggle-target="panel"] {
+    /* Le dropdown des selects natifs est rendu au niveau du body,
+       donc on s'assure qu'il y a assez d'espace visuellement */
+  }
+}
+
 /* Hero Section Modern Animations 2025-2026 */
 @keyframes float {
   0%, 100% {
@@ -186,8 +200,8 @@ h1, h2, h3, h4, h5, h6 {
   position: relative;
   width: 100%;
   overflow: hidden;
-  padding: 3rem 0;
-  margin: 0 auto;
+  padding: 3rem 0 0 0;
+  margin: 0 auto 0 auto;
 }
 
 .annuaire-carousel-track {
@@ -461,3 +475,76 @@ h3[id^="heading-"] {
   max-width: 100%;
 }
 
+
+.hero-gradient-orb-1 {
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(219, 140, 22, 0.4), transparent);
+  top: -250px;
+  right: -100px;
+  animation-delay: 0s;
+}
+
+.hero-gradient-orb-2 {
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(246, 160, 11, 0.3), transparent);
+  animation-delay: 2s;
+}
+.hero-floating-shapes {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.floating-shape {
+  position: absolute;
+  border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+  animation: float 10s ease-in-out infinite;
+}
+
+.shape-1 {
+  width: 150px;
+  height: 150px;
+  background: linear-gradient(135deg, rgba(195, 130, 238, 0.08), rgba(181, 105, 243, 0.03));
+  top: 20%;
+  left: 10%;
+  animation-delay: 0s;
+}
+
+/* Pixel Scroll Effect Styles */
+.pixel-image-container {
+  position: relative;
+  min-height: 200px;
+}
+
+.pixel-image-container canvas {
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+  background: #f3f4f6;
+  transition: opacity 0.3s ease;
+}
+
+.pixel-image-container canvas[data-loading="true"] {
+  opacity: 0.5;
+}
+
+.shape-2 {
+  width: 150px;
+  height: 150px;
+  background: linear-gradient(135deg, rgba(195, 130, 238, 0.08), rgba(181, 105, 243, 0.03));
+  top: 60%;
+  right: 15%;
+  animation-delay: 2s;
+}
+
+.shape-3 {
+  width: 100px;
+  height: 100px;
+  background: linear-gradient(135deg, rgba(195, 130, 238, 0.08), rgba(181, 105, 243, 0.03));
+  bottom: 30%;
+  left: 15%;
+  animation-delay: 4s;
+}

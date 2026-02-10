@@ -15,11 +15,14 @@ class Admin::GwanaNetworkRequestsController < Admin::BaseController
   def approve
     authorize [:admin, @gwana_network_request]
 
-    if GwanaNetworkRequestService.approve(request: @gwana_network_request, reviewer: current_user)
+    service = GwanaNetworkRequestService.new(request: @gwana_network_request, reviewer: current_user)
+    
+    if service.approve
       GwanaNetworkRequestMailer.request_approved(@gwana_network_request).deliver_later
       redirect_to admin_gwana_network_requests_path, notice: "Demande approuvée avec succès"
     else
-      redirect_to admin_gwana_network_request_path(@gwana_network_request), alert: "Une erreur est survenue lors de l'approbation de la demande"
+      error_message = service.errors.any? ? service.errors.join(", ") : "Une erreur est survenue lors de l'approbation de la demande"
+      redirect_to admin_gwana_network_request_path(@gwana_network_request), alert: error_message
     end
   end
 

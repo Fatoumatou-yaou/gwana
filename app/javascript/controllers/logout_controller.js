@@ -5,8 +5,10 @@ export default class extends Controller {
   static values = { logoutUrl: String }
 
   connect() {
-    // S'assurer que le modal est bien caché au départ
+    // S'assurer que le modal est bien caché au départ si présent
+    if (this.hasModalTarget) {
     this.hideModal()
+    }
   }
 
   show(event) {
@@ -50,15 +52,19 @@ export default class extends Controller {
   }
 
   showModal() {
+    if (this.hasModalTarget) {
     this.modalTarget.classList.remove("hidden")
     this.modalTarget.classList.add("flex")
     document.body.style.overflow = "hidden"
+    }
   }
 
   hideModal() {
+    if (this.hasModalTarget) {
     this.modalTarget.classList.add("hidden")
     this.modalTarget.classList.remove("flex")
     document.body.style.overflow = ""
+    }
   }
 }
 

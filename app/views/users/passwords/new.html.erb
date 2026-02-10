@@ -1,0 +1,89 @@
+<% content_for :title, "Mot de passe oublié" %>
+
+<div class="min-h-screen bg-gray-50 flex">
+  <!-- Left side - Form -->
+  <div class="w-full lg:w-1/2 flex flex-col justify-center px-6 sm:px-8 lg:px-16 xl:px-20 bg-gradient-to-br from-white to-gray-50">
+    <div class="mx-auto w-full max-w-lg">
+      <!-- Logo -->
+      <div class="text-center mb-10">
+        <a href="<%= root_path %>" class="inline-block transform hover:scale-105 transition-transform duration-200">
+          <h1 class="text-6xl font-bold bg-gradient-to-r from-purple-700 to-purple-800 bg-clip-text text-transparent drop-shadow-lg">
+            gwana
+          </h1>
+        </a>
+        <h2 class="mt-8 text-4xl font-bold bg-gradient-to-r from-purple-700 to-purple-800 bg-clip-text text-transparent">
+          Mot de passe oublié
+        </h2>
+        <p class="mt-3 text-lg text-gray-600 font-medium">
+          Entrez votre email pour recevoir les instructions de réinitialisation
+        </p>
+      </div>
+
+      <!-- Form -->
+      <div class="bg-white/80 backdrop-blur-sm py-10 px-8 shadow-2xl rounded-3xl border border-white/20 relative overflow-hidden">
+        <!-- Decorative background -->
+        <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-purple-50 to-purple-700/20 rounded-full -translate-y-16 translate-x-16 opacity-50"></div>
+        <div class="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-purple-50 to-purple-700/20 rounded-full translate-y-12 -translate-x-12 opacity-50"></div>
+        
+        <div class="relative z-10">
+          <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post, class: "space-y-8" }) do |f| %>
+            <%= render "shared/error_messages", resource: resource %>
+
+            <!-- Email Field -->
+            <div class="group mb-4">
+              <%= f.label :email, 'Email', class: 'block text-sm font-semibold text-gray-700 mb-2 group-focus-within:text-purple-700 transition-colors duration-200 tracking-wide' %>
+              <div class="relative">
+                <%= f.email_field :email, 
+                    autofocus: true, 
+                    autocomplete: "email",
+                    class: "w-full p-2 border-1 border-gray-200 rounded-xl focus:ring-4 focus:ring-purple-700/20 focus:border-purple-700 focus:outline-none transition-all duration-300 text-gray-900 placeholder-gray-400 bg-white/80 backdrop-blur-sm hover:border-gray-300 hover:bg-white/90",
+                    placeholder: "votre.email@exemple.com" %>
+              </div>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="pt-4">
+              <button type="submit" class="w-full flex justify-center items-center py-3 px-6 border border-transparent rounded-xl shadow-lg text-lg font-bold text-white bg-gradient-to-r from-purple-700 via-purple-800 to-purple-700 hover:from-purple-800 hover:via-purple-700 hover:to-purple-800 focus:outline-none focus:ring-4 focus:ring-purple-700/30 transition-all duration-300 cursor-pointer transform hover:scale-[1.02] hover:shadow-xl active:scale-[0.98] relative overflow-hidden group">
+                <span class="relative z-10 flex items-center">
+                  <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                  </svg>
+                  Envoyer les instructions
+                </span>
+                <div class="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              </button>
+            </div>
+          <% end %>
+
+          <!-- Links -->
+          <div class="mt-8 space-y-3 text-center">
+            <%= link_to "Retour à la connexion", new_user_session_path, class: "block text-sm font-semibold text-purple-700 hover:text-purple-600 transition-colors duration-200" %>
+            <p class="text-sm text-gray-600 font-medium">
+              Pas encore de compte ? 
+              <%= link_to "Créer un compte", new_user_registration_path, class: "font-semibold text-purple-700 hover:text-purple-600 transition-colors duration-200" %>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right side - Decorative Background -->
+  <div class="hidden lg:block lg:w-1/2">
+    <div class="h-full w-full relative bg-gradient-to-br from-purple-700 via-purple-800 to-purple-700 overflow-hidden">
+      <!-- Decorative shapes -->
+      <div class="absolute top-0 right-0 w-96 h-96 bg-purple-50/20 rounded-full -translate-y-48 translate-x-48 blur-3xl"></div>
+      <div class="absolute bottom-0 left-0 w-80 h-80 bg-amber-500/10 rounded-full translate-y-40 -translate-x-40 blur-3xl"></div>
+      <div class="absolute top-1/2 left-1/2 w-64 h-64 bg-purple-50/10 rounded-full -translate-x-1/2 -translate-y-1/2 blur-2xl"></div>
+      
+      <!-- Text overlay -->
+      <div class="absolute inset-0 flex items-end justify-start p-12">
+        <div class="text-white">
+          <h3 class="text-2xl font-bold mb-2">Réinitialisation</h3>
+          <p class="text-lg opacity-90">Nous vous enverrons un email avec les instructions</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

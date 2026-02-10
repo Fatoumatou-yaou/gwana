@@ -32,7 +32,7 @@
     <%= render "shared/flash" %>
 
     <!-- Header -->
-    <div class="flex min-h-screen">
+    <div class="flex min-h-screen" data-controller="mobile-sidebar">
       <!-- Sidebar -->
       <%= render "shared/sidebar" %>
 
@@ -41,7 +41,7 @@
         <%= render "shared/header" %>
 
         <!-- Main content -->
-        <div class="p-4 max-w-9xl mx-auto md:ml-64">
+        <div class="p-4 sm:p-6 lg:p-8 max-w-9xl mx-auto md:ml-64">
           <%= yield %>
         </div>
       </main>

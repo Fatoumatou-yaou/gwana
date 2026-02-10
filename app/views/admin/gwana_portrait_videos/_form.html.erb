@@ -19,7 +19,7 @@
       <p class="text-xs text-gray-500 mt-2">Indiquez uniquement l'ID de la vidéo (pas l'URL complète)</p>
       <% if @portrait_video.persisted? && @portrait_video.youtube_video_id.present? %>
         <div class="mt-4">
-          <iframe width="560" height="315" src="<%= @portrait_video.youtube_embed_url %>" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen class="rounded-lg"></iframe>
+          <iframe width="560" height="315" src="<%= @portrait_video.youtube_embed_url %>" frameborder="0" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen class="rounded-lg"></iframe>
         </div>
       <% end %>
     </div>

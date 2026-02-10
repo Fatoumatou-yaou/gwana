@@ -43,10 +43,12 @@ class MentorshipRequestsController < ApplicationController
     authorize @mentorship_request
 
     if @mentorship_request.save
-      redirect_to dashboard_path, notice: "Votre demande de mentorat a été envoyée avec succès."
+      redirect_to mentorship_requests_path, notice: "Votre demande de mentorat a été envoyée avec succès."
     else
       @gwanas = User.gwana.joins(:gwana_profile).where(gwanas: { available_for_mentorship: true }).includes(:gwana_profile).order("gwanas.first_name, gwanas.last_name")
       @regions = Region.ordered
+      @region_id = params[:region_id]
+      @department_id = params[:department_id]
       render :new, status: :unprocessable_entity
     end
   end
@@ -76,6 +78,6 @@ class MentorshipRequestsController < ApplicationController
   end
 
   def mentorship_request_params
-    params.require(:mentorship_request).permit(:mentor_id, :motivation, :commune_id, :niveau_etudes, :filiere)
+    params.require(:mentorship_request).permit(:mentor_id, :motivation, :commune_id, :niveau_etudes, :filiere, :message, :objectives)
   end
 end

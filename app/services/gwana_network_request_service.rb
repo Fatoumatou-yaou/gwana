@@ -1,4 +1,6 @@
 class GwanaNetworkRequestService
+  attr_reader :errors
+
   def self.approve(request:, reviewer:)
     new(request: request, reviewer: reviewer).approve
   end
@@ -6,10 +8,17 @@ class GwanaNetworkRequestService
   def initialize(request:, reviewer:)
     @request = request
     @reviewer = reviewer
+    @errors = []
   end
 
   def approve
     return false unless @request&.pending?
+
+    # Vérifier d'abord si l'email est déjà utilisé
+    if User.exists?(email: @request.email)
+      @errors << "L'email #{@request.email} est déjà utilisé par un utilisateur existant"
+      return false
+    end
 
     ActiveRecord::Base.transaction do
       # Préparer les paramètres pour GwanaCreationService
@@ -34,7 +43,25 @@ class GwanaNetworkRequestService
 
       unless result[:success]
         Rails.logger.error("Failed to create gwana from network request: #{result[:errors]}")
-        return false
+        
+        # Extraire les messages d'erreur du résultat
+        if result[:errors].is_a?(ActiveModel::Errors)
+          result[:errors].full_messages.each do |message|
+            @errors << message
+          end
+        elsif result[:errors].is_a?(Hash)
+          result[:errors].each do |field, messages|
+            if messages.is_a?(Array)
+              messages.each { |msg| @errors << "#{field.to_s.humanize}: #{msg}" }
+            else
+              @errors << "#{field.to_s.humanize}: #{messages}"
+            end
+          end
+        else
+          @errors << result[:errors].to_s
+        end
+        
+        raise ActiveRecord::Rollback
       end
 
       # Copier la photo de la demande vers le gwana
@@ -46,10 +73,13 @@ class GwanaNetworkRequestService
       @request.approve!(reviewer: @reviewer)
     end
 
-    true
+    @errors.empty?
+  rescue ActiveRecord::Rollback
+    false
   rescue StandardError => e
     Rails.logger.error("Failed to approve gwana network request: #{e.message}")
     Rails.logger.error(e.backtrace.join("\n"))
+    @errors << "Une erreur est survenue: #{e.message}"
     false
   end
 end

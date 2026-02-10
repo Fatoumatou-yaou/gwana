@@ -1,14 +1,19 @@
 <!-- Vidéos Portraits des Gwanas Section -->
 <% if @portrait_videos.any? %>
   <section 
-    class="relative py-12 md:py-20 bg-white"
-    aria-labelledby="portrait-videos-title">
+    class="relative py-12 md:py-10 overflow-hidden" 
+    aria-labelledby="portrait-videos-title"
+    data-controller="portrait-videos-carousel">
+    <div class="absolute -inset-4 bg-gradient-to-r from-purple-200 to-purple-300 rounded-3xl blur-2xl opacity-20 group-hover:opacity-30 transition-opacity duration-500"></div>
+    <div class="hero-floating-shapes">
+      <div class="floating-shape shape-1"></div>
+      <div class="floating-shape shape-2"></div>
+      <div class="floating-shape shape-3"></div>
+    </div>
     
-    <div 
-      class="container mx-auto px-4 sm:px-6 lg:px-8"
-      data-controller="portrait-videos-carousel">
+    <div class="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
       <!-- Header -->
-      <div class="max-w-3xl mx-auto text-center mb-16 md:mb-20">
+      <div class="max-w-3xl mx-auto text-center mb-10">
         <h2 id="portrait-videos-title" 
           class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-purple-600 text-center mb-6">
           Vidéos Portraits
@@ -29,7 +34,7 @@
             type="button"
             data-portrait-videos-carousel-target="prevButton"
             data-action="click->portrait-videos-carousel#previous"
-            class="hidden absolute left-4 top-1/2 -translate-y-1/2 z-20 w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-gray-50 transition-colors border border-purple-200"
+            class="flex absolute left-0 md:-left-12 top-1/2 -translate-y-1/2 z-20 w-12 h-12 bg-white rounded-full shadow-lg items-center justify-center hover:bg-gray-50 transition-colors border border-purple-200"
             aria-label="Vidéo précédente">
             <svg class="w-6 h-6 text-gray-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
@@ -40,7 +45,7 @@
             type="button"
             data-portrait-videos-carousel-target="nextButton"
             data-action="click->portrait-videos-carousel#next"
-            class="hidden absolute right-4 top-1/2 -translate-y-1/2 z-20 w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-gray-50 transition-colors border border-purple-200"
+            class="flex absolute right-0 md:-right-12 top-1/2 -translate-y-1/2 z-20 w-12 h-12 bg-white rounded-full shadow-lg items-center justify-center hover:bg-gray-50 transition-colors border border-purple-200"
             aria-label="Vidéo suivante">
             <svg class="w-6 h-6 text-gray-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
@@ -49,7 +54,7 @@
 
           <!-- Cards Track -->
           <div 
-            class="overflow-hidden"
+            class="overflow-hidden mx-4 md:mx-0"
             data-portrait-videos-carousel-target="track">
             <div 
               class="flex gap-6 transition-transform duration-500 ease-in-out"
@@ -60,7 +65,7 @@
                   data-portrait-videos-carousel-target="card">
                   <button
                     type="button"
-                    class="group relative w-full text-left bg-white rounded-xl overflow-hidden border border-purple-200 hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 isolate <%= 'border-purple-700 border-2' if index == 0 %>"
+                    class="group relative w-full text-left bg-white rounded-xl overflow-hidden border border-purple-200 hover:shadow-2xl isolate <%= 'border-purple-700 border-2' if index == 0 %>"
                     data-action="click->portrait-videos-carousel#loadVideo"
                     data-portrait-videos-carousel-video-url-param="<%= portrait_video.youtube_embed_url %>"
                     data-portrait-videos-carousel-index-param="<%= index %>">
@@ -122,7 +127,7 @@
       </div>
 
       <!-- Video Player Section -->
-      <div class="max-w-5xl mx-auto mt-12">
+      <div class="max-w-5xl mx-auto mt-12 px-4 md:px-0">
         <div class="relative w-full" style="padding-bottom: 56.25%;">
           <% clip_id = "video-wave-clip-#{SecureRandom.hex(4)}" %>
           <svg class="absolute inset-0 w-full h-full" style="pointer-events: none;">
@@ -161,7 +166,7 @@
               data-portrait-videos-carousel-target="videoFrame"
               src="<%= @portrait_videos.first.youtube_embed_url %>"
               frameborder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allow="autoplay; encrypted-media; picture-in-picture"
               allowfullscreen
               class="absolute inset-0 w-full h-full">
             </iframe>
@@ -169,7 +174,6 @@
         </div>
       </div>
     </div>
-
   </section>
 <% end %>
 

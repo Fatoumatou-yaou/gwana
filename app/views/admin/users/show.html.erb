@@ -1,0 +1,107 @@
+<% content_for :title, @user.full_name %>
+
+<div class="max-w-9xl mx-auto px-4 py-8">
+  <div class="mb-6">
+    <%= link_to "← Retour à la liste", admin_users_path, class: "text-purple-700 hover:text-purple-600 transition-colors" %>
+  </div>
+
+  <div class="bg-white rounded-lg p-8 border border-gray-200 shadow-sm">
+    <!-- Header -->
+    <div class="flex justify-between items-start mb-8">
+      <div>
+        <h1 class="text-4xl font-bold text-gray-900 mb-2"><%= @user.full_name %></h1>
+        <div class="flex items-center gap-4">
+          <span class="px-3 py-1 rounded-full text-xs font-semibold <%= 
+            @user.admin? ? 'bg-red-100 text-red-800' : 
+            @user.gwana? ? 'bg-purple-100 text-purple-800' : 
+            'bg-gray-100 text-gray-800' 
+          %>">
+            <%= @user.profile.humanize %>
+          </span>
+          <span class="text-sm text-gray-600">
+            Compte créé le <%= l(@user.created_at, format: :long) %>
+          </span>
+        </div>
+      </div>
+      <div class="flex gap-2">
+        <%= link_to "Modifier", edit_admin_user_path(@user), class: "bg-purple-700 hover:bg-purple-800 text-white px-4 py-2 rounded-lg transition-colors" %>
+      </div>
+    </div>
+
+    <!-- Informations principales -->
+    <div class="mb-8">
+      <h2 class="text-xl font-semibold text-gray-900 mb-4">Informations principales</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <span class="text-sm font-semibold text-purple-700">Email</span>
+          <p class="text-gray-700"><%= @user.email %></p>
+        </div>
+        <% if @user.first_name.present? %>
+          <div>
+            <span class="text-sm font-semibold text-purple-700">Prénom</span>
+            <p class="text-gray-700"><%= @user.first_name %></p>
+          </div>
+        <% end %>
+        <% if @user.last_name.present? %>
+          <div>
+            <span class="text-sm font-semibold text-purple-700">Nom</span>
+            <p class="text-gray-700"><%= @user.last_name %></p>
+          </div>
+        <% end %>
+        <% if @user.phone.present? %>
+          <div>
+            <span class="text-sm font-semibold text-purple-700">Téléphone</span>
+            <p class="text-gray-700"><%= @user.phone %></p>
+          </div>
+        <% end %>
+        <div>
+          <span class="text-sm font-semibold text-purple-700">Statut de vérification</span>
+          <p class="text-gray-700">
+            <% if @user.is_verified? %>
+              <span class="px-2 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-800">Vérifié</span>
+            <% else %>
+              <span class="px-2 py-1 rounded-full text-xs font-semibold bg-yellow-100 text-yellow-800">Non vérifié</span>
+            <% end %>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Profil Gwana si applicable -->
+    <% if @user.gwana? && @user.gwana_profile.present? %>
+      <div class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-900 mb-4">Profil Gwana</h2>
+        <div class="bg-gray-50 rounded-lg p-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <% if @user.gwana_profile.profession.present? %>
+              <div>
+                <span class="text-sm font-semibold text-purple-700">Profession</span>
+                <p class="text-gray-700"><%= @user.gwana_profile.profession %></p>
+              </div>
+            <% end %>
+            <% if @user.gwana_profile.commune_id.present? && @user.gwana_profile.object.commune.present? %>
+              <div>
+                <span class="text-sm font-semibold text-purple-700">Localisation</span>
+                <p class="text-gray-700">
+                  <%= @user.gwana_profile.object.commune.name %>, 
+                  <%= @user.gwana_profile.object.commune.department.name %>, 
+                  <%= @user.gwana_profile.object.commune.department.region.name %>
+                </p>
+              </div>
+            <% end %>
+            <% if @user.gwana_profile.bio.present? %>
+              <div class="md:col-span-2">
+                <span class="text-sm font-semibold text-purple-700">Biographie</span>
+                <p class="text-gray-700 whitespace-pre-wrap"><%= @user.gwana_profile.bio %></p>
+              </div>
+            <% end %>
+          </div>
+          <div class="mt-4">
+            <%= link_to "Voir le profil complet", admin_gwana_path(@user.gwana_profile), class: "text-purple-700 hover:text-purple-600 transition-colors" %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+

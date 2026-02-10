@@ -26,7 +26,7 @@ class GwanaNetworkRequest < ApplicationRecord
   validate :validate_url_format
   validate :rejection_reason_present_if_rejected
   validate :normalize_phone_before_validation
-  validate :commune_belongs_to_selected_region
+  validate :email_not_already_in_use
 
   # Scopes
   scope :pending, -> { where(status: :pending) }
@@ -91,6 +91,14 @@ class GwanaNetworkRequest < ApplicationRecord
   def rejection_reason_present_if_rejected
     if rejected? && rejection_reason.blank?
       errors.add(:rejection_reason, "doit être rempli lors du rejet")
+    end
+  end
+
+  def email_not_already_in_use
+    return unless email.present?
+    
+    if User.exists?(email: email)
+      errors.add(:email, "a déjà été utilisé")
     end
   end
 

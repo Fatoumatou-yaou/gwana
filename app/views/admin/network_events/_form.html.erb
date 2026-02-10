@@ -1,0 +1,86 @@
+<% if network_event.errors.any? %>
+  <div class="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+    <h3 class="text-red-800 font-semibold mb-2">Erreurs à corriger :</h3>
+    <ul class="list-disc list-inside text-red-600">
+      <% network_event.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<div class="bg-white rounded-lg p-8 border border-gray-200 shadow-sm">
+  <!-- Nom de l'événement -->
+  <div class="mb-6">
+    <%= f.label :name, "Nom de l'événement", class: "block text-sm font-semibold text-gray-700 mb-2" %>
+    <%= f.text_field :name, 
+        placeholder: "Ex: Rencontre de bilan", 
+        class: field_error_class(network_event, :name, "w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-gray-900 focus:outline-none focus:border-purple-700 focus:ring-2 focus:ring-purple-700/20 transition-all") %>
+    <%= field_error_message(network_event, :name) %>
+    <p class="text-xs text-gray-500 mt-2">Entre 3 et 200 caractères</p>
+  </div>
+
+  <!-- Description -->
+  <div class="mb-6">
+    <%= f.label :description, "Description", class: "block text-sm font-semibold text-gray-700 mb-2" %>
+    <%= f.text_area :description, 
+        rows: 6,
+        placeholder: "Décrivez l'événement...", 
+        class: field_error_class(network_event, :description, "w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-gray-900 focus:outline-none focus:border-purple-700 focus:ring-2 focus:ring-purple-700/20 transition-all") %>
+    <%= field_error_message(network_event, :description) %>
+    <p class="text-xs text-gray-500 mt-2">Minimum 10 caractères</p>
+  </div>
+
+  <!-- Date de l'événement -->
+  <div class="mb-6">
+    <%= f.label :event_date, "Date de l'événement", class: "block text-sm font-semibold text-gray-700 mb-2" %>
+    <%= f.date_field :event_date, 
+        class: field_error_class(network_event, :event_date, "w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-gray-900 focus:outline-none focus:border-purple-700 focus:ring-2 focus:ring-purple-700/20 transition-all") %>
+    <%= field_error_message(network_event, :event_date) %>
+  </div>
+
+  <!-- Photos -->
+  <div class="mb-6">
+    <%= f.label :photos, "Photos", class: "block text-sm font-semibold text-gray-700 mb-2" %>
+    
+    <!-- Photos existantes -->
+    <% if network_event.persisted? && network_event.photos.attached? %>
+      <div class="mb-4 p-4 bg-gray-50 rounded-lg border border-gray-200">
+        <p class="text-sm font-semibold text-gray-700 mb-3">Photos actuelles (<%= network_event.photos.count %>/<%= 30 %>) :</p>
+        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+          <% network_event.photos.each do |photo| %>
+            <div class="relative group">
+              <%= image_tag photo, class: "w-full h-32 object-cover rounded-lg border border-gray-300" %>
+              <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-center justify-center">
+                <span class="text-white text-xs text-center px-2">
+                  <%= number_to_human_size(photo.byte_size) %>
+                </span>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+
+    <!-- Upload de nouvelles photos -->
+    <%= f.file_field :photos, 
+        multiple: true,
+        accept: "image/jpeg,image/jpg,image/png,image/webp",
+        class: field_error_class(network_event, :photos, "w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-gray-900 focus:outline-none focus:border-purple-700 focus:ring-2 focus:ring-purple-700/20 transition-all") %>
+    <%= field_error_message(network_event, :photos) %>
+    
+    <!-- Informations sur les contraintes -->
+    <div class="mt-3 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+      <p class="text-sm text-blue-800 font-semibold mb-2">Contraintes :</p>
+      <ul class="text-xs text-blue-700 space-y-1 list-disc list-inside">
+        <li>Maximum <strong>30 photos</strong> par événement</li>
+        <li>Taille maximale : <strong>2 Mo</strong> par photo</li>
+        <li>Formats acceptés : <strong>JPEG, PNG, WebP</strong></li>
+        <% if network_event.persisted? && network_event.photos.attached? %>
+          <li>Photos restantes : <strong><%= 30 - network_event.photos.count %></strong></li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+</div>
+

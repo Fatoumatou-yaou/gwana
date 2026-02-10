@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_02_05_194929) do
+ActiveRecord::Schema[8.0].define(version: 2026_02_09_163738) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -197,6 +197,14 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_05_194929) do
     t.index ["mentor_id"], name: "index_mentorship_requests_on_mentor_id"
     t.index ["requester_id"], name: "index_mentorship_requests_on_requester_id"
     t.index ["status"], name: "index_mentorship_requests_on_status"
+  end
+
+  create_table "network_events", force: :cascade do |t|
+    t.string "name"
+    t.text "description"
+    t.date "event_date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "regions", force: :cascade do |t|

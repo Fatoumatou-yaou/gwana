@@ -108,19 +108,63 @@ export default class extends Controller {
   populateSelect(selectElement, options) {
     if (!selectElement) return
 
-    // Save the placeholder text
+    // Check if it's a custom select (has data-custom-select-target="input")
+    const customSelectContainer = selectElement.closest('[data-controller*="custom-select"]')
+    if (customSelectContainer) {
+      const menu = customSelectContainer.querySelector('[data-custom-select-target="menu"]')
+      const button = customSelectContainer.querySelector('[data-custom-select-target="button"]')
+      
+      if (menu && button) {
+        const placeholder = button.dataset.placeholder || "Sélectionnez..."
+
+        // Clear menu
+        menu.innerHTML = ""
+
+        // Add placeholder option
+        const placeholderButton = document.createElement("button")
+        placeholderButton.type = "button"
+        placeholderButton.dataset.action = "click->custom-select#selectOption"
+        placeholderButton.dataset.value = ""
+        placeholderButton.className = "w-full px-4 py-3 text-left text-gray-900 hover:bg-purple-50 transition-colors"
+        placeholderButton.textContent = placeholder
+        menu.appendChild(placeholderButton)
+
+        // Add options
+        options.forEach((option) => {
+          const optionButton = document.createElement("button")
+          optionButton.type = "button"
+          optionButton.dataset.action = "click->custom-select#selectOption"
+          optionButton.dataset.value = option.id
+          optionButton.className = "w-full px-4 py-3 text-left text-gray-900 hover:bg-purple-50 transition-colors"
+          optionButton.textContent = option.name
+          menu.appendChild(optionButton)
+        })
+
+        // Reset button text and value
+        const buttonSpan = button.querySelector('span')
+        if (buttonSpan) {
+          buttonSpan.textContent = placeholder
+        } else {
+          // If no span, update button text directly (but preserve SVG if exists)
+          const svg = button.querySelector('svg')
+          button.innerHTML = `<span>${placeholder}</span>`
+          if (svg) {
+            button.appendChild(svg)
+          }
+        }
+        selectElement.value = ""
+        return
+      }
+    }
+
+    // Fallback for native select
     const placeholder = selectElement.options[0]?.textContent || "Sélectionnez..."
-
-    // Clear all options
     selectElement.innerHTML = ""
-
-    // Add placeholder
     const placeholderOption = document.createElement("option")
     placeholderOption.value = ""
     placeholderOption.textContent = placeholder
     selectElement.appendChild(placeholderOption)
 
-    // Add new options
     options.forEach((option) => {
       const optionElement = document.createElement("option")
       optionElement.value = option.id
@@ -132,17 +176,49 @@ export default class extends Controller {
   resetSelect(selectElement) {
     if (!selectElement) return
 
-    // Save the placeholder text
-    const placeholder = selectElement.options[0]?.textContent || "Sélectionnez..."
+    // Check if it's a custom select
+    const customSelectContainer = selectElement.closest('[data-controller*="custom-select"]')
+    if (customSelectContainer) {
+      const menu = customSelectContainer.querySelector('[data-custom-select-target="menu"]')
+      const button = customSelectContainer.querySelector('[data-custom-select-target="button"]')
+      
+      if (menu && button) {
+        const placeholder = button.dataset.placeholder || "Sélectionnez..."
 
-    // Clear all options and keep only placeholder
+        // Clear menu and add only placeholder
+        menu.innerHTML = ""
+        const placeholderButton = document.createElement("button")
+        placeholderButton.type = "button"
+        placeholderButton.dataset.action = "click->custom-select#selectOption"
+        placeholderButton.dataset.value = ""
+        placeholderButton.className = "w-full px-4 py-3 text-left text-gray-900 hover:bg-purple-50 transition-colors"
+        placeholderButton.textContent = placeholder
+        menu.appendChild(placeholderButton)
+
+        // Reset button text and value
+        const buttonSpan = button.querySelector('span')
+        if (buttonSpan) {
+          buttonSpan.textContent = placeholder
+        } else {
+          // If no span, update button text directly (but preserve SVG if exists)
+          const svg = button.querySelector('svg')
+          button.innerHTML = `<span>${placeholder}</span>`
+          if (svg) {
+            button.appendChild(svg)
+          }
+        }
+        selectElement.value = ""
+        return
+      }
+    }
+
+    // Fallback for native select
+    const placeholder = selectElement.options[0]?.textContent || "Sélectionnez..."
     selectElement.innerHTML = ""
     const placeholderOption = document.createElement("option")
     placeholderOption.value = ""
     placeholderOption.textContent = placeholder
     selectElement.appendChild(placeholderOption)
-    
-    // Reset value
     selectElement.value = ""
   }
 }

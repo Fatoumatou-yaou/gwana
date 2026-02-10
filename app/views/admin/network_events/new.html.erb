@@ -1,0 +1,19 @@
+<% content_for :title, "Nouvel événement réseau" %>
+
+<div class="max-w-4xl mx-auto px-4 py-8">
+  <div class="mb-6">
+    <h1 class="text-4xl font-bold text-gray-900 mb-2">Nouvel événement réseau</h1>
+    <p class="text-gray-600">Ajouter un nouvel événement avec sa galerie de photos</p>
+  </div>
+
+  <%= form_with model: [:admin, @network_event], local: true, multipart: true do |f| %>
+    <%= render "admin/network_events/form", network_event: @network_event, f: f %>
+    
+    <div class="flex justify-end gap-4 mt-8">
+      <%= link_to "Annuler", admin_network_events_path, class: "bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-lg transition-colors" %>
+      <%= f.submit "Créer l'événement", 
+          class: "bg-purple-700 hover:bg-purple-800 text-white px-6 py-3 rounded-lg transition-colors font-semibold" %>
+    </div>
+  <% end %>
+</div>
+

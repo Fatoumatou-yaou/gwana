@@ -12,6 +12,12 @@ export default class extends Controller {
     this.currentIndex = 0
     this.totalCards = this.cardTargets.length
     
+    // Vérifier que les targets nécessaires sont présents
+    if (!this.hasTrackTarget) {
+      console.warn('Track target not found')
+      return
+    }
+    
     // Setup responsive handling
     this.handleResize = this.handleResize.bind(this)
     window.addEventListener('resize', this.handleResize)
@@ -24,12 +30,19 @@ export default class extends Controller {
     
     // Initialiser la position après un petit délai pour que le layout soit calculé
     setTimeout(() => {
-      this.updateCarousel()
-      this.updateNavigation()
+      if (this.hasTrackTarget && this.hasTrackInnerTarget) {
+        this.updateCarousel()
+        this.updateNavigation()
+      }
     }, 100)
     
     // Marquer la première card comme active
     this.updateActiveCard(0)
+    
+    // Forcer l'affichage des boutons après un délai supplémentaire
+    setTimeout(() => {
+      this.updateNavigation()
+    }, 300)
   }
 
   disconnect() {
@@ -43,63 +56,83 @@ export default class extends Controller {
   }
 
   // Navigate to next slide
-  next() {
-    if (this.currentIndex < this.maxIndex) {
+  next(event) {
+    
+    if (event) {
+      event.preventDefault()
+      event.stopPropagation()
+    }
+    
+    if (this.currentIndex < this.totalCards - 1) {
       this.currentIndex++
       this.updateCarousel()
+      this.updateNavigation()
+    } else {
+      console.log('Already at last card')
     }
   }
 
   // Navigate to previous slide
-  previous() {
+  previous(event) {
+    console.log('Previous button clicked')
+    console.log('Current index:', this.currentIndex)
+    
+    if (event) {
+      event.preventDefault()
+      event.stopPropagation()
+    }
+    
     if (this.currentIndex > 0) {
       this.currentIndex--
+      console.log('New index:', this.currentIndex)
       this.updateCarousel()
+      this.updateNavigation()
+    } else {
+      console.log('Already at first card')
     }
   }
 
   // Update carousel position
   updateCarousel() {
-    if (!this.trackTarget || !this.hasContainerTarget || !this.hasTrackInnerTarget || this.cardTargets.length === 0) {
+    console.log('Updating carousel, index:', this.currentIndex)
+    
+    if (!this.hasTrackInnerTarget || this.cardTargets.length === 0) {
+      console.error('Missing required elements - trackInner:', this.hasTrackInnerTarget, 'cards:', this.cardTargets.length)
       return
     }
     
-    const container = this.containerTarget
-    if (!container || container.offsetWidth === 0) {
-      return
-    }
+    // Forcer un reflow pour éviter les problèmes de layout
+    void this.trackInnerTarget.offsetWidth
     
-    // Utiliser la largeur réelle de la première card
-    const firstCard = this.cardTargets[0]
-    if (!firstCard) {
-      return
-    }
-    
-    // Attendre que la card ait une largeur calculée
-    const cardWidth = firstCard.offsetWidth
-    if (cardWidth === 0) {
-      // Réessayer après un court délai si la largeur n'est pas encore calculée
+    const card = this.cardTargets[0]
+    if (!card || card.offsetWidth === 0) {
+      console.log('Card width not available yet, retrying...')
       setTimeout(() => this.updateCarousel(), 50)
       return
     }
     
-    // Calculer la largeur d'une carte + gap
-    const gap = 24 // gap-6 = 1.5rem = 24px
+    const cardWidth = card.offsetWidth
+    const gap = 24 // gap-6 = 24px
     const offset = -this.currentIndex * (cardWidth + gap)
+        
+    // Utiliser requestAnimationFrame pour une animation fluide
+    requestAnimationFrame(() => {
+      this.trackInnerTarget.style.transform = `translateX(${offset}px)`
+      this.trackInnerTarget.style.transition = 'transform 0.3s ease-in-out'
+    })
     
-    // Appliquer la transformation sur le div flex interne
-    this.trackInnerTarget.style.transform = `translateX(${offset}px)`
-    
-    // Mettre à jour la navigation
-    this.updateNavigation()
+    this.updateActiveCard(this.currentIndex)
   }
 
   // Update navigation buttons visibility
   updateNavigation() {
-    if (!this.hasPrevButtonTarget || !this.hasNextButtonTarget) return
+    if (!this.hasPrevButtonTarget || !this.hasNextButtonTarget) {
+      return
+    }
     
-    // Afficher les flèches seulement s'il y a plus de 4 vidéos
-    if (this.totalCards > this.cardsPerView) {
+    // Toujours afficher les flèches s'il y a plus d'une vidéo
+    if (this.totalCards > 1) {
+      // S'assurer que les boutons sont visibles
       this.prevButtonTarget.classList.remove("hidden")
       this.nextButtonTarget.classList.remove("hidden")
       
@@ -112,7 +145,7 @@ export default class extends Controller {
         this.prevButtonTarget.disabled = false
       }
       
-      if (this.currentIndex >= this.maxIndex) {
+      if (this.currentIndex >= this.totalCards - 1) {
         this.nextButtonTarget.classList.add("opacity-50", "cursor-not-allowed")
         this.nextButtonTarget.disabled = true
       } else {
@@ -153,14 +186,16 @@ export default class extends Controller {
     
     // Mettre à jour après un petit délai pour que le layout soit calculé
     setTimeout(() => {
-      this.updateCarousel()
-      this.updateNavigation()
+      if (this.hasTrackTarget && this.hasTrackInnerTarget) {
+        this.updateCarousel()
+        this.updateNavigation()
+      }
     }, 50)
   }
 
   // Setup touch/swipe handlers
   setupTouchHandlers() {
-    if (!this.trackTarget) return
+    if (!this.hasTrackTarget || !this.trackTarget) return
     
     let touchStartX = 0
     let touchEndX = 0

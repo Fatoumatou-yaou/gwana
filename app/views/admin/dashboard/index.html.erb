@@ -43,12 +43,12 @@
           <div class="border-b border-gray-200 pb-4 last:border-0">
             <div class="flex justify-between items-start">
               <div>
-                <p class="font-semibold text-gray-900"><%= request.requester.gwana_profile&.full_name || request.requester.email %></p>
-                <p class="text-sm text-gray-600">→ <%= request.mentor.gwana_profile&.full_name || request.mentor.email %></p>
+                <p class="font-semibold text-gray-900"><%= request.requester.decorate.full_name || request.requester.email %></p>
+                <p class="text-sm text-gray-600">→ <%= request.decorate.mentor_name %></p>
                 <p class="text-xs text-gray-500 mt-1"><%= l(request.created_at, format: :short) %></p>
               </div>
               <span class="px-3 py-1 rounded-full text-xs <%= request.pending? ? 'bg-yellow-500/20 text-yellow-500' : request.accepted? ? 'bg-green-500/20 text-green-500' : 'bg-red-500/20 text-red-500' %>">
-                <%= request.status.humanize %>
+                <%= request.decorate.status_label %>
               </span>
             </div>
           </div>

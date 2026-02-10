@@ -1,5 +1,12 @@
 <div class="flex">
-  <aside class="w-64 fixed inset-y-0 left-0 z-50 bg-white shadow-sm transition-all duration-300 ease-in-out transform border-r border-gray-200 flex flex-col">
+  <!-- Overlay pour mobile -->
+  <div 
+    class="hidden md:hidden fixed inset-0 bg-black bg-opacity-50 z-40 transition-opacity duration-300"
+    data-mobile-sidebar-target="overlay"
+    data-action="click->mobile-sidebar#close"
+  ></div>
+  
+  <aside class="w-64 fixed inset-y-0 left-0 z-50 bg-white shadow-sm transition-all duration-300 ease-in-out transform border-r border-gray-200 flex flex-col -translate-x-full md:translate-x-0" data-mobile-sidebar-target="sidebar">
     <!-- Logo Section - Style page de connexion -->
     <div class="flex-shrink-0 flex items-center justify-center py-6 border-b border-gray-200 bg-gradient-to-br from-white to-gray-50">
       <%= link_to current_user&.admin? ? admin_dashboard_path : dashboard_path, class: "group" do %>
@@ -45,6 +52,14 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
               </svg>
               <span class="ml-3 font-medium relative z-10">Tableau de bord</span>
+            <% end %>
+          <% elsif current_user&.gwana? %>
+            <%= link_to dashboard_path, class: "flex items-center px-4 py-3 text-gray-700 rounded-xl hover:bg-gradient-to-r hover:from-purple-700/10 hover:to-purple-800/10 hover:text-purple-700 transition-all duration-200 group relative overflow-hidden" do %>
+              <div class="absolute inset-0 bg-gradient-to-r from-purple-700/10 to-purple-800/10 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
+              <svg class="w-5 h-5 text-gray-500 group-hover:text-purple-700 transition-colors duration-200 relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
+              </svg>
+              <span class="ml-3 font-medium relative z-10">Dashboard</span>
             <% end %>
           <% end %>
 
@@ -114,6 +129,17 @@
             <% end %>
           <% end %>
 
+          <% if policy([:admin, NetworkEvent]).index? %>
+            <%= link_to admin_network_events_path, class: "flex items-center px-4 py-3 text-gray-700 rounded-xl hover:bg-gradient-to-r hover:from-purple-700/10 hover:to-purple-800/10 hover:text-purple-700 transition-all duration-200 group relative overflow-hidden" do %>
+              <div class="absolute inset-0 bg-gradient-to-r from-purple-700/10 to-purple-800/10 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
+              <svg class="w-5 h-5 text-gray-500 group-hover:text-purple-700 transition-colors duration-200 relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+              </svg>
+              <span class="ml-3 font-medium relative z-10">Galérie</span>
+            <% end %>
+          <% end %>
+
+
           <!-- Mes demandes de mentorat (pour les users qui font des demandes) -->
           <% if policy(MentorshipRequest).index? && current_user&.user? %>
             <%= link_to mentorship_requests_path, class: "flex items-center px-4 py-3 text-gray-700 rounded-xl hover:bg-gradient-to-r hover:from-purple-700/10 hover:to-purple-800/10 hover:text-purple-700 transition-all duration-200 group relative overflow-hidden" do %>
@@ -125,14 +151,14 @@
             <% end %>
           <% end %>
 
-          <!-- Mes mentorats (pour les gwanas qui reçoivent des demandes) -->
+          <!-- Demandes de mentorat (pour les gwanas qui reçoivent des demandes) -->
           <% if policy(MentorshipRequest).index? && current_user&.gwana? %>
             <%= link_to mentorship_requests_path, class: "flex items-center px-4 py-3 text-gray-700 rounded-xl hover:bg-gradient-to-r hover:from-purple-700/10 hover:to-purple-800/10 hover:text-purple-700 transition-all duration-200 group relative overflow-hidden" do %>
               <div class="absolute inset-0 bg-gradient-to-r from-purple-700/10 to-purple-800/10 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
               <svg class="w-5 h-5 text-gray-500 group-hover:text-purple-700 transition-colors duration-200 relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
               </svg>
-              <span class="ml-3 font-medium relative z-10">Mes mentorats</span>
+              <span class="ml-3 font-medium relative z-10">Demandes de mentorat</span>
             <% end %>
           <% end %>
 

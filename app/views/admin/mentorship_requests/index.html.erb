@@ -3,9 +3,9 @@
   <%= render ItemTableComponent.new(
     items: @mentorship_requests,
     columns: {
-      "requester.gwana_profile.full_name" => "Demandeur",
-      "mentor.gwana_profile.full_name" => "Mentor",
-      status: "Statut",
+      requester_name: "Demandeur",
+      mentor_name: "Mentor",
+      status_badge: "Statut",
       formatted_created_at: "Date de création"
     },
     item_type: "mentorship_request",

@@ -1,8 +1,8 @@
 <% content_for :title, "Mes demandes de mentorat" %>
 
-<div class="max-w-7xl mx-auto px-4 py-8">
-  <div class="flex justify-between items-center mb-8">
-    <h1 class="text-4xl font-bold text-gray-900">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+  <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-6 sm:mb-8">
+    <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-purple-600">
       <% if current_user.user? %>
         Mes demandes de mentorat
       <% elsif current_user.gwana? %>
@@ -12,39 +12,39 @@
       <% end %>
     </h1>
     <% if current_user.user? %>
-      <%= link_to "Nouvelle demande", new_mentorship_request_path, class: "px-6 py-3 bg-gradient-to-r from-purple-700 to-purple-800 text-white rounded-lg hover:from-purple-800 hover:to-purple-700 transition-all font-semibold" %>
+      <%= link_to "Nouvelle demande", new_mentorship_request_path, class: "inline-flex items-center justify-center gap-2 px-4 sm:px-6 py-2 sm:py-3 bg-white border-2 border-purple-600 text-purple-600 rounded-lg hover:from-purple-800 hover:to-purple-700 transition-all font-semibold text-sm sm:text-base" %>
     <% end %>
   </div>
 
   <% if @mentorship_requests.any? %>
     <div class="space-y-4">
       <% @mentorship_requests.each do |request| %>
-        <div class="bg-white rounded-lg p-6 border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
-          <div class="flex justify-between items-start">
-            <div class="flex-1">
-              <div class="flex items-center gap-4 mb-2">
-                <h3 class="text-xl font-semibold text-purple-700">
+        <div class="bg-white rounded-lg p-4 sm:p-6 border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
+          <div class="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4">
+            <div class="flex-1 min-w-0">
+              <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 mb-2">
+                <h3 class="text-base sm:text-lg md:text-xl font-semibold text-purple-700 break-words">
                   <% if current_user.user? %>
-                    Mentor : <%= request.mentor.gwana_profile&.full_name || request.mentor.email %>
+                    Mentor : <%= request.mentor.gwana_profile ? "#{request.mentor.gwana_profile.first_name} #{request.mentor.gwana_profile.last_name}" : request.mentor.first_name %>
                   <% else %>
-                    De : <%= request.requester.full_name || request.requester.email %>
+                    De : <%= request.requester.decorate.full_name || request.requester.email %>
                   <% end %>
                 </h3>
-                <span class="px-3 py-1 rounded-full text-xs font-semibold <%= 
+                <span class="px-2 sm:px-3 py-1 rounded-full text-xs font-semibold inline-flex items-center w-fit <%= 
                   request.pending? ? 'bg-yellow-100 text-yellow-800' : 
                   request.accepted? ? 'bg-green-100 text-green-800' : 
                   request.rejected? ? 'bg-red-100 text-red-800' : 
                   'bg-gray-100 text-gray-800' 
                 %>">
-                  <%= request.status.humanize %>
+                  <%= request.decorate.status_label %>
                 </span>
               </div>
               
               <% if request.motivation.present? %>
-                <p class="text-gray-600 mb-2 line-clamp-2"><%= request.motivation.truncate(150) %></p>
+                <p class="text-sm sm:text-base text-gray-600 mb-2 line-clamp-2 break-words"><%= request.motivation.truncate(150) %></p>
               <% end %>
               
-              <div class="flex gap-4 text-sm text-gray-500">
+              <div class="flex flex-col sm:flex-row sm:gap-4 gap-2 text-xs sm:text-sm text-gray-500 mb-2">
                 <% if request.niveau_etudes.present? %>
                   <span>Niveau : <%= request.niveau_etudes.humanize %></span>
                 <% end %>
@@ -52,21 +52,21 @@
                   <span>Filière : <%= request.filiere %></span>
                 <% end %>
                 <% if request.commune.present? %>
-                  <span>Localisation : <%= request.commune.name %></span>
+                  <span class="break-words">Localisation : <%= request.commune.name %></span>
                 <% end %>
               </div>
               
               <p class="text-xs text-gray-400 mt-2">Créée le <%= l(request.created_at, format: :long) %></p>
             </div>
             
-            <div class="flex gap-2 ml-4">
-              <%= link_to "Voir", mentorship_request_path(request), class: "px-4 py-2 text-purple-700 border border-purple-700 rounded-lg hover:bg-purple-700 hover:text-white transition-colors" %>
+            <div class="flex flex-col sm:flex-row gap-2 sm:ml-4 sm:flex-shrink-0">
+              <%= link_to "Voir", mentorship_request_path(request), class: "inline-flex items-center justify-center px-3 sm:px-4 py-2 text-sm sm:text-base text-purple-700 border border-purple-700 rounded-lg hover:bg-purple-700 hover:text-white transition-colors" %>
               <% if current_user.gwana? && request.pending? %>
                 <%= link_to "Accepter", accept_mentorship_request_path(request), method: :patch, 
-                    class: "px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors",
+                    class: "inline-flex items-center justify-center px-3 sm:px-4 py-2 text-sm sm:text-base bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors",
                     data: { confirm: "Êtes-vous sûr de vouloir accepter cette demande ?" } %>
                 <%= link_to "Refuser", reject_mentorship_request_path(request), method: :patch,
-                    class: "px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors",
+                    class: "inline-flex items-center justify-center px-3 sm:px-4 py-2 text-sm sm:text-base bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors",
                     data: { confirm: "Êtes-vous sûr de vouloir refuser cette demande ?" } %>
               <% end %>
             </div>
