@@ -3,305 +3,385 @@
 <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
   <div class="mb-8">
     <div class="flex items-center justify-between mb-4">
-      <h1 class="text-3xl md:text-4xl font-bold text-purple-700">Modifier mon profil</h1>
-      <%= link_to profile_path, class: "inline-flex items-center gap-2 px-4 py-2 text-gray-700 hover:text-purple-700 transition-colors" do %>
+      <h1 class="text-3xl md:text-4xl font-bold text-purple-600">Modifier mon profil</h1>
+      <%= link_to profile_path, class: "inline-flex items-center gap-2 px-4 py-2 text-gray-700 hover:text-purple-600 transition-colors" do %>
         <span class="material-symbols-outlined">arrow_back</span>
         Retour au profil
       <% end %>
     </div>
-    <p class="text-gray-600">Mettez à jour vos informations personnelles et professionnelles</p>
+    <p class="text-gray-600">Mettez à jour vos informations personnelles<%= current_user.gwana? ? " et professionnelles" : "" %></p>
   </div>
 
-  <%= form_with model: @gwana, url: profile_path, local: true, multipart: true, class: "space-y-6" do |f| %>
-    <%= render "shared/error_messages", resource: @gwana %>
+  <% if current_user.admin? %>
+    <!-- Formulaire pour Admin -->
+    <%= form_with model: current_user, url: profile_path, local: true, class: "space-y-6" do |f| %>
+      <%= render "shared/error_messages", resource: current_user %>
 
-    <div class="bg-white rounded-2xl shadow-xl p-6 md:p-8 relative overflow-hidden">
-      <!-- Decorative shapes -->
-      <div class="absolute top-0 right-0 w-32 h-32 bg-purple-700/10 rounded-full -mr-16 -mt-16"></div>
-      <div class="absolute bottom-0 left-0 w-40 h-40 bg-purple-700/5 rounded-full -ml-20 -mb-20"></div>
+      <div class="bg-white rounded-2xl shadow-xl p-6 md:p-8 relative overflow-hidden">
+        <!-- Decorative shapes -->
+        <div class="absolute top-0 right-0 w-32 h-32 bg-purple-600/10 rounded-full -mr-16 -mt-16"></div>
+        <div class="absolute bottom-0 left-0 w-40 h-40 bg-purple-600/5 rounded-full -ml-20 -mb-20"></div>
 
-      <div class="relative z-10">
-        <!-- Informations personnelles -->
-        <div class="mb-8">
-          <h2 class="text-xl font-bold text-purple-700 mb-6 flex items-center gap-2">
-            <span class="material-symbols-outlined">person</span>
-            Informations personnelles
-          </h2>
+        <div class="relative z-10">
+          <!-- Informations personnelles -->
+          <div class="mb-8">
+            <h2 class="text-xl font-bold text-purple-600 mb-6 flex items-center gap-2">
+              <span class="material-symbols-outlined">person</span>
+              Informations personnelles
+            </h2>
 
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-            <!-- Prénom -->
-            <div>
-              <%= f.label :first_name, "Prénom", class: "block text-sm font-semibold text-purple-700 mb-2" %>
-              <%= f.text_field :first_name, 
-                  placeholder: "Prénom", 
-                  class: field_error_class(@gwana, :first_name, "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-700 focus:border-transparent outline-none transition-all") %>
-              <%= field_error_message(@gwana, :first_name) %>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+              <!-- Prénom -->
+              <div>
+                <%= f.label :first_name, "Prénom", class: "block text-sm font-semibold text-purple-600 mb-2" %>
+                <%= f.text_field :first_name, 
+                    placeholder: "Prénom", 
+                    class: field_error_class(current_user, :first_name, "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent outline-none transition-all") %>
+                <%= field_error_message(current_user, :first_name) %>
+              </div>
+
+              <!-- Nom -->
+              <div>
+                <%= f.label :last_name, "Nom", class: "block text-sm font-semibold text-purple-600 mb-2" %>
+                <%= f.text_field :last_name, 
+                    placeholder: "Nom", 
+                    class: field_error_class(current_user, :last_name, "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent outline-none transition-all") %>
+                <%= field_error_message(current_user, :last_name) %>
+              </div>
             </div>
 
-            <!-- Nom -->
-            <div>
-              <%= f.label :last_name, "Nom", class: "block text-sm font-semibold text-purple-700 mb-2" %>
-              <%= f.text_field :last_name, 
-                  placeholder: "Nom", 
-                  class: field_error_class(@gwana, :last_name, "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-700 focus:border-transparent outline-none transition-all") %>
-              <%= field_error_message(@gwana, :last_name) %>
-            </div>
-          </div>
-
-          <!-- Email -->
-          <div class="mb-6">
-            <%= f.fields_for :user do |user_form| %>
-              <%= user_form.label :email, "Email", class: "block text-sm font-semibold text-purple-700 mb-2" %>
-              <% 
-                user_obj = @gwana.user || @gwana.build_user
-                email_errors = user_obj.errors[:email]
-                email_has_errors = email_errors.any? || @gwana.errors[:email].any?
-              %>
-              <%= user_form.email_field :email, 
+            <!-- Email -->
+            <div class="mb-6">
+              <%= f.label :email, "Email", class: "block text-sm font-semibold text-purple-600 mb-2" %>
+              <%= f.email_field :email, 
                   placeholder: "email@exemple.com", 
-                  class: (email_has_errors ? "w-full px-4 py-3 border border-red-500 focus:border-red-500 focus:ring-red-500 rounded-lg focus:ring-2 outline-none transition-all" : "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-700 focus:border-transparent outline-none transition-all") %>
-              <% if email_has_errors %>
-                <div class="mt-1 text-sm text-red-600 flex items-center gap-1">
-                  <span class="text-red-500">⚠</span>
-                  <%= email_errors.first || @gwana.errors[:email].first %>
-                </div>
-              <% end %>
+                  class: field_error_class(current_user, :email, "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent outline-none transition-all") %>
+              <%= field_error_message(current_user, :email) %>
+            </div>
+
+            <!-- Téléphone -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+              <div>
+                <%= f.label :country_code, "Code pays", class: "block text-sm font-semibold text-purple-600 mb-2" %>
+                <%= f.text_field :country_code, 
+                    placeholder: "+223", 
+                    class: field_error_class(current_user, :country_code, "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent outline-none transition-all") %>
+                <%= field_error_message(current_user, :country_code) %>
+              </div>
+
+              <div>
+                <%= f.label :phone, "Téléphone", class: "block text-sm font-semibold text-purple-600 mb-2" %>
+                <%= f.telephone_field :phone, 
+                    placeholder: "12345678", 
+                    class: field_error_class(current_user, :phone, "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent outline-none transition-all") %>
+                <%= field_error_message(current_user, :phone) %>
+              </div>
+            </div>
+          </div>
+
+          <!-- Actions -->
+          <div class="flex justify-end gap-4 pt-6 border-t border-gray-200">
+            <%= link_to profile_path, class: "px-6 py-3 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors font-semibold" do %>
+              Annuler
             <% end %>
-          </div>
-
-          <!-- Téléphone -->
-          <div class="mb-6">
-            <%= f.label :phone, "Téléphone", class: "block text-sm font-semibold text-purple-700 mb-2" %>
-            <%= f.text_field :phone, 
-                placeholder: "12345678", 
-                pattern: "[0-9]{8}",
-                maxlength: 8,
-                inputmode: "numeric",
-                class: field_error_class(@gwana, :phone, "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-700 focus:border-transparent outline-none transition-all") %>
-            <p class="mt-1 text-xs text-gray-500">8 chiffres uniquement</p>
-            <%= field_error_message(@gwana, :phone) %>
-          </div>
-
-          <!-- Adresse -->
-          <div class="mb-6">
-            <%= f.label :address, "Adresse", class: "block text-sm font-semibold text-purple-700 mb-2" %>
-            <%= f.text_field :address, 
-                placeholder: "Adresse", 
-                class: field_error_class(@gwana, :address, "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-700 focus:border-transparent outline-none transition-all") %>
-            <%= field_error_message(@gwana, :address) %>
+            <%= f.submit "Enregistrer les modifications", 
+                class: "px-6 py-3 bg-purple-600 hover:bg-purple-600/90 text-white rounded-lg transition-all font-semibold shadow-lg hover:shadow-xl" %>
           </div>
         </div>
+      </div>
+    <% end %>
 
-        <!-- Localisation -->
-        <div class="mb-8">
-          <h2 class="text-xl font-bold text-purple-700 mb-6 flex items-center gap-2">
-            <span class="material-symbols-outlined">place</span>
-            Localisation
-          </h2>
+  <% elsif current_user.gwana? %>
+    <!-- Formulaire pour Gwana -->
+    <%= form_with model: @gwana, url: profile_path, local: true, multipart: true, class: "space-y-6" do |f| %>
+      <%= render "shared/error_messages", resource: @gwana %>
 
-          <div data-controller="location-cascade" class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <% commune_obj = @gwana.commune %>
-            <!-- Région -->
-            <div>
-              <%= f.label :region_id, "Région", class: "block text-sm font-semibold text-purple-700 mb-2" %>
-              <select name="region_id" 
-                      id="region_id"
-                      data-location-cascade-target="region"
-                      class="<%= field_error_class(@gwana, :commune_id, "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-700 focus:border-transparent outline-none transition-all") %>">
-                <option value="">Sélectionnez une région</option>
-                <% @regions ||= Region.ordered %>
-                <% selected_region_id = commune_obj&.department&.region_id || params[:region_id] || params.dig(:gwana, :region_id) %>
-                <% @regions.each do |region| %>
-                  <option value="<%= region.id %>" 
-                          <%= "selected" if selected_region_id.to_s == region.id.to_s %>>
-                    <%= region.name %>
-                  </option>
-                <% end %>
-              </select>
+      <div class="bg-white rounded-2xl shadow-xl p-6 md:p-8 relative overflow-hidden">
+        <!-- Decorative shapes -->
+        <div class="absolute top-0 right-0 w-32 h-32 bg-purple-600/10 rounded-full -mr-16 -mt-16"></div>
+        <div class="absolute bottom-0 left-0 w-40 h-40 bg-purple-600/5 rounded-full -ml-20 -mb-20"></div>
+
+        <div class="relative z-10">
+          <!-- Informations personnelles -->
+          <div class="mb-8">
+            <h2 class="text-xl font-bold text-purple-600 mb-6 flex items-center gap-2">
+              <span class="material-symbols-outlined">person</span>
+              Informations personnelles
+            </h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+              <!-- Prénom -->
+              <div>
+                <%= f.label :first_name, "Prénom", class: "block text-sm font-semibold text-purple-600 mb-2" %>
+                <%= f.text_field :first_name, 
+                    placeholder: "Prénom", 
+                    class: field_error_class(@gwana, :first_name, "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent outline-none transition-all") %>
+                <%= field_error_message(@gwana, :first_name) %>
+              </div>
+
+              <!-- Nom -->
+              <div>
+                <%= f.label :last_name, "Nom", class: "block text-sm font-semibold text-purple-600 mb-2" %>
+                <%= f.text_field :last_name, 
+                    placeholder: "Nom", 
+                    class: field_error_class(@gwana, :last_name, "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent outline-none transition-all") %>
+                <%= field_error_message(@gwana, :last_name) %>
+              </div>
             </div>
 
-            <!-- Département -->
-            <div>
-              <%= f.label :department_id, "Département", class: "block text-sm font-semibold text-purple-700 mb-2" %>
-              <select name="department_id" 
-                      id="department_id"
-                      data-location-cascade-target="department"
-                      <% selected_department_id = commune_obj&.department_id || params[:department_id] || params.dig(:gwana, :department_id) %>
-                      <% if selected_department_id.present? %>
-                        data-selected-value="<%= selected_department_id %>"
-                      <% end %>
-                      class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-700 focus:border-transparent outline-none transition-all">
-                <option value="">Sélectionnez un département</option>
-                <% if @departments.present? %>
-                  <% @departments.each do |department| %>
-                    <option value="<%= department.id %>" 
-                            <%= "selected" if selected_department_id.to_s == department.id.to_s %>>
-                      <%= department.name %>
+            <!-- Email -->
+            <div class="mb-6">
+              <%= f.fields_for :user do |user_form| %>
+                <%= user_form.label :email, "Email", class: "block text-sm font-semibold text-purple-600 mb-2" %>
+                <% 
+                  user_obj = @gwana.user || @gwana.build_user
+                  email_errors = user_obj.errors[:email]
+                  email_has_errors = email_errors.any? || @gwana.errors[:email].any?
+                %>
+                <%= user_form.email_field :email, 
+                    placeholder: "email@exemple.com", 
+                    class: (email_has_errors ? "w-full px-4 py-3 border border-red-500 focus:border-red-500 focus:ring-red-500 rounded-lg focus:ring-2 outline-none transition-all" : "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent outline-none transition-all") %>
+                <% if email_has_errors %>
+                  <div class="mt-1 text-sm text-red-600 flex items-center gap-1">
+                    <span class="text-red-500">⚠</span>
+                    <%= email_errors.first || @gwana.errors[:email].first %>
+                  </div>
+                <% end %>
+              <% end %>
+            </div>
+
+            <!-- Téléphone -->
+            <div class="mb-6">
+              <%= f.label :phone, "Téléphone", class: "block text-sm font-semibold text-purple-600 mb-2" %>
+              <%= f.text_field :phone, 
+                  placeholder: "12345678", 
+                  pattern: "[0-9]{8}",
+                  maxlength: 8,
+                  inputmode: "numeric",
+                  class: field_error_class(@gwana, :phone, "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent outline-none transition-all") %>
+              <p class="mt-1 text-xs text-gray-500">8 chiffres uniquement</p>
+              <%= field_error_message(@gwana, :phone) %>
+            </div>
+
+            <!-- Adresse -->
+            <div class="mb-6">
+              <%= f.label :address, "Adresse", class: "block text-sm font-semibold text-purple-600 mb-2" %>
+              <%= f.text_field :address, 
+                  placeholder: "Adresse", 
+                  class: field_error_class(@gwana, :address, "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent outline-none transition-all") %>
+              <%= field_error_message(@gwana, :address) %>
+            </div>
+          </div>
+
+          <!-- Localisation -->
+          <div class="mb-8">
+            <h2 class="text-xl font-bold text-purple-600 mb-6 flex items-center gap-2">
+              <span class="material-symbols-outlined">place</span>
+              Localisation
+            </h2>
+
+            <div data-controller="location-cascade" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <% commune_obj = @gwana.commune %>
+              <!-- Région -->
+              <div>
+                <%= f.label :region_id, "Région", class: "block text-sm font-semibold text-purple-600 mb-2" %>
+                <select name="region_id" 
+                        id="region_id"
+                        data-location-cascade-target="region"
+                        class="<%= field_error_class(@gwana, :commune_id, "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent outline-none transition-all") %>">
+                  <option value="">Sélectionnez une région</option>
+                  <% @regions ||= Region.ordered %>
+                  <% selected_region_id = commune_obj&.department&.region_id || params[:region_id] || params.dig(:gwana, :region_id) %>
+                  <% @regions.each do |region| %>
+                    <option value="<%= region.id %>" 
+                            <%= "selected" if selected_region_id.to_s == region.id.to_s %>>
+                      <%= region.name %>
                     </option>
                   <% end %>
-                <% end %>
-              </select>
+                </select>
+              </div>
+
+              <!-- Département -->
+              <div>
+                <%= f.label :department_id, "Département", class: "block text-sm font-semibold text-purple-600 mb-2" %>
+                <select name="department_id" 
+                        id="department_id"
+                        data-location-cascade-target="department"
+                        <% selected_department_id = commune_obj&.department_id || params[:department_id] || params.dig(:gwana, :department_id) %>
+                        <% if selected_department_id.present? %>
+                          data-selected-value="<%= selected_department_id %>"
+                        <% end %>
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent outline-none transition-all">
+                  <option value="">Sélectionnez un département</option>
+                  <% if @departments.present? %>
+                    <% @departments.each do |department| %>
+                      <option value="<%= department.id %>" 
+                              <%= "selected" if selected_department_id.to_s == department.id.to_s %>>
+                        <%= department.name %>
+                      </option>
+                    <% end %>
+                  <% end %>
+                </select>
+              </div>
+
+              <!-- Commune -->
+              <div>
+                <%= f.label :commune_id, "Commune", class: "block text-sm font-semibold text-purple-600 mb-2" %>
+                <%= f.select :commune_id,
+                    options_for_select(
+                      (@communes || []).map { |c| [c.name, c.id] },
+                      @gwana.commune_id
+                    ),
+                    { prompt: "Sélectionnez une commune" },
+                    { 
+                      data: { 
+                        location_cascade_target: "commune",
+                        selected_value: @gwana.commune_id
+                      },
+                      class: field_error_class(@gwana, :commune_id, "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent outline-none transition-all")
+                    } %>
+                <%= field_error_message(@gwana, :commune_id) %>
+              </div>
+            </div>
+          </div>
+
+          <!-- Profil professionnel -->
+          <div class="mb-8">
+            <h2 class="text-xl font-bold text-purple-600 mb-6 flex items-center gap-2">
+              <span class="material-symbols-outlined">work</span>
+              Profil professionnel
+            </h2>
+
+            <!-- Profession -->
+            <div class="mb-6">
+              <%= f.label :profession, "Profession", class: "block text-sm font-semibold text-purple-600 mb-2" %>
+              <%= f.text_field :profession, 
+                  placeholder: "Profession", 
+                  class: field_error_class(@gwana, :profession, "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent outline-none transition-all") %>
+              <%= field_error_message(@gwana, :profession) %>
             </div>
 
-            <!-- Commune -->
-            <div>
-              <%= f.label :commune_id, "Commune", class: "block text-sm font-semibold text-purple-700 mb-2" %>
-              <%= f.select :commune_id,
-                  options_for_select(
-                    (@communes || []).map { |c| [c.name, c.id] },
-                    @gwana.commune_id
-                  ),
-                  { prompt: "Sélectionnez une commune" },
-                  { 
-                    data: { 
-                      location_cascade_target: "commune",
-                      selected_value: @gwana.commune_id
-                    },
-                    class: field_error_class(@gwana, :commune_id, "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-700 focus:border-transparent outline-none transition-all")
-                  } %>
-              <%= field_error_message(@gwana, :commune_id) %>
+            <!-- Expériences -->
+            <div class="mb-6">
+              <%= f.label :experiences, "Expériences", class: "block text-sm font-semibold text-purple-600 mb-2" %>
+              <%= f.text_area :experiences, 
+                  rows: 4,
+                  placeholder: "Décrivez vos expériences professionnelles...", 
+                  class: field_error_class(@gwana, :experiences, "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent outline-none transition-all") %>
+              <%= field_error_message(@gwana, :experiences) %>
             </div>
-          </div>
-        </div>
 
-        <!-- Profil professionnel -->
-        <div class="mb-8">
-          <h2 class="text-xl font-bold text-purple-700 mb-6 flex items-center gap-2">
-            <span class="material-symbols-outlined">work</span>
-            Profil professionnel
-          </h2>
+            <!-- Formations -->
+            <div class="mb-6">
+              <%= f.label :formations, "Formations", class: "block text-sm font-semibold text-purple-600 mb-2" %>
+              <%= f.text_area :formations, 
+                  rows: 4,
+                  placeholder: "Listez vos formations et diplômes...", 
+                  class: field_error_class(@gwana, :formations, "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent outline-none transition-all") %>
+              <%= field_error_message(@gwana, :formations) %>
+            </div>
 
-          <!-- Profession -->
-          <div class="mb-6">
-            <%= f.label :profession, "Profession", class: "block text-sm font-semibold text-purple-700 mb-2" %>
-            <%= f.text_field :profession, 
-                placeholder: "Profession", 
-                class: field_error_class(@gwana, :profession, "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-700 focus:border-transparent outline-none transition-all") %>
-            <%= field_error_message(@gwana, :profession) %>
-          </div>
+            <!-- Compétences -->
+            <div class="mb-6">
+              <%= f.label :skills, "Compétences", class: "block text-sm font-semibold text-purple-600 mb-2" %>
+              <%= f.text_field :skills, 
+                  placeholder: "Compétence1, Compétence2, Compétence3...", 
+                  class: field_error_class(@gwana, :skills, "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent outline-none transition-all") %>
+              <p class="mt-1 text-xs text-gray-500">Séparez les compétences par des virgules</p>
+              <%= field_error_message(@gwana, :skills) %>
+            </div>
 
-          <!-- Expériences -->
-          <div class="mb-6">
-            <%= f.label :experiences, "Expériences", class: "block text-sm font-semibold text-purple-700 mb-2" %>
-            <%= f.text_area :experiences, 
-                rows: 4,
-                placeholder: "Décrivez vos expériences professionnelles...", 
-                class: field_error_class(@gwana, :experiences, "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-700 focus:border-transparent outline-none transition-all") %>
-            <%= field_error_message(@gwana, :experiences) %>
-          </div>
+            <!-- Bio -->
+            <div class="mb-6">
+              <%= f.label :bio, "Biographie", class: "block text-sm font-semibold text-purple-600 mb-2" %>
+              <p class="text-xs text-gray-500 mb-2">La modification de votre biographie nécessitera une validation par un administrateur</p>
+              <%= f.text_area :bio, 
+                  rows: 5,
+                  placeholder: "Rédigez votre biographie...", 
+                  class: field_error_class(@gwana, :bio, "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent outline-none transition-all") %>
+              <%= field_error_message(@gwana, :bio) %>
+            </div>
 
-          <!-- Formations -->
-          <div class="mb-6">
-            <%= f.label :formations, "Formations", class: "block text-sm font-semibold text-purple-700 mb-2" %>
-            <%= f.text_area :formations, 
-                rows: 4,
-                placeholder: "Listez vos formations et diplômes...", 
-                class: field_error_class(@gwana, :formations, "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-700 focus:border-transparent outline-none transition-all") %>
-            <%= field_error_message(@gwana, :formations) %>
-          </div>
-
-          <!-- Compétences -->
-          <div class="mb-6">
-            <%= f.label :skills, "Compétences", class: "block text-sm font-semibold text-purple-700 mb-2" %>
-            <%= f.text_field :skills, 
-                placeholder: "Compétence1, Compétence2, Compétence3...", 
-                class: field_error_class(@gwana, :skills, "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-700 focus:border-transparent outline-none transition-all") %>
-            <p class="mt-1 text-xs text-gray-500">Séparez les compétences par des virgules</p>
-            <%= field_error_message(@gwana, :skills) %>
-          </div>
-
-          <!-- Bio -->
-          <div class="mb-6">
-            <%= f.label :bio, "Biographie", class: "block text-sm font-semibold text-purple-700 mb-2" %>
-            <p class="text-xs text-gray-500 mb-2">La modification de votre biographie nécessitera une validation par un administrateur</p>
-            <%= f.text_area :bio, 
-                rows: 5,
-                placeholder: "Rédigez votre biographie...", 
-                class: field_error_class(@gwana, :bio, "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-700 focus:border-transparent outline-none transition-all") %>
-            <%= field_error_message(@gwana, :bio) %>
-          </div>
-
-          <!-- Disponible pour mentorat -->
-          <% if current_user.gwana? %>
+            <!-- Disponible pour mentorat -->
             <div class="mb-6">
               <div class="flex items-center">
                 <%= f.check_box :available_for_mentorship, 
-                    { class: "w-4 h-4 text-purple-700 bg-white border-gray-300 rounded focus:ring-purple-700/50" }, 
+                    { class: "w-4 h-4 text-purple-600 bg-white border-gray-300 rounded focus:ring-purple-600/50" }, 
                     true, 
                     false %>
-                <%= f.label :available_for_mentorship, "Disponible pour mentorat", class: "ml-3 text-sm font-semibold text-purple-700 cursor-pointer hover:text-purple-600 transition-colors" %>
+                <%= f.label :available_for_mentorship, "Disponible pour mentorat", class: "ml-3 text-sm font-semibold text-purple-600 cursor-pointer hover:text-purple-600/80 transition-colors" %>
               </div>
               <p class="mt-1 text-xs text-gray-500 ml-7">Cochez cette case si vous êtes disponible pour offrir du mentorat</p>
             </div>
-          <% end %>
-        </div>
-
-        <!-- Réseaux sociaux -->
-        <div class="mb-8">
-          <h2 class="text-xl font-bold text-purple-700 mb-6 flex items-center gap-2">
-            <span class="material-symbols-outlined">share</span>
-            Réseaux sociaux
-          </h2>
-
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <!-- LinkedIn URL -->
-            <div>
-              <%= f.label :linkedin_url, "LinkedIn URL", class: "block text-sm font-semibold text-purple-700 mb-2" %>
-              <%= f.text_field :linkedin_url, 
-                  placeholder: "https://www.linkedin.com/in/...", 
-                  class: field_error_class(@gwana, :linkedin_url, "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-700 focus:border-transparent outline-none transition-all") %>
-              <%= field_error_message(@gwana, :linkedin_url) %>
-            </div>
-
-            <!-- Twitter URL -->
-            <div>
-              <%= f.label :twitter_url, "Twitter URL", class: "block text-sm font-semibold text-purple-700 mb-2" %>
-              <%= f.text_field :twitter_url, 
-                  placeholder: "https://twitter.com/...", 
-                  class: field_error_class(@gwana, :twitter_url, "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-700 focus:border-transparent outline-none transition-all") %>
-              <%= field_error_message(@gwana, :twitter_url) %>
-            </div>
-
-            <!-- Website URL -->
-            <div>
-              <%= f.label :website_url, "Website URL", class: "block text-sm font-semibold text-purple-700 mb-2" %>
-              <%= f.text_field :website_url, 
-                  placeholder: "https://your-website.com", 
-                  class: field_error_class(@gwana, :website_url, "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-700 focus:border-transparent outline-none transition-all") %>
-              <%= field_error_message(@gwana, :website_url) %>
-            </div>
           </div>
-        </div>
 
-        <!-- Photo -->
-        <div class="mb-8">
-          <h2 class="text-xl font-bold text-purple-700 mb-6 flex items-center gap-2">
-            <span class="material-symbols-outlined">photo_camera</span>
-            Photo de profil
-          </h2>
-          <div>
-            <% if @gwana.persisted? && @gwana.photo.attached? %>
-              <div class="mb-4">
-                <%= image_tag @gwana.photo, class: "w-32 h-32 rounded-full object-cover border-4 border-purple-700/20" %>
+          <!-- Réseaux sociaux -->
+          <div class="mb-8">
+            <h2 class="text-xl font-bold text-purple-600 mb-6 flex items-center gap-2">
+              <span class="material-symbols-outlined">share</span>
+              Réseaux sociaux
+            </h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <!-- LinkedIn URL -->
+              <div>
+                <%= f.label :linkedin_url, "LinkedIn URL", class: "block text-sm font-semibold text-purple-600 mb-2" %>
+                <%= f.text_field :linkedin_url, 
+                    placeholder: "https://www.linkedin.com/in/...", 
+                    class: field_error_class(@gwana, :linkedin_url, "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent outline-none transition-all") %>
+                <%= field_error_message(@gwana, :linkedin_url) %>
               </div>
-            <% end %>
-            <p class="text-xs text-gray-500 mb-2">La modification de votre photo nécessitera une validation par un administrateur</p>
-            <%= f.file_field :photo, 
-                accept: "image/*",
-                class: field_error_class(@gwana, :photo, "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-700 focus:border-transparent outline-none transition-all") %>
-            <%= field_error_message(@gwana, :photo) %>
-          </div>
-        </div>
 
-        <!-- Actions -->
-        <div class="flex justify-end gap-4 pt-6 border-t border-gray-200">
-          <%= link_to profile_path, class: "px-6 py-3 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors font-semibold" do %>
-            Annuler
-          <% end %>
-          <%= f.submit "Enregistrer les modifications", 
-              class: "px-6 py-3 bg-gradient-to-r from-purple-700 to-purple-800 text-white rounded-lg hover:from-purple-800 hover:to-purple-700 transition-all font-semibold shadow-lg hover:shadow-xl" %>
+              <!-- Twitter URL -->
+              <div>
+                <%= f.label :twitter_url, "Twitter URL", class: "block text-sm font-semibold text-purple-600 mb-2" %>
+                <%= f.text_field :twitter_url, 
+                    placeholder: "https://twitter.com/...", 
+                    class: field_error_class(@gwana, :twitter_url, "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent outline-none transition-all") %>
+                <%= field_error_message(@gwana, :twitter_url) %>
+              </div>
+
+              <!-- Website URL -->
+              <div>
+                <%= f.label :website_url, "Website URL", class: "block text-sm font-semibold text-purple-600 mb-2" %>
+                <%= f.text_field :website_url, 
+                    placeholder: "https://your-website.com", 
+                    class: field_error_class(@gwana, :website_url, "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent outline-none transition-all") %>
+                <%= field_error_message(@gwana, :website_url) %>
+              </div>
+            </div>
+          </div>
+
+          <!-- Photo -->
+          <div class="mb-8">
+            <h2 class="text-xl font-bold text-purple-600 mb-6 flex items-center gap-2">
+              <span class="material-symbols-outlined">photo_camera</span>
+              Photo de profil
+            </h2>
+            <div>
+              <% if @gwana.persisted? && @gwana.photo.attached? %>
+                <div class="mb-4">
+                  <%= image_tag @gwana.photo, class: "w-32 h-32 rounded-full object-cover border-4 border-purple-600/20" %>
+                </div>
+              <% end %>
+              <p class="text-xs text-gray-500 mb-2">La modification de votre photo nécessitera une validation par un administrateur</p>
+              <%= f.file_field :photo, 
+                  accept: "image/*",
+                  class: field_error_class(@gwana, :photo, "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent outline-none transition-all") %>
+              <%= field_error_message(@gwana, :photo) %>
+            </div>
+          </div>
+
+          <!-- Actions -->
+          <div class="flex justify-end gap-4 pt-6 border-t border-gray-200">
+            <%= link_to profile_path, class: "px-6 py-3 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors font-semibold" do %>
+              Annuler
+            <% end %>
+            <%= f.submit "Enregistrer les modifications", 
+                class: "px-6 py-3 bg-purple-600 hover:bg-purple-600/90 text-white rounded-lg transition-all font-semibold shadow-lg hover:shadow-xl" %>
+          </div>
         </div>
       </div>
-    </div>
+    <% end %>
   <% end %>
 </div>
