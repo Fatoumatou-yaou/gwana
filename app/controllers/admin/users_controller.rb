@@ -17,24 +17,15 @@ class Admin::UsersController < Admin::BaseController
 
   def new
     @user = User.new
-    @profile = params[:profile] || "gwana"
-    @user.profile = @profile
+    @user.profile = :admin
     authorize [:admin, @user]
   end
 
   def create
     @user = User.new(user_params)
-    @user.profile = params[:user][:profile] || "gwana"
+    @user.profile = :admin
     @user.is_verified = false
     authorize [:admin, @user]
-
-    # Empêcher la création de user
-    if @user.profile == "user"
-      @profile = @user.profile
-      flash[:alert] = "Vous ne pouvez créer que des comptes admin ou gwana."
-      render :new, status: :unprocessable_entity
-      return
-    end
 
     # Générer un mot de passe temporaire
     temp_password = SecureRandom.alphanumeric(12)
@@ -48,10 +39,9 @@ class Admin::UsersController < Admin::BaseController
       # Envoyer les identifiants par email (TODO: créer un mailer)
       UserMailer.send_credentials(@user, temp_password).deliver_now if defined?(UserMailer)
       
-      flash[:notice] = "#{@user.profile.capitalize} créé(e) avec succès. Un code de vérification a été envoyé."
+      flash[:notice] = "Compte administrateur créé avec succès. Un code de vérification a été envoyé."
       redirect_to admin_user_path(@user)
     else
-      @profile = @user.profile
       render :new, status: :unprocessable_entity
     end
   end
@@ -77,7 +67,7 @@ class Admin::UsersController < Admin::BaseController
   end
 
   def user_params
-    params.require(:user).permit(:email, :first_name, :last_name, :phone, :country_code, :profile)
+    params.require(:user).permit(:email, :first_name, :last_name, :phone, :country_code)
   end
 end
 
