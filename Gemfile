@@ -59,7 +59,7 @@ gem "redis", "~> 5.0"
 gem "pg_search", "~> 2.3"
 
 # Pagination
-gem "pagy", "~> 8.0"
+gem "pagy", "~> 43.2"
 
 # Charts
 gem "chartkick", "~> 5.0"
