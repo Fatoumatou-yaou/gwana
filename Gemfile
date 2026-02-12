@@ -65,7 +65,7 @@ gem "pagy", "~> 8.0"
 gem "chartkick", "~> 5.0"
 
 # Friendly URLs
-gem "friendly_id", "~> 5.5"
+gem "friendly_id", "~> 5.6"
 
 # Decorators
 gem "draper", "~> 4.0"
