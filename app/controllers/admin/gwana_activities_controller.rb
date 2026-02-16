@@ -57,6 +57,7 @@ class Admin::GwanaActivitiesController < Admin::BaseController
   def activity_params
     params.require(:gwana_activity).permit(
       :activity_type,
+      :activity_date,
       :youtube_video_id,
       :description,
       photos: []

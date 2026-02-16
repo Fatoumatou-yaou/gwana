@@ -94,7 +94,7 @@
                           <%= activity.activity_type.humanize %>
                         </span>
                         <span class="text-xs text-gray-500 whitespace-nowrap">
-                          <%= l(activity.created_at, format: :short) %>
+                          <%= l(activity.activity_date, format: :short) %>
                         </span>
                       </div>
                       <p class="text-gray-700 text-sm line-clamp-2 break-words overflow-hidden"><%= activity.description %></p>

@@ -20,9 +20,9 @@
     </div>
 
     <!-- Description -->
-    <div class="mb-8">
+    <div class="mb-8 min-w-0 overflow-hidden">
       <h2 class="text-2xl font-semibold text-gray-900 mb-4">Description</h2>
-      <div class="text-gray-700 text-base leading-relaxed whitespace-pre-wrap">
+      <div class="text-gray-700 text-base leading-relaxed whitespace-pre-wrap break-words max-w-full">
         <%= simple_format(@network_event.description, {}, wrapper_tag: "div") %>
       </div>
     </div>

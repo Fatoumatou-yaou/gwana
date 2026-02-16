@@ -27,37 +27,39 @@
   <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
     <!-- Main Content -->
     <div class="lg:col-span-2">
-      <article class="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
-        <!-- Header -->
+      <article class="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100 flex flex-col">
+        <!-- Card: Header -->
         <div class="px-6 md:px-10 pt-8 md:pt-12 pb-6 border-b border-gray-100">
           <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
             <span class="text-sm font-semibold text-purple-700 bg-purple-700/10 px-4 py-2 rounded-full border border-purple-700/20">
               <%= @activity.activity_type.humanize %>
             </span>
-            <time datetime="<%= @activity.created_at.iso8601 %>" class="text-sm text-gray-500 flex items-center gap-2">
+            <time datetime="<%= @activity.activity_date %>" class="text-sm text-gray-500 flex items-center gap-2">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
               </svg>
-              <%= l(@activity.created_at, format: :long) %>
+              <%= l(@activity.activity_date, format: :long) %>
             </time>
           </div>
         </div>
 
-        <!-- Media Section -->
+        <!-- Card: Media -->
         <% if @activity.has_video? %>
-          <div class="w-full bg-black rounded-lg overflow-hidden">
-            <div class="relative aspect-video">
-              <iframe 
-                src="<%= @activity.youtube_embed_url %>" 
-                frameborder="0"
-                allow="autoplay; encrypted-media; picture-in-picture"
-                allowfullscreen
-                class="w-full h-full"
-              ></iframe>
+          <div class="px-6 md:px-10 py-6 border-b border-gray-100">
+            <div class="w-full bg-black rounded-lg overflow-hidden">
+              <div class="relative aspect-video">
+                <iframe 
+                  src="<%= @activity.youtube_embed_url %>" 
+                  frameborder="0"
+                  allow="autoplay; encrypted-media; picture-in-picture"
+                  allowfullscreen
+                  class="w-full h-full"
+                ></iframe>
+              </div>
             </div>
           </div>
         <% elsif @activity.has_photos? %>
-          <div class="px-6 md:px-10 py-8">
+          <div class="px-6 md:px-10 py-8 border-b border-gray-100">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               <% @activity.photos.each do |photo| %>
                 <%= image_tag photo, class: "w-full h-auto rounded-lg border border-gray-200 shadow-md" %>
@@ -66,8 +68,7 @@
           </div>
         <% end %>
 
-        <!-- Description -->
-        <div class="px-6 md:px-10 pb-8 md:pb-12">
+        <div class="px-6 md:px-10 py-8 md:pb-12 flex-1">
           <div class="text-gray-700 text-lg leading-relaxed whitespace-pre-wrap">
             <%= simple_format(@activity.description, {}, wrapper_tag: "div") %>
           </div>

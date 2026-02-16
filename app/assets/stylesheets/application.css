@@ -159,6 +159,101 @@ h1, h2, h3, h4, h5, h6 {
   text-shadow: 0 2px 20px rgba(0, 0, 0, 0.5), 0 4px 40px rgba(0, 0, 0, 0.3);
 }
 
+/* Galerie – Animations d'entrée artistiques (mobile) */
+@keyframes galleryFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes galleryScale {
+  from {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes gallerySlideLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes gallerySlideRight {
+  from {
+    opacity: 0;
+    transform: translateX(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes galleryReveal {
+  from {
+    opacity: 0;
+    transform: scale(0.96) translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes galleryBlur {
+  from {
+    opacity: 0;
+    filter: blur(8px);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+
+[data-gallery-entrance-target="card"] {
+  opacity: 0;
+}
+
+[data-gallery-entrance-target="card"].gallery-entrance-in.gallery-entrance-fade-up {
+  animation: galleryFadeUp 0.65s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+[data-gallery-entrance-target="card"].gallery-entrance-in.gallery-entrance-scale {
+  animation: galleryScale 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+[data-gallery-entrance-target="card"].gallery-entrance-in.gallery-entrance-slide-left {
+  animation: gallerySlideLeft 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+[data-gallery-entrance-target="card"].gallery-entrance-in.gallery-entrance-slide-right {
+  animation: gallerySlideRight 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+[data-gallery-entrance-target="card"].gallery-entrance-in.gallery-entrance-reveal {
+  animation: galleryReveal 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+[data-gallery-entrance-target="card"].gallery-entrance-in.gallery-entrance-blur {
+  animation: galleryBlur 0.55s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
 /* Accessibilité - Respecter les préférences de mouvement réduit */
 @media (prefers-reduced-motion: reduce) {
   *,

@@ -179,7 +179,7 @@
                   <span class="text-sm text-purple-700 font-semibold">
                     <%= event.photos_count %> photo<%= 's' if event.photos_count > 1 %>
                   </span>
-                  <%= link_to "Voir la galerie", galeries_path, 
+                  <%= link_to "Voir la galerie", galerie_event_path(event), 
                       class: "text-purple-700 hover:text-purple-800 font-semibold text-sm" %>
                 </div>
               </div>

@@ -229,8 +229,8 @@
         </div>
         
         <!-- Right Side: Text Content -->
-        <div class="hidden md:flex w-full lg:w-2/5 lg:sticky lg:top-24 flex-col justify-center">
-          <div class="space-y-5 mb-8">
+        <div class="w-full lg:w-2/5 lg:sticky lg:top-24 flex-col justify-center">
+          <div class=" hidden md:flex space-y-5 mb-8">
             <p class="text-lg md:text-xl text-gray-800 leading-relaxed font-medium">
               Les Gwanas sont des figures inspirantes qui entreprennent des initiatives remarquables et réalisent des projets concrets pour transformer leur communauté.
             </p>
@@ -241,7 +241,7 @@
           
           <!-- CTA Button avec effets modernes -->
           <%= link_to gwana_activities_path, 
-              class: "group relative inline-flex items-center px-2 py-3 bg-purple-600 text-white rounded-lg font-semibold text-sm hover:purple-700 transition-all duration-300 shadow-md hover:shadow-lg hover:-translate-y-0.5 overflow-hidden" do %>
+              class: "group relative inline-flex items-center px-2 w-2/5 md:w-full py-3 bg-purple-600 text-white rounded-lg font-semibold text-sm hover:purple-700 transition-all duration-300 shadow-md hover:shadow-lg hover:-translate-y-0.5 overflow-hidden" do %>
             <!-- Shimmer effect sur le bouton -->
             <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out"></div>
             <span class="relative z-10">Toutes les activités</span>
