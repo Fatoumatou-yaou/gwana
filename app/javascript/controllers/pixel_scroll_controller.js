@@ -9,9 +9,13 @@ export default class extends Controller {
     // Vérifier les préférences de mouvement réduit
     this.prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     
-    // Sur mobile, on active l'effet mais avec des images plus petites
+    // Sur mobile : pas d'effet pixel (performances + animations dédiées)
     this.isMobile = window.innerWidth < 768
-    
+    if (this.isMobile) {
+      this.showImagesNormally()
+      return
+    }
+
     if (this.prefersReducedMotion) {
       // Afficher les images normalement sans effet
       this.showImagesNormally()
@@ -52,10 +56,11 @@ export default class extends Controller {
       const canvas = container.querySelector('[data-pixel-scroll-target="canvas"]')
       
       if (source && canvas) {
-        // Remplacer le canvas par l'image normale
         const img = document.createElement('img')
         img.src = source.src
-        img.className = "w-full h-auto cursor-pointer"
+        img.className = container.classList.contains('galerie-hero-image')
+          ? "w-full h-full object-cover cursor-pointer rounded-lg"
+          : "w-full h-auto cursor-pointer"
         img.addEventListener('click', () => {
           this.openZoom(index)
         })
@@ -133,10 +138,9 @@ export default class extends Controller {
       canvas.style.width = `${displayWidth}px`
       canvas.style.height = `${displayHeight}px`
       
-      // Définir la résolution interne du canvas (pour la qualité)
-      // Sur mobile, réduire la résolution pour les performances
-      const maxResolution = this.isMobile ? 800 : 1920
-      const scale = Math.min(1, maxResolution / displayWidth)
+      // Limiter la résolution du canvas pour l'effet pixel (réduit la RAM : getImageData peut être très coûteux)
+      const maxCanvasWidth = this.isMobile ? 400 : 800
+      const scale = Math.min(1, maxCanvasWidth / displayWidth)
       canvas.width = Math.floor(displayWidth * scale)
       canvas.height = Math.floor(displayHeight * scale)
       

@@ -1,9 +1,10 @@
 <!-- Vidéos Portraits des Gwanas Section -->
 <% if @portrait_videos.any? %>
-  <section 
-    class="relative py-12 md:py-10 overflow-hidden" 
+  <section
+    class="section-reveal relative py-12 md:py-10 overflow-hidden"
     aria-labelledby="portrait-videos-title"
-    data-controller="portrait-videos-carousel">
+    data-controller="section-reveal portrait-videos-carousel"
+    data-section-reveal-animation-value="fadeInUp">
     <div class="absolute -inset-4 bg-gradient-to-r from-purple-200 to-purple-300 rounded-3xl blur-2xl opacity-20 group-hover:opacity-30 transition-opacity duration-500"></div>
     <div class="hero-floating-shapes">
       <div class="floating-shape shape-1"></div>

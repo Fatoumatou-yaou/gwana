@@ -32,7 +32,7 @@ class NetworkEvent < ApplicationRecord
 
     # Compter toutes les photos attachées (existantes + nouvelles lors d'un update)
     total_count = photos.count
-    
+
     if total_count > 30
       errors.add(:photos, "ne peut pas dépasser 30 photos (actuellement : #{total_count})")
     end
@@ -43,10 +43,10 @@ class NetworkEvent < ApplicationRecord
 
     photos.each do |photo|
       next unless photo.respond_to?(:byte_size)
-      
       if photo.byte_size > 2.megabytes
         size_in_mb = (photo.byte_size / 1.megabyte.to_f).round(2)
         filename = photo.respond_to?(:filename) ? photo.filename.to_s : "photo"
+        Rails.logger.error("Photo trop grande: #{filename} = #{photo.byte_size} bytes (#{size_in_mb} Mo)")
         errors.add(:photos, "contient une photo (#{filename}) qui dépasse 2 Mo (taille actuelle : #{size_in_mb} Mo)")
       end
     end
@@ -56,10 +56,10 @@ class NetworkEvent < ApplicationRecord
     return unless photos.attached?
 
     allowed_types = %w[image/jpeg image/jpg image/png image/webp]
-    
+
     photos.each do |photo|
       next unless photo.respond_to?(:content_type)
-      
+
       unless photo.content_type.in?(allowed_types)
         filename = photo.respond_to?(:filename) ? photo.filename.to_s : "fichier"
         errors.add(:photos, "contient un fichier (#{filename}) au format non autorisé. Formats acceptés : JPEG, PNG, WebP")
@@ -67,4 +67,3 @@ class NetworkEvent < ApplicationRecord
     end
   end
 end
-
