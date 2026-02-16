@@ -33,7 +33,7 @@ Rails.application.routes.draw do
     resources :articles, only: %i[index show]
     resources :gwana_network_requests, only: %i[new create show], path: "gwana_network_requests"
     resources :gwana_activities, only: [:index, :show], path: "activites-gwanas"
-    resources :network_events, only: [:index], path: "galeries", controller: "galeries", as: "galeries"
+    resources :network_events, only: [:index, :show], path: "galeries", controller: "galeries", as: "galeries"
     get "impact", to: "impact#index", as: :impact
 
     # API routes for location data

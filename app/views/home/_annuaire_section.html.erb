@@ -1,6 +1,10 @@
 <!-- Annuaire Section -->
 <% if @directory_gwanas.any? %>
-  <section class="relative py-16 md:py-20 bg-gradient-to-b from-purple-50 to-purple-50 overflow-hidden" aria-labelledby="annuaire-title">
+  <section
+    class="section-reveal relative py-16 md:py-20 bg-gradient-to-b from-purple-50 to-purple-50 overflow-hidden"
+    aria-labelledby="annuaire-title"
+    data-controller="section-reveal"
+    data-section-reveal-animation-value="slideInUp">
     <!-- Background geometric shapes -->
     <div class="absolute inset-0 overflow-hidden pointer-events-none">
       <!-- Wavy lines background -->

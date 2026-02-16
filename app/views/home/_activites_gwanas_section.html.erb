@@ -1,8 +1,10 @@
 <!-- Activités des Gwanas Section -->
 <% if @recent_activities.any? %>
-  <section 
-    class="relative py-12 md:py-16 bg-gradient-to-br from-gray-50 via-purple-50/30 to-gray-100 overflow-hidden"
-    aria-labelledby="activites-gwanas-title">
+  <section
+    class="section-reveal relative py-12 md:py-16 bg-gradient-to-br from-gray-50 via-purple-50/30 to-gray-100 overflow-hidden"
+    aria-labelledby="activites-gwanas-title"
+    data-controller="section-reveal"
+    data-section-reveal-animation-value="slideInUp">
     
     <!-- Background decorative elements -->
     <div class="absolute inset-0 overflow-hidden pointer-events-none">

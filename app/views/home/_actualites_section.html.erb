@@ -1,8 +1,10 @@
 <!-- Actualités Section -->
 <% if @recent_articles.any? %>
-  <section 
-    class="relative py-18 bg-gray-100 overflow-hidden"
-    aria-labelledby="actualites-title">
+  <section
+    class="section-reveal relative py-18 bg-gray-100 overflow-hidden"
+    aria-labelledby="actualites-title"
+    data-controller="section-reveal"
+    data-section-reveal-animation-value="slideInUp">
     
     <!-- Background decorative elements -->
     <div class="absolute inset-0 overflow-hidden pointer-events-none">
