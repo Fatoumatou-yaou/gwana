@@ -1,7 +1,7 @@
 class GwanaNetworkRequestsController < ApplicationController
   layout "slim"
-  before_action :set_gwana_network_request, only: [:show]
-  before_action :authorize_gwana_network_request, only: [:new, :create]
+  before_action :set_gwana_network_request, only: [ :show ]
+  before_action :authorize_gwana_network_request, only: [ :new, :create ]
 
   def new
     @gwana_network_request = GwanaNetworkRequest.new
@@ -17,7 +17,7 @@ class GwanaNetworkRequestsController < ApplicationController
     if @gwana_network_request.save
       # Envoyer l'email de confirmation
       GwanaNetworkRequestMailer.request_received(@gwana_network_request).deliver_later
-      
+
       # Notifier les admins
       notify_admins
 
@@ -63,9 +63,7 @@ class GwanaNetworkRequestsController < ApplicationController
   def gwana_network_request_params
     params.require(:gwana_network_request).permit(
       :first_name, :last_name, :email, :phone, :address, :commune_id,
-      :profession, :experiences, :formations, :bio,
-      :linkedin_url, :twitter_url, :website_url,
-      :identity_document, :photo
+      :profession, :experiences, :formations, :bio, :photo, :identity_document
     )
   end
 
@@ -76,4 +74,3 @@ class GwanaNetworkRequestsController < ApplicationController
     end
   end
 end
-

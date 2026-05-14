@@ -20,7 +20,6 @@ class GwanaNetworkRequest < ApplicationRecord
   validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }, uniqueness: true
   validates :phone, format: { with: /\A\d{8}\z/ }, uniqueness: true, allow_blank: true
   validates :profession, :experiences, :formations, :bio, presence: true
-  validates :identity_document, presence: true
   validates :photo, presence: true
   validate :identity_document_must_be_pdf
   validate :validate_url_format
@@ -35,7 +34,7 @@ class GwanaNetworkRequest < ApplicationRecord
 
   # Instance methods
   def approve!(reviewer:)
-    update(
+    update!(
       status: :approved,
       reviewed_by: reviewer,
       reviewed_at: Time.current
@@ -43,7 +42,7 @@ class GwanaNetworkRequest < ApplicationRecord
   end
 
   def reject!(reviewer:, reason:)
-    update(
+    update!(
       status: :rejected,
       reviewed_by: reviewer,
       reviewed_at: Time.current,
@@ -96,6 +95,7 @@ class GwanaNetworkRequest < ApplicationRecord
 
   def email_not_already_in_use
     return unless email.present?
+    return if approved? || rejected?
     
     if User.exists?(email: email)
       errors.add(:email, "a déjà été utilisé")
