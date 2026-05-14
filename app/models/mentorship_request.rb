@@ -17,9 +17,8 @@ class MentorshipRequest < ApplicationRecord
   # Validations
   validates :message, presence: true, length: { minimum: 10 }
   validates :objectives, presence: true
-  validates :motivation, presence: true, length: { minimum: 50 }
+  validates :motivation, presence: true, length: { minimum: 20 }
   validates :niveau_etudes, presence: true
-  validates :filiere, presence: true
   validates :requester_id, presence: true
   validates :mentor_id, presence: true
   validate :requester_cannot_be_mentor
@@ -36,13 +35,21 @@ class MentorshipRequest < ApplicationRecord
 
   # Instance methods
   def accept!
-    update(status: :accepted)
-    send_acceptance_notification
+    if update(status: :accepted)
+      send_acceptance_notification
+      true
+    else
+      false
+    end
   end
 
   def reject!
-    update(status: :rejected)
-    send_rejection_notification
+    if update(status: :rejected)
+      send_rejection_notification
+      true
+    else
+      false
+    end
   end
 
   private

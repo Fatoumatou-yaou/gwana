@@ -91,4 +91,9 @@ Rails.application.routes.draw do
     authenticate :user, ->(u) { u.admin? } do
       mount Sidekiq::Web => "/sidekiq"
     end
+
+    # Letter Opener Web (development only)
+    if Rails.env.development?
+      mount LetterOpenerWeb::Engine, at: "/letter_opener"
+    end
 end

@@ -192,7 +192,7 @@
 
         <div class="group">
           <%= f.label :filiere, "Filière", class: 'block text-sm font-semibold text-gray-700 mb-2 group-focus-within:text-purple-700 transition-colors duration-200' %>
-          <%= f.text_field :filiere, required: true,
+          <%= f.text_field :filiere,
               class: field_error_class(@mentorship_request, :filiere, "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-700 focus:border-transparent outline-none transition-all"),
               placeholder: "Ex: Informatique, Commerce, Droit..." %>
           <%= field_error_message(@mentorship_request, :filiere) %>
@@ -205,7 +205,7 @@
       <h2 class="text-xl font-semibold mb-4 text-purple-700">Votre motivation</h2>
       <div class="group">
         <%= f.label :motivation, "Pourquoi souhaitez-vous être mentoré(e) par cette gwana ?", class: 'block text-sm font-semibold text-gray-700 mb-2 group-focus-within:text-purple-700 transition-colors duration-200' %>
-        <p class="text-xs text-gray-500 mb-2">Décrivez vos motivations, vos objectifs et ce que vous attendez de ce mentorat (minimum 50 caractères)</p>
+        <p class="text-xs text-gray-500 mb-2">Décrivez vos motivations, vos objectifs et ce que vous attendez de ce mentorat (minimum 20 caractères)</p>
         <%= f.text_area :motivation, required: true, rows: 8,
             class: field_error_class(@mentorship_request, :motivation, "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-700 focus:border-transparent outline-none transition-all"),
             placeholder: "Expliquez pourquoi vous souhaitez être mentoré(e) par cette gwana, vos objectifs professionnels, vos attentes..." %>

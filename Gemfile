@@ -30,6 +30,8 @@ gem "solid_cache"
 gem "solid_queue"
 gem "solid_cable"
 
+gem "csv"
+
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", require: false
 
@@ -63,6 +65,7 @@ gem "pagy", "~> 8.0"
 
 # Charts
 gem "chartkick", "~> 5.0"
+gem "groupdate"
 
 # Friendly URLs
 gem "friendly_id", "~> 5.5"
@@ -76,6 +79,9 @@ gem "rails-i18n", "~> 8.0"
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
+
+  # Load local .env variables in development and test
+  gem "dotenv-rails"
 
   # Static analysis for security vulnerabilities [https://brakemanscanner.org/]
   gem "brakeman", require: false
@@ -92,6 +98,8 @@ end
 group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"
+  # Preview emails in browser [https://github.com/fgrehm/letter_opener_web]
+  gem "letter_opener_web", "~> 3.0"
 end
 
 group :test do

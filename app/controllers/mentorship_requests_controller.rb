@@ -1,7 +1,7 @@
 class MentorshipRequestsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_mentorship_request, only: [:show, :accept, :reject]
-  after_action :verify_authorized, except: [:index]
+  before_action :set_mentorship_request, only: [ :show, :accept, :reject ]
+  after_action :verify_authorized, except: [ :index ]
 
   def index
     if current_user.user?
@@ -34,12 +34,12 @@ class MentorshipRequestsController < ApplicationController
   def create
     @mentorship_request = MentorshipRequest.new(mentorship_request_params)
     @mentorship_request.requester = current_user
-    
+
     # Gérer la commune depuis les paramètres région/département/commune
     if params[:mentorship_request][:commune_id].present?
       @mentorship_request.commune_id = params[:mentorship_request][:commune_id]
     end
-    
+
     authorize @mentorship_request
 
     if @mentorship_request.save

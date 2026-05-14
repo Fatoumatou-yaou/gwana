@@ -32,15 +32,17 @@ Rails.application.configure do
   config.active_storage.service = :local
 
   # Configuration email pour développement
-  # Par défaut, utiliser :test (emails dans ActionMailer::Base.deliveries)
-  # Pour tester avec Mailgun API, définir USE_MAILGUN_API=true
+  # Options disponibles :
+  # - :test (défaut) : emails stockés dans ActionMailer::Base.deliveries
+  # - :letter_opener : ouvre les emails dans le navigateur
+  # - :mailgun_api : utilise Mailgun API (nécessite USE_MAILGUN_API=true)
+
   if ENV["USE_MAILGUN_API"] == "true"
     mailgun_creds = Rails.application.credentials.dig(:mailgun)
     if mailgun_creds && mailgun_creds[:api_key].present?
       config.action_mailer.delivery_method = :mailgun_api
       config.action_mailer.perform_deliveries = true
       config.action_mailer.raise_delivery_errors = true
-      # Le logger sera disponible après l'initialisation complète
       config.after_initialize do
         Rails.logger.info "Mailgun API activé en développement" if Rails.logger
       end
@@ -51,10 +53,20 @@ Rails.application.configure do
         Rails.logger.warn "Mailgun credentials non trouvés, utilisation de :test" if Rails.logger
       end
     end
+  elsif ENV["USE_LETTER_OPENER"] == "true"
+    config.action_mailer.delivery_method = :letter_opener_web
+    config.action_mailer.perform_deliveries = true
+    config.action_mailer.raise_delivery_errors = false
+    config.after_initialize do
+      Rails.logger.info "Letter Opener Web activé en développement" if Rails.logger
+    end
   else
     config.action_mailer.delivery_method = :test
     config.action_mailer.perform_deliveries = true
     config.action_mailer.raise_delivery_errors = false
+    config.after_initialize do
+      Rails.logger.info "Emails en mode test (stockés dans ActionMailer::Base.deliveries)" if Rails.logger
+    end
   end
 
   # Make template changes take effect immediately.
@@ -62,6 +74,9 @@ Rails.application.configure do
 
   # Set localhost to be used by links generated in mailer templates.
   config.action_mailer.default_url_options = { host: "localhost", port: 3000 }
+
+  # ActiveStorage URL options for development
+  config.active_storage.url_options = { host: "localhost", port: 3000 }
 
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log

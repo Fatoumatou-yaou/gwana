@@ -89,11 +89,13 @@ redis-server
 
 ### Variables d'environnement
 
-Créer un fichier `.env` (ou utiliser les credentials Rails) :
+Créer un fichier `.env` à la racine du projet (ou utiliser les credentials Rails) :
 
 ```bash
 # Database
 DATABASE_URL=postgres://localhost:5432/gwana_development
+PGUSER=postgres
+PGPASSWORD=postgres
 
 # Redis
 REDIS_URL=redis://localhost:6379/0
@@ -104,6 +106,9 @@ REDIS_URL=redis://localhost:6379/0
 # Pour AWS S3:
 # ACTIVE_STORAGE_SERVICE=amazon
 ```
+
+Ce projet utilise `dotenv-rails` en développement et test pour charger automatiquement
+les variables définies dans `.env`.
 
 ### Credentials Rails
 

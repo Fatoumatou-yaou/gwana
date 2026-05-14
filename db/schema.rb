@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_02_16_140002) do
+ActiveRecord::Schema[8.0].define(version: 2026_05_14_120000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -208,6 +208,20 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_16_140002) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "page_views", force: :cascade do |t|
+    t.string "ip_address"
+    t.string "user_agent"
+    t.string "path"
+    t.string "referer"
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["created_at"], name: "index_page_views_on_created_at"
+    t.index ["ip_address", "created_at"], name: "index_page_views_on_ip_address_and_created_at"
+    t.index ["ip_address"], name: "index_page_views_on_ip_address"
+    t.index ["user_id"], name: "index_page_views_on_user_id"
+  end
+
   create_table "regions", force: :cascade do |t|
     t.string "name", null: false
     t.datetime "created_at", null: false
@@ -262,4 +276,5 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_16_140002) do
   add_foreign_key "mentorship_requests", "communes"
   add_foreign_key "mentorship_requests", "users", column: "mentor_id"
   add_foreign_key "mentorship_requests", "users", column: "requester_id"
+  add_foreign_key "page_views", "users"
 end

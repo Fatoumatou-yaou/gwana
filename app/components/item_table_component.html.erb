@@ -113,6 +113,16 @@
                               </svg>
                               Supprimer
                             <% end %>
+                          <% when 'approve' %>
+                            <%= link_to send("approve_#{route_base}_path".to_sym, route_params(item)),
+                                        data: { turbo_method: :patch, turbo_confirm: "Êtes-vous sûr de vouloir approuver cette demande ?" },
+                                        class: "flex items-center px-4 py-2 text-sm text-green-700 hover:bg-green-50 hover:text-green-900",
+                                        title: "Approuver" do %>
+                              <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                              </svg>
+                              Approuver
+                            <% end %>
                           <% end %>
                         <% end %>
                       <% end %>
