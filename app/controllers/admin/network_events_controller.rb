@@ -1,21 +1,21 @@
 class Admin::NetworkEventsController < Admin::BaseController
-  before_action :set_network_event, only: [:show, :edit, :update, :destroy]
+  before_action :set_network_event, only: [ :show, :edit, :update, :destroy ]
 
   def index
-    network_events = policy_scope([:admin, NetworkEvent]).recent
+    network_events = policy_scope([ :admin, NetworkEvent ]).recent
     network_events = network_events.where("name ILIKE ?", "%#{params[:search]}%") if params[:search].present?
     @pagy, network_events = pagy(network_events)
     @network_events = decorate(network_events)
   end
 
   def show
-    authorize [:admin, @network_event]
+    authorize [ :admin, @network_event ]
     @network_event = @network_event.decorate
   end
 
   def new
     @network_event = NetworkEvent.new
-    authorize [:admin, @network_event]
+    authorize [ :admin, @network_event ]
   end
 
   def create
@@ -23,13 +23,13 @@ class Admin::NetworkEventsController < Admin::BaseController
     raw_photos = params[:network_event][:photos] rescue nil
     if reject_if_photos_too_large!(raw_photos)
       @network_event = NetworkEvent.new(network_event_params)
-      authorize [:admin, @network_event]
+      authorize [ :admin, @network_event ]
       render :new, status: :unprocessable_entity
       return
     end
 
     @network_event = NetworkEvent.new(network_event_params)
-    authorize [:admin, @network_event]
+    authorize [ :admin, @network_event ]
 
     if @network_event.save
       Rails.logger.info("NetworkEvent créé avec succès, ID: #{@network_event.id}, Photos attachées: #{@network_event.photos.count}")
@@ -52,18 +52,18 @@ class Admin::NetworkEventsController < Admin::BaseController
         end
       end
       Rails.logger.error("=====================================")
-      
+
       flash[:alert] = "Impossible de créer l'événement. Veuillez corriger les erreurs ci-dessous."
       render :new, status: :unprocessable_entity
     end
   end
 
   def edit
-    authorize [:admin, @network_event]
+    authorize [ :admin, @network_event ]
   end
 
   def update
-    authorize [:admin, @network_event]
+    authorize [ :admin, @network_event ]
 
     # Vérifier la taille des photos brutes AVANT tout filtrage (pour afficher l'erreur à l'utilisateur)
     raw_photos = params[:network_event][:photos] rescue nil
@@ -91,7 +91,7 @@ class Admin::NetworkEventsController < Admin::BaseController
       # Recharger l'objet depuis la DB pour éviter d'avoir des photos non persistées attachées
       # Cela évite l'erreur "Cannot get a signed_id for a new record" dans la vue
       @network_event.reload
-      
+
       # Logger les erreurs pour le debugging en production
       Rails.logger.error("=== NetworkEvent update failed ===")
       Rails.logger.error("Event ID: #{@network_event.id}")
@@ -105,14 +105,14 @@ class Admin::NetworkEventsController < Admin::BaseController
         end
       end
       Rails.logger.error("===================================")
-      
+
       flash[:alert] = "Impossible de mettre à jour l'événement. Veuillez corriger les erreurs ci-dessous."
       render :edit, status: :unprocessable_entity
     end
   end
 
   def destroy
-    authorize [:admin, @network_event]
+    authorize [ :admin, @network_event ]
     @network_event.destroy
     flash[:notice] = "Événement supprimé avec succès."
     redirect_to admin_network_events_path
@@ -131,10 +131,10 @@ class Admin::NetworkEventsController < Admin::BaseController
 
     raw_photos.each do |photo|
       next unless photo.is_a?(ActionDispatch::Http::UploadedFile)
-      if photo.size > 2.megabytes
+      if photo.size > 4.megabytes
         size_in_mb = (photo.size / 1.megabyte.to_f).round(2)
         filename = photo.original_filename
-        flash[:alert] = "La photo \"#{filename}\" dépasse 2 Mo (taille actuelle : #{size_in_mb} Mo). Veuillez réduire la taille de l'image."
+        flash[:alert] = "La photo \"#{filename}\" dépasse 4 Mo (taille actuelle : #{size_in_mb} Mo). Veuillez réduire la taille de l'image."
         return true
       end
     end
@@ -143,14 +143,14 @@ class Admin::NetworkEventsController < Admin::BaseController
 
   def network_event_params
     permitted = params.require(:network_event).permit(:name, :description, :event_date, photos: [])
-    
+
     # Logger les paramètres bruts pour le debugging
     raw_photos_param = params[:network_event][:photos] rescue nil
     Rails.logger.info("=== network_event_params ===")
     Rails.logger.info("Paramètres photos bruts: #{raw_photos_param.inspect}")
     Rails.logger.info("Type: #{raw_photos_param.class}")
     Rails.logger.info("Count: #{raw_photos_param&.count || 0}")
-    
+
     # Filtrer les photos vides (chaînes vides) qui peuvent être envoyées par le formulaire
     # Ne garder que les fichiers uploadés valides (ActionDispatch::Http::UploadedFile)
     if permitted[:photos].present?
@@ -158,12 +158,12 @@ class Admin::NetworkEventsController < Admin::BaseController
       permitted[:photos].each_with_index do |photo, index|
         Rails.logger.info("Photo brute #{index + 1}: type=#{photo.class}, is_uploaded_file=#{photo.is_a?(ActionDispatch::Http::UploadedFile)}, blank?=#{photo.blank? rescue 'N/A'}")
       end
-      
-      # Filtrer : fichiers uploadés valides ET taille <= 2 Mo (ne jamais attacher de photo trop grosse)
+
+      # Filtrer : fichiers uploadés valides ET taille <= 4 Mo (ne jamais attacher de photo trop grosse)
       filtered_photos = permitted[:photos].reject(&:blank?).select do |photo|
-        photo.is_a?(ActionDispatch::Http::UploadedFile) && photo.size <= 2.megabytes
+        photo.is_a?(ActionDispatch::Http::UploadedFile) && photo.size <= 4.megabytes
       end
-      
+
       # Si on a des photos valides, les utiliser
       # Si le tableau est vide après filtrage, ne pas inclure le paramètre photos
       # pour éviter de supprimer les photos existantes lors d'un update
@@ -182,11 +182,10 @@ class Admin::NetworkEventsController < Admin::BaseController
     else
       Rails.logger.info("Aucun paramètre photos reçu dans permitted")
     end
-    
+
     Rails.logger.info("Paramètres finaux: photos présent? #{permitted.key?(:photos)}, count: #{permitted[:photos]&.count || 0}")
     Rails.logger.info("============================")
-    
+
     permitted
   end
 end
-
