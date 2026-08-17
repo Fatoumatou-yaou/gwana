@@ -43,11 +43,11 @@ class NetworkEvent < ApplicationRecord
 
     photos.each do |photo|
       next unless photo.respond_to?(:byte_size)
-      if photo.byte_size > 2.megabytes
+      if photo.byte_size > 4.megabytes
         size_in_mb = (photo.byte_size / 1.megabyte.to_f).round(2)
         filename = photo.respond_to?(:filename) ? photo.filename.to_s : "photo"
         Rails.logger.error("Photo trop grande: #{filename} = #{photo.byte_size} bytes (#{size_in_mb} Mo)")
-        errors.add(:photos, "contient une photo (#{filename}) qui dépasse 2 Mo (taille actuelle : #{size_in_mb} Mo)")
+        errors.add(:photos, "contient une photo (#{filename}) qui dépasse 4 Mo (taille actuelle : #{size_in_mb} Mo)")
       end
     end
   end
