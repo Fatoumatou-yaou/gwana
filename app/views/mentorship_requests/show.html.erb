@@ -117,12 +117,12 @@
     <!-- Actions pour gwana -->
     <% if current_user.gwana? && @mentorship_request.pending? %>
       <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-4 border-t border-gray-200">
-        <%= link_to "Accepter", accept_mentorship_request_path(@mentorship_request), method: :patch, 
+        <%= link_to "Accepter", accept_mentorship_request_path(@mentorship_request), 
             class: "inline-flex items-center justify-center px-4 sm:px-6 py-2 sm:py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-semibold text-sm sm:text-base",
-            data: { confirm: "Êtes-vous sûr de vouloir accepter cette demande ?" } %>
-        <%= link_to "Refuser", reject_mentorship_request_path(@mentorship_request), method: :patch,
+            data: { turbo_method: :patch, turbo_confirm: "Êtes-vous sûr de vouloir accepter cette demande ?" } %>
+        <%= link_to "Refuser", reject_mentorship_request_path(@mentorship_request), 
             class: "inline-flex items-center justify-center px-4 sm:px-6 py-2 sm:py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-semibold text-sm sm:text-base",
-            data: { confirm: "Êtes-vous sûr de vouloir refuser cette demande ?" } %>
+            data: { turbo_method: :patch, turbo_confirm: "Êtes-vous sûr de vouloir refuser cette demande ?" } %>
       </div>
     <% end %>
   </div>

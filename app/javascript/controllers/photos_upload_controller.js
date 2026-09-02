@@ -4,8 +4,8 @@ export default class extends Controller {
   static targets = ["input", "error", "info", "preview"]
   static values = {
     maxFiles: { type: Number, default: 30 },
-    maxFileSize: { type: Number, default: 2097152 }, // 2 Mo en bytes
-    maxTotalSize: { type: Number, default: 62914560 }, // 60 Mo total (30 * 2 Mo)
+    maxFileSize: { type: Number, default: 4194304 }, // 4 Mo en bytes
+    maxTotalSize: { type: Number, default: 125829120 }, // 120 Mo total (30 * 4 Mo)
     existingCount: { type: Number, default: 0 }
   }
 
@@ -46,10 +46,10 @@ export default class extends Controller {
         return
       }
       
-      // Vérifier la taille individuelle - IMPORTANT: bloquer si > 2 Mo
+      // Vérifier la taille individuelle - IMPORTANT: bloquer si > 4 Mo
       if (file.size > this.maxFileSizeValue) {
         const sizeInMB = (file.size / 1048576).toFixed(2)
-        errors.push(`La photo "${file.name}" dépasse 2 Mo (${sizeInMB} Mo).`)
+        errors.push(`La photo "${file.name}" dépasse 4 Mo (${sizeInMB} Mo).`)
       }
 
       // Vérifier le type
@@ -163,15 +163,15 @@ export default class extends Controller {
         return false
       }
 
-      // Vérifier la taille de chaque fichier - BLOQUER si > 2 Mo
+      // Vérifier la taille de chaque fichier - BLOQUER si > 4 Mo
       const errors = []
       let totalSize = 0
       
       for (const file of files) {
-        // Vérifier la taille - CRITIQUE: bloquer si > 2 Mo
+        // Vérifier la taille - CRITIQUE: bloquer si > 4 Mo
         if (file.size > this.maxFileSizeValue) {
           const sizeInMB = (file.size / 1048576).toFixed(2)
-          const errorMsg = `La photo "${file.name}" dépasse 2 Mo (${sizeInMB} Mo).`
+          const errorMsg = `La photo "${file.name}" dépasse 4 Mo (${sizeInMB} Mo).`
           errors.push(errorMsg)
           console.error(`[SUBMIT] ${errorMsg}`)
         } else {

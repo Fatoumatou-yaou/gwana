@@ -52,7 +52,13 @@ class Admin::UsersController < Admin::BaseController
 
   def update
     authorize [:admin, @user]
-    if @user.update(user_params)
+    params_to_update = user_params
+    if params_to_update[:password].blank?
+      params_to_update.delete(:password)
+      params_to_update.delete(:password_confirmation)
+    end
+
+    if @user.update(params_to_update)
       flash[:notice] = "Utilisateur mis à jour avec succès."
       redirect_to admin_user_path(@user)
     else
@@ -67,7 +73,18 @@ class Admin::UsersController < Admin::BaseController
   end
 
   def user_params
-    params.require(:user).permit(:email, :first_name, :last_name, :phone, :country_code)
+    params.require(:user).permit(
+      :first_name,
+      :last_name,
+      :email,
+      :phone,
+      :country_code,
+      :profile,
+      :gender,
+      :is_verified,
+      :password,
+      :password_confirmation
+    )
   end
 end
 

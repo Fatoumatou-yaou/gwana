@@ -42,7 +42,7 @@
   <!-- Photos -->
   <div class="mb-6" data-controller="photos-upload" 
        data-photos-upload-max-files-value="30"
-       data-photos-upload-max-file-size-value="2097152"
+       data-photos-upload-max-file-size-value="4194304"
        data-photos-upload-existing-count-value="<%= network_event.persisted? ? network_event.photos.count : 0 %>">
     <%= f.label :photos, "Photos", class: "block text-sm font-semibold text-gray-700 mb-2" %>
     
@@ -89,7 +89,7 @@
       <p class="text-sm text-blue-800 font-semibold mb-2">Contraintes :</p>
       <ul class="text-xs text-blue-700 space-y-1 list-disc list-inside">
         <li>Maximum <strong>30 photos</strong> par événement</li>
-        <li>Taille maximale : <strong>2 Mo</strong> par photo</li>
+        <li>Taille maximale : <strong>4 Mo</strong> par photo</li>
         <li>Formats acceptés : <strong>JPEG, PNG, WebP</strong></li>
         <% if network_event.persisted? && network_event.photos.attached? %>
           <li>Photos restantes : <strong><%= 30 - network_event.photos.count %></strong></li>
