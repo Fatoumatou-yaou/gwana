@@ -1,6 +1,6 @@
 class Admin::GwanaActivitiesController < Admin::BaseController
   before_action :set_gwana
-  before_action :set_activity, only: [:edit, :update, :destroy]
+  before_action :set_activity, only: [ :show, :edit, :update, :destroy ]
 
   def index
     @activities = policy_scope(@gwana.activities).includes(:gwana).recent
@@ -8,14 +8,19 @@ class Admin::GwanaActivitiesController < Admin::BaseController
     @activities = decorate(@activities)
   end
 
+  def show
+    authorize [ :admin, @activity ]
+    redirect_to edit_admin_gwana_activity_path(@gwana, @activity)
+  end
+
   def new
     @activity = @gwana.activities.build
-    authorize [:admin, @activity]
+    authorize [ :admin, @activity ]
   end
 
   def create
     @activity = @gwana.activities.build(activity_params)
-    authorize [:admin, @activity]
+    authorize [ :admin, @activity ]
 
     if @activity.save
       redirect_to admin_gwana_path(@gwana), notice: "Activité créée avec succès"
@@ -25,11 +30,11 @@ class Admin::GwanaActivitiesController < Admin::BaseController
   end
 
   def edit
-    authorize [:admin, @activity]
+    authorize [ :admin, @activity ]
   end
 
   def update
-    authorize [:admin, @activity]
+    authorize [ :admin, @activity ]
 
     if @activity.update(activity_params)
       redirect_to admin_gwana_path(@gwana), notice: "Activité mise à jour avec succès"
@@ -39,7 +44,7 @@ class Admin::GwanaActivitiesController < Admin::BaseController
   end
 
   def destroy
-    authorize [:admin, @activity]
+    authorize [ :admin, @activity ]
     @activity.destroy
     redirect_to admin_gwana_path(@gwana), notice: "Activité supprimée avec succès"
   end
@@ -64,4 +69,3 @@ class Admin::GwanaActivitiesController < Admin::BaseController
     )
   end
 end
-

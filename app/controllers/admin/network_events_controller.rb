@@ -125,7 +125,7 @@ class Admin::NetworkEventsController < Admin::BaseController
   end
 
   # Vérifie les photos brutes (params) avant tout filtrage. Retourne true si au moins une photo
-  # dépasse 2 Mo (et définit flash[:alert]). À appeler avant network_event_params.
+  # dépasse 4 Mo (et définit flash[:alert]). À appeler avant network_event_params.
   def reject_if_photos_too_large!(raw_photos)
     return false if raw_photos.blank?
 

@@ -1,11 +1,16 @@
 class Admin::GwanaPortraitVideosController < Admin::BaseController
   before_action :set_gwana
-  before_action :set_portrait_video, only: [:edit, :update, :destroy]
+  before_action :set_portrait_video, only: [:show, :edit, :update, :destroy]
 
   def index
     @portrait_videos = policy_scope(@gwana.portrait_videos).includes(:gwana).ordered
     @pagy, @portrait_videos = pagy(@portrait_videos)
     @portrait_videos = decorate(@portrait_videos)
+  end
+
+  def show
+    authorize [:admin, @portrait_video]
+    redirect_to edit_admin_gwana_portrait_video_path(@gwana, @portrait_video)
   end
 
   def new

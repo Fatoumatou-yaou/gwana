@@ -2,21 +2,21 @@ class Admin::GwanaUpdateRequestsController < Admin::BaseController
     before_action :set_gwana_update_request, only: %i[show approve reject]
 
     def index
-      authorize [:admin, GwanaUpdateRequest]
-      requests = policy_scope([:admin, GwanaUpdateRequest]).includes(:gwana, :reviewed_by).recent
+      authorize [ :admin, GwanaUpdateRequest ]
+      requests = policy_scope([ :admin, GwanaUpdateRequest ]).includes(:gwana, :reviewed_by).recent
       @pagy, requests = pagy(requests)
       @gwana_update_requests = decorate(requests)
-      @pending_requests = policy_scope([:admin, GwanaUpdateRequest]).pending.includes(:gwana).recent
-      @approved_requests = policy_scope([:admin, GwanaUpdateRequest]).approved.includes(:gwana, :reviewed_by).recent.limit(20)
-      @rejected_requests = policy_scope([:admin, GwanaUpdateRequest]).rejected.includes(:gwana, :reviewed_by).recent.limit(20)
+      @pending_requests = policy_scope([ :admin, GwanaUpdateRequest ]).pending.includes(:gwana).recent
+      @approved_requests = policy_scope([ :admin, GwanaUpdateRequest ]).approved.includes(:gwana, :reviewed_by).recent.limit(20)
+      @rejected_requests = policy_scope([ :admin, GwanaUpdateRequest ]).rejected.includes(:gwana, :reviewed_by).recent.limit(20)
     end
 
     def show
-        authorize [:admin, @gwana_update_request]
+        authorize [ :admin, @gwana_update_request ]
     end
 
     def approve
-      authorize [:admin, @gwana_update_request]
+      authorize [ :admin, @gwana_update_request ]
 
       if GwanaUpdateRequestService.approve(request: @gwana_update_request, reviewer: current_user)
         GwanaUpdateRequestMailer.request_approved(@gwana_update_request).deliver_later
@@ -27,14 +27,14 @@ class Admin::GwanaUpdateRequestsController < Admin::BaseController
     end
 
     def reject
-      authorize [:admin, @gwana_update_request]
+      authorize [ :admin, @gwana_update_request ]
 
       if GwanaUpdateRequestService.reject(request: @gwana_update_request, reviewer: current_user)
         GwanaUpdateRequestMailer.request_rejected(@gwana_update_request).deliver_later
         redirect_to admin_gwana_update_requests_path, notice: "Demande de mise à jour refusée"
       else
         redirect_to admin_gwana_update_request_path(@gwana_update_request), alert: "Une erreur est survenue lors du refus de la demande"
-        end
+      end
     end
 
     private
@@ -43,4 +43,3 @@ class Admin::GwanaUpdateRequestsController < Admin::BaseController
       @gwana_update_request = GwanaUpdateRequest.find(params[:id])
     end
 end
-

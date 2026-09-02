@@ -32,10 +32,6 @@ class MentorshipRequestPolicy < ApplicationPolicy
     user.present? && record.mentor == user
   end
 
-  def approve?
-    user.admin?
-  end
-
   class Scope < Scope
     def resolve
       if user&.admin?
@@ -50,4 +46,3 @@ class MentorshipRequestPolicy < ApplicationPolicy
     end
   end
 end
-

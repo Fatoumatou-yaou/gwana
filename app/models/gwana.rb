@@ -42,6 +42,10 @@ class Gwana < ApplicationRecord
                   }
 
   # Instance methods
+  def full_name
+    "#{first_name} #{last_name}".strip.humanize
+  end
+
   def skills_array
     return [] if skills.blank?
 

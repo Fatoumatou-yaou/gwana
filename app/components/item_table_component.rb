@@ -184,7 +184,7 @@ class ItemTableComponent < ViewComponent::Base
               :empty_message, :route_base, :pagy
 
   def can_perform_action?(item, action)
-    policy_target = scope.include?("admin") ? [:admin, item] : item
+    policy_target = scope.include?("admin") ? [ :admin, item ] : item
     helpers.policy(policy_target).send("#{action == 'delete' ? 'destroy' : action}?")
   end
 end
