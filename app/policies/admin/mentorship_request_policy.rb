@@ -19,10 +19,6 @@ class Admin::MentorshipRequestPolicy < ApplicationPolicy
     admin?
   end
 
-  def approve?
-    admin?
-  end
-
   def reject?
     admin?
   end
@@ -37,4 +33,3 @@ class Admin::MentorshipRequestPolicy < ApplicationPolicy
     end
   end
 end
-
